@@ -2,6 +2,9 @@ import * as config from 'config';
 
 const isObject = (thing: any) => typeof thing === 'object' && thing !== null;
 
+/**
+ * @Version 0.0.1
+ */
 export default class ConfigManagement {
   private static configDataDictionary = {};
 
