@@ -16,4 +16,7 @@ export default class ConfigManagement {
     }
     return this.configDataDictionary[ymlHead];
   }
+  public static legacyGet(key: string): any {
+    return config.get(key);
+  }
 }
