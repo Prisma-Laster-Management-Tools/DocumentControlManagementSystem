@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
   Post,
   ValidationPipe,
 } from '@nestjs/common';
@@ -26,6 +27,7 @@ export class UserController {
   }
 
   @Post('/login')
+  @HttpCode(200)
   signIn(
     @Body(ValidationPipe) authCredentialsDto: SignUpCredentialsDto,
   ): Promise<{ accessToken: string }> {
