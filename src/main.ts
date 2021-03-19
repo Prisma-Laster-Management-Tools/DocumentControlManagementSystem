@@ -1,13 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as config from 'config';
-import { Logger } from '@nestjs/common';
+import { BadRequestException, Logger, ValidationPipe } from '@nestjs/common';
 import ConfigManagement from './utilities/conf_management';
+import { ValidationPipeWithCustomException } from './validation';
 
 async function bootstrap() {
   const serverConfig = ConfigManagement.extractConfigVariables('server');
   const logger = new Logger('bootstrap');
   const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(ValidationPipeWithCustomException);
   app.setGlobalPrefix('api'); // prefix the route with /api/
 
   const port = process.env.PORT || serverConfig.port;
