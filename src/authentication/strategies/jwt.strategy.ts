@@ -37,6 +37,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException();
     }
 
-    return user;
+    return user; // this is where the data gonna be embeding to the req.user
   }
 }
