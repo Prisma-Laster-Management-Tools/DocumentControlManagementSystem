@@ -4,10 +4,12 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
+@Unique(['email'])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -19,6 +21,9 @@ export class User extends BaseEntity {
   password: string;
 
   @Column()
+  salt: string;
+
+  @Column({ nullable: false, default: 'user' })
   role: string;
 
   @CreateDateColumn({ type: 'timestamp' })
