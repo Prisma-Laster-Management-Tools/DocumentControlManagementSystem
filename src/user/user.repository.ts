@@ -1,8 +1,37 @@
-import { Logger } from '@nestjs/common';
-import { EntityRepository, Repository } from 'typeorm';
-import { User } from './model/user.entity';
+import {
+  ConflictException,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 
+import { EntityRepository, Repository } from 'typeorm';
+import { SignUpCredentialsDto } from './dto/signup-credentials.dto';
+import { User } from './model/user.entity';
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
   private logger = new Logger();
+
+  async signUp(signUpCredentialDto: SignUpCredentialsDto): Promise<any> {
+    const { email, password } = signUpCredentialDto;
+    const user = new User();
+    user.email = email;
+    user.salt = await bcrypt.genSalt();
+    user.password = await this.hashPassword(password, user.salt);
+    try {
+      await user.save();
+      return { success: true };
+    } catch (error) {
+      if (error.code === '23505') {
+        // duplicate username
+        throw new ConflictException('Email already exists');
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
+  }
+
+  private async hashPassword(password: string, salt: string): Promise<string> {
+    return bcrypt.hash(password, salt);
+  }
 }
