@@ -8,6 +8,7 @@ async function bootstrap() {
   const serverConfig = ConfigManagement.extractConfigVariables('server');
   const logger = new Logger('bootstrap');
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api'); // prefix the route with /api/
 
   const port = process.env.PORT || serverConfig.port;
   await app.listen(port, () =>
