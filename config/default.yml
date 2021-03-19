@@ -1,2 +1,6 @@
 server:
   port: 3000
+db:
+  database: 'iso-13485-management'
+  type: 'postgres'
+  port: 5432
