@@ -13,4 +13,8 @@ export class SalesService {
   async createSalesData(createSalesDataDTO: CreateSalesDataDTO) {
     return this.salesRepository.createSalesData(createSalesDataDTO);
   }
+
+  async getAllSalesData() {
+    return this.salesRepository.find();
+  }
 }

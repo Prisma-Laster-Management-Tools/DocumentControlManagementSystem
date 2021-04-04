@@ -13,6 +13,11 @@ import { SalesService } from './sales.service';
 export class SalesController {
   constructor(private salesService: SalesService) {}
 
+  @Get()
+  getAllSalesData() {
+    return this.salesService.getAllSalesData();
+  }
+
   @Post()
   @UsePipes(ValidationPipe)
   createSalesData(@Body() createSalesDataDTO: CreateSalesDataDTO) {
