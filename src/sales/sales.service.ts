@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ResponseMsg } from 'src/shared/helpers/ResponseMsg';
 import { CreateSalesDataDTO } from './dto/create-sales-data.dto';
 import { SalesRepository } from './sales.repository';
 
@@ -15,6 +16,6 @@ export class SalesService {
   }
 
   async getAllSalesData() {
-    return this.salesRepository.find();
+    return ResponseMsg.success(await this.salesRepository.find());
   }
 }
