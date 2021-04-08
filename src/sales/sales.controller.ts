@@ -1,7 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
+  ParseIntPipe,
   Post,
   UsePipes,
   ValidationPipe,
@@ -22,5 +25,10 @@ export class SalesController {
   @UsePipes(ValidationPipe)
   createSalesData(@Body() createSalesDataDTO: CreateSalesDataDTO) {
     return this.salesService.createSalesData(createSalesDataDTO);
+  }
+
+  @Delete('/:id')
+  removeSalesData(@Param('id', ParseIntPipe) id: number) {
+    return this.salesService.removeSalesData(id);
   }
 }
