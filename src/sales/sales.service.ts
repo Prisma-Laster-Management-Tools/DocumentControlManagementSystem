@@ -1,5 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import {
+  PaginateResult,
+  PaginationDto,
+} from 'src/shared/dto/pagination/pagination.dto';
 import { ResponseMsg } from 'src/shared/helpers/ResponseMsg';
 import { CreateSalesDataDTO } from './dto/create-sales-data.dto';
 import { SalesRepository } from './sales.repository';
@@ -15,8 +19,27 @@ export class SalesService {
     return this.salesRepository.createSalesData(createSalesDataDTO);
   }
 
-  async getAllSalesData() {
-    return ResponseMsg.success(await this.salesRepository.find());
+  // async getAllSalesData() {
+  //   return ResponseMsg.success(await this.salesRepository.find());
+  // }
+  async findAll(paginationDto: PaginationDto): Promise<PaginateResult> {
+    const skippedItem = (paginationDto.page - 1) * paginationDto.limit;
+
+    const totalCount = await this.salesRepository.count();
+    const sales_datas = await this.salesRepository
+      .createQueryBuilder('sales')
+      .orderBy('sales.createdAt', 'DESC')
+      .offset(skippedItem)
+      .limit(paginationDto.limit)
+      .getMany();
+
+    return {
+      totalCount,
+      page: paginationDto.page,
+      limit: paginationDto.limit,
+      data: sales_datas,
+      totalPage: Math.floor(totalCount / paginationDto.limit),
+    };
   }
 
   async removeSalesData(id: number) {
