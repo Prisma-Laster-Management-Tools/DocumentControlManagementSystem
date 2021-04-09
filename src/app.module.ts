@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from '../config/typeorm.config';
 import { SalesModule } from './sales/sales.module';
+import { FeedbackModule } from './feedback/feedback.module';
 // ────────────────────────────────────────────────────────────────────────────────
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { SalesModule } from './sales/sales.module';
     AuthenticationModule,
     UserModule,
     SalesModule,
+    FeedbackModule,
   ],
 })
 export class AppModule {}
