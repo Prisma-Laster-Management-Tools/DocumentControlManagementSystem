@@ -15,6 +15,13 @@ export class SalesService {
     private salesRepository: SalesRepository,
   ) {}
 
+  async findSales(id: number) {
+    const sales_data = await this.salesRepository.findOne(id);
+    if (!sales_data)
+      throw new NotFoundException(`Sale data with id "${id}" doesn't exist`);
+    return ResponseMsg.success(sales_data);
+  }
+
   async createSalesData(createSalesDataDTO: CreateSalesDataDTO) {
     return this.salesRepository.createSalesData(createSalesDataDTO);
   }

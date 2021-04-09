@@ -30,6 +30,11 @@ export class SalesController {
     return this.salesService.findAll(paginationDto);
   }
 
+  @Get('/:id')
+  findSales(@Param('id', ParseIntPipe) id: number) {
+    return this.salesService.findSales(id);
+  }
+
   @Post()
   createSalesData(@Body() createSalesDataDTO: CreateSalesDataDTO) {
     return this.salesService.createSalesData(createSalesDataDTO);
