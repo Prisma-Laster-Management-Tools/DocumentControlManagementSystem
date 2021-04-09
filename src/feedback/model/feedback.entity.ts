@@ -22,7 +22,7 @@ export class Feedback extends BaseEntity {
   //   serial_number: string;
 
   @ManyToOne((type) => Sales, (sales) => sales.id, { eager: false })
-  customer: Sales;
+  sales: Sales;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
