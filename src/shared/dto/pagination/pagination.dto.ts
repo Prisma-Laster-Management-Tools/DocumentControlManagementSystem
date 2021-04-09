@@ -11,6 +11,9 @@ export class PaginationDto {
   @IsNumber()
   @IsOptional()
   limit: number;
+
+  @IsOptional()
+  search: string;
 }
 
 export interface PaginateResult {

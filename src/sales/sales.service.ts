@@ -22,23 +22,49 @@ export class SalesService {
   // async getAllSalesData() {
   //   return ResponseMsg.success(await this.salesRepository.find());
   // }
+
+  // Note@ could be move to be inside of the repository for modulizing logic parts
   async findAll(paginationDto: PaginationDto): Promise<PaginateResult> {
     const skippedItem = (paginationDto.page - 1) * paginationDto.limit;
 
-    const totalCount = await this.salesRepository.count();
-    const sales_datas = await this.salesRepository
-      .createQueryBuilder('sales')
-      .orderBy('sales.createdAt', 'DESC')
-      .offset(skippedItem)
-      .limit(paginationDto.limit)
-      .getMany();
+    let totalCount = await this.salesRepository.count();
+    const query = await this.salesRepository.createQueryBuilder('sales');
+
+    if (paginationDto.search) {
+      // if search is provided
+      query.where(
+        'sales.product_name LIKE :search_str OR sales.serial_number LIKE :search_str OR sales.price = :search_int',
+        {
+          search_str: `%${paginationDto.search}%`,
+          search_int: parseInt(paginationDto.search) || 0,
+        },
+      );
+    }
+
+    const [getCountPromise, sales_datas] = await Promise.all([
+      paginationDto.search
+        ? query.getCount()
+        : new Promise((resolve) => {
+            resolve(false);
+          }),
+      query
+        .orderBy('sales.createdAt', 'DESC')
+        .offset(skippedItem)
+        .limit(paginationDto.limit)
+        .getMany(),
+    ]);
+
+    totalCount = getCountPromise ? (getCountPromise as number) : totalCount;
 
     return {
       totalCount,
       page: paginationDto.page,
       limit: paginationDto.limit,
       data: sales_datas,
-      totalPage: Math.floor(totalCount / paginationDto.limit),
+      totalPage:
+        totalCount < paginationDto.limit
+          ? 1
+          : Math.floor(totalCount / paginationDto.limit),
     };
   }
 
