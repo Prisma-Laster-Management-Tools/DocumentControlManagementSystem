@@ -19,7 +19,7 @@ export class SalesService {
     const sales_data = await this.salesRepository.findOne(id);
     if (!sales_data)
       throw new NotFoundException(`Sale data with id "${id}" doesn't exist`);
-    return ResponseMsg.success(sales_data);
+    return sales_data;
   }
 
   async createSalesData(createSalesDataDTO: CreateSalesDataDTO) {

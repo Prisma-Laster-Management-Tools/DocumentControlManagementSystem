@@ -21,6 +21,9 @@ export class Feedback extends BaseEntity {
   //   @Column()
   //   serial_number: string;
 
+  @Column()
+  feedback_str: string;
+
   @ManyToOne((type) => Sales, (sales) => sales.id, { eager: false })
   sales: Sales;
 
