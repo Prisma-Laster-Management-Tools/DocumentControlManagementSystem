@@ -56,6 +56,16 @@ export class SalesController {
     return response.redirect(307, `/api/feedback`);
   }
 
+  @Delete('/:id/feedback')
+  REDIRECTION_RemoveFeedback(
+    @Response() response: express.Response,
+    @Req() request: Request,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    request.session.param_cached = { sales_id: id }; // using session -> on the other side will take this and do some action with it
+    return response.redirect(303, `/api/feedback/removal`);
+  }
+
   @Delete('/:id')
   removeSalesData(@Param('id', ParseIntPipe) id: number) {
     return this.salesService.removeSalesData(id);
