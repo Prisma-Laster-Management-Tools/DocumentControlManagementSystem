@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { UserModule } from './user/user.module';
 
+import { AllExceptionsFilter } from './app.http-exception.filter';
+import { APP_FILTER } from '@nestjs/core';
 //
 // ─── DB ─────────────────────────────────────────────────────────────────────────
 //
@@ -17,6 +19,12 @@ import { FeedbackModule } from './feedback/feedback.module';
     UserModule,
     SalesModule,
     FeedbackModule,
+  ],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
   ],
 })
 export class AppModule {}
