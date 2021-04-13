@@ -29,9 +29,9 @@ export class FeedbackController {
     @Body() createFeedbackDTO: CreateFeedbackDTO,
     @Session() session: ISessionItems,
   ) {
-    const { feedback_id } = session.param_cached; // it's not feedback id -> change to sales_id later
-    delete session.param_cached;
-    return this.feedbackService.createFeedback(createFeedbackDTO, feedback_id);
+    const { sales_id } = SESSION_ExtractDataAndClear(session, 'param_cached');
+    if (!sales_id) throw new NotAcceptableException();
+    return this.feedbackService.createFeedback(createFeedbackDTO, sales_id);
   }
 
   /**

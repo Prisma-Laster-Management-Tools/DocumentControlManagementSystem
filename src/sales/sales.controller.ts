@@ -52,7 +52,7 @@ export class SalesController {
     @Req() request: Request,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    request.session.param_cached = { feedback_id: id }; // using session -> on the other side will take this and do some action with it
+    request.session.param_cached = { sales_id: id }; // using session -> on the other side will take this and do some action with it
     return response.redirect(307, `/api/feedback`);
   }
 
