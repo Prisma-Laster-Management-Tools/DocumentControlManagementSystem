@@ -15,7 +15,6 @@ export class FeedbackService {
   findAll() {
     return this.feedbackRepository.findAll();
   }
-  55;
 
   async createFeedback(createFeedbackDTO: CreateFeedbackDTO, sales_id: number) {
     const SaleEntity = await this.salesService.findSales(sales_id); // getting if the entity exist (cross-service)
