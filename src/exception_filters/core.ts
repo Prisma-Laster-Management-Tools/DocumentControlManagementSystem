@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { ITypeormException } from './typeorm/interfaces';
 import * as TYPEORM_ERROR_DICTS from './typeorm/mapped_code.json'; // @NOTE need to import wildcard as ... otherwise it would then return undef xD
 
@@ -25,6 +26,15 @@ export function GetProperExceptionResultFromReceivedException(
   console.log(exception);
   // ────────────────────────────────────────────────────────────────────────────────
 
+  // TODO All legacy nest exception should be cased here
+  if (exception instanceof NotFoundException) {
+    return {
+      found: true,
+      statusCode: exception.getStatus(),
+      message: exception.message,
+    };
+  }
+
   if ((exception as any).code) {
     // Suppose that we found code on the exception
     const { code, detail } = exception as ITypeormException;
@@ -42,4 +52,6 @@ export function GetProperExceptionResultFromReceivedException(
       statusCode: 400,
     };
   }
+
+  return { found: false };
 }
