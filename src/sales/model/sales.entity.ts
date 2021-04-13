@@ -3,12 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
 } from 'typeorm';
 
-import * as bcrypt from 'bcrypt';
+import { Feedback } from 'src/feedback/model/feedback.entity';
 
 @Entity()
 export class Sales extends BaseEntity {
@@ -29,6 +30,9 @@ export class Sales extends BaseEntity {
 
   @Column()
   price: number;
+
+  @OneToMany((type) => Feedback, (feedback) => feedback.sales, { eager: true })
+  feedback: Feedback;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
