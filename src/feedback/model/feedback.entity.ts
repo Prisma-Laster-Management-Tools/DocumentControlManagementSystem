@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 
 @Entity()
+@Unique(['sales']) // 1 Sale can only have 1 feedback
 export class Feedback extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
