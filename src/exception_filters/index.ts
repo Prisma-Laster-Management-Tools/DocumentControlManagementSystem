@@ -19,6 +19,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       found,
       message,
       statusCode,
+      errors = undefined,
     } = GetProperExceptionResultFromReceivedException(exception);
 
     const status = found
@@ -32,6 +33,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       path: request.url,
       message,
+      errors,
     });
   }
 }
