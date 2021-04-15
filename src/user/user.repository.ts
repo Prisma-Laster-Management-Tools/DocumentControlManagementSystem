@@ -18,6 +18,7 @@ export class UserRepository extends Repository<User> {
     user.email = email;
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);
+    user.position = 'super'; // TODO change this later when we know where to adjust user position
     try {
       await user.save();
       return { success: true };
