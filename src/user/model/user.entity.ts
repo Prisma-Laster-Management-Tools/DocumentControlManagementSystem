@@ -28,6 +28,9 @@ export class User extends BaseEntity {
   @Column({ nullable: false, default: 'user' })
   role: string;
 
+  @Column()
+  position: string;
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
