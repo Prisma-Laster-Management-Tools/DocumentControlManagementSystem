@@ -1,4 +1,9 @@
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  HttpException,
+  NotFoundException,
+} from '@nestjs/common';
 import { ITypeormException } from './typeorm/interfaces';
 import * as TYPEORM_ERROR_DICTS from './typeorm/mapped_code.json'; // @NOTE need to import wildcard as ... otherwise it would then return undef xD
 
@@ -67,5 +72,17 @@ export function GetProperExceptionResultFromReceivedException(
     };
   }
 
+  // ELSES
+
+  //check if exception is instance of HTTPEXCEPTION => forward
+  if (exception instanceof HttpException) {
+    return {
+      found: true,
+      message: exception.message,
+      statusCode: exception.getStatus(),
+    };
+  }
+
+  // OTHERWISE
   return { found: false };
 }
