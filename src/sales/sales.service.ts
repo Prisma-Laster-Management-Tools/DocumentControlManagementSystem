@@ -15,6 +15,17 @@ export class SalesService {
     private salesRepository: SalesRepository,
   ) {}
 
+  async findSales(id: number) {
+    const sales_data = await this.salesRepository
+      .createQueryBuilder('sales')
+      .where(`sales.id = ${id}`)
+      .leftJoinAndSelect('sales.feedback', 'feedback')
+      .getOne();
+    if (!sales_data)
+      throw new NotFoundException(`Sale data with id "${id}" doesn't exist`);
+    return sales_data;
+  }
+
   async createSalesData(createSalesDataDTO: CreateSalesDataDTO) {
     return this.salesRepository.createSalesData(createSalesDataDTO);
   }
