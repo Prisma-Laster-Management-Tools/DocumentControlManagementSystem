@@ -14,7 +14,7 @@ export class Notification extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true }) // can be null -> null means no restriction
+  @Column({ nullable: true, default: null }) // can be null -> null means no restriction
   related_positions: string; // [multiple position are allow] ->
 
   @Column()
