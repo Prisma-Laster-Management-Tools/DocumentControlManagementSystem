@@ -12,6 +12,7 @@ import { typeOrmConfig } from '../config/typeorm.config';
 import { SalesModule } from './sales/sales.module';
 import { FeedbackModule } from './feedback/feedback.module';
 import { NotificationModule } from './notification/notification.module';
+import { NotificationGateway } from './notification.gateway';
 // ────────────────────────────────────────────────────────────────────────────────
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { NotificationModule } from './notification/notification.module';
       provide: APP_FILTER,
       useClass: AllExceptionsFilter,
     },
+    NotificationGateway,
   ],
 })
 export class AppModule {}
