@@ -23,6 +23,9 @@ export class Notification extends BaseEntity {
   @Column()
   attached_params: string; // should be separating with [,] comma likes -> the first splited one would be pointing to the id of something then the [1] one should performs some operation
 
+  @Column({ default: true })
+  required_attention: boolean;
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
