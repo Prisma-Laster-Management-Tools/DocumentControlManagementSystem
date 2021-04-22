@@ -39,4 +39,8 @@ export class ProductService {
     // ─────────────────────────────────────────────────────────────────
     return this.productRepository.createProduct(createProductDTO);
   }
+
+  async getAllProduct() {
+    return this.productRepository.getAllProduct();
+  }
 }

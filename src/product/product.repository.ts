@@ -22,4 +22,10 @@ export class ProductRepository extends Repository<Product> {
     ProductEntity.serial_number = serial_number;
     return await ProductEntity.save();
   }
+
+  async getAllProduct() {
+    return await this.query(
+      'SELECT prod.*,prod_detail.product_name,prod_detail.product_description FROM public.product prod LEFT JOIN public.product_detail prod_detail ON prod.product_code=prod_detail.product_code ',
+    );
+  }
 }
