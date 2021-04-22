@@ -13,17 +13,19 @@ import {
 import { Product } from './product.entity';
 
 @Entity()
+@Unique(['product_code'])
 export class ProductDetail extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany((type) => Product, (product) => product.product_code, {
-    eager: true,
-  })
+  @PrimaryColumn()
   product_code: string; //sku
 
   @Column()
-  description: string;
+  product_name: string;
+
+  @Column()
+  product_description: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
