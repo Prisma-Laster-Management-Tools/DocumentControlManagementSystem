@@ -19,10 +19,7 @@ export class Product extends BaseEntity {
   @PrimaryColumn()
   serial_number: string;
 
-  @ManyToOne(
-    (type) => ProductDetail,
-    (product_detail) => product_detail.product_code,
-  )
+  @Column()
   product_code: string;
 
   @CreateDateColumn({ type: 'timestamp' })
