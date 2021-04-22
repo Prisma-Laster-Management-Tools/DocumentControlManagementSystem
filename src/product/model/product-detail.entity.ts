@@ -5,6 +5,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
   Unique,
@@ -19,6 +20,7 @@ export class ProductDetail extends BaseEntity {
   id: number;
 
   @PrimaryColumn()
+  // @OneToOne(() => Product, (product) => product.product_code, { eager: false })
   product_code: string; //sku
 
   @Column()
