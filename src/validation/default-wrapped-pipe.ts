@@ -18,6 +18,7 @@ export default new ValidationPipe({
     return new BadRequestException(format(err));
   },
   stopAtFirstError: true, // we don't want multiple error -> we should stop at first <and the class validator priority starts from bottom to top  so pay attention when defining it>
+  transform: true, // allow transforming streamline
 });
 
 function format(basedValidationError: any) {

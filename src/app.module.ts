@@ -11,6 +11,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from '../config/typeorm.config';
 import { SalesModule } from './sales/sales.module';
 import { FeedbackModule } from './feedback/feedback.module';
+import { NotificationModule } from './notification/notification.module';
+import { NotificationGateway } from './notification.gateway';
 // ────────────────────────────────────────────────────────────────────────────────
 @Module({
   imports: [
@@ -19,12 +21,14 @@ import { FeedbackModule } from './feedback/feedback.module';
     UserModule,
     SalesModule,
     FeedbackModule,
+    NotificationModule,
   ],
   providers: [
     {
       provide: APP_FILTER,
       useClass: AllExceptionsFilter,
     },
+    NotificationGateway,
   ],
 })
 export class AppModule {}
