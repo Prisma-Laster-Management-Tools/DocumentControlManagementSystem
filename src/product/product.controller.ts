@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { ResponseMsg } from 'src/shared/helpers/ResponseMsg';
 import { CreateProductDetailDTO } from './dto/create-product-detail.dto';
 import { CreateProductDTO } from './dto/create-product.dto';
 import { ProductService } from './product.service';
@@ -19,8 +20,15 @@ export class ProductController {
     return this.productService.createProduct(createProductDTO);
   }
 
+  @Get('/:serial_number')
+  async getProduct(@Param('serial_number') serial_number: string) {
+    return ResponseMsg.success(
+      await this.productService.getProduct(serial_number),
+    );
+  }
+
   @Get()
   async getAllProduct() {
-    return this.productService.getAllProduct();
+    return ResponseMsg.success(await this.productService.getAllProduct());
   }
 }

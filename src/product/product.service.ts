@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateProductDetailDTO } from './dto/create-product-detail.dto';
 import { CreateProductDTO } from './dto/create-product.dto';
@@ -42,5 +46,14 @@ export class ProductService {
 
   async getAllProduct() {
     return this.productRepository.getAllProduct();
+  }
+
+  async getProduct(serial_number: string) {
+    const prod = await this.productRepository.findOne({ serial_number });
+    if (!prod)
+      throw new NotFoundException(
+        `Product with serial_number of "${serial_number} doesn't exist"`,
+      );
+    return prod;
   }
 }
