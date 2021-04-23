@@ -1,20 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-  Query,
-  Redirect,
-  Req,
-  Request,
-  Res,
-  Response,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Query, Redirect, Req, Request, Res, Response, UsePipes, ValidationPipe } from '@nestjs/common';
 import { PaginationDto } from 'src/shared/dto/pagination/pagination.dto';
 import { CreateSalesDataDTO } from './dto/create-sales-data.dto';
 import { SalesService } from './sales.service';
@@ -47,21 +31,13 @@ export class SalesController {
   }
 
   @Post('/:id/feedback')
-  redirect(
-    @Response() response: express.Response,
-    @Req() request: Request,
-    @Param('id', ParseIntPipe) id: number,
-  ) {
+  redirect(@Response() response: express.Response, @Req() request: Request, @Param('id', ParseIntPipe) id: number) {
     request.session.param_cached = { sales_id: id }; // using session -> on the other side will take this and do some action with it
     return response.redirect(307, `/api/feedback`);
   }
 
   @Delete('/:id/feedback')
-  REDIRECTION_RemoveFeedback(
-    @Response() response: express.Response,
-    @Req() request: Request,
-    @Param('id', ParseIntPipe) id: number,
-  ) {
+  REDIRECTION_RemoveFeedback(@Response() response: express.Response, @Req() request: Request, @Param('id', ParseIntPipe) id: number) {
     request.session.param_cached = { sales_id: id }; // using session -> on the other side will take this and do some action with it
     return response.redirect(303, `/api/feedback/removal`);
   }

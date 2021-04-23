@@ -6,9 +6,7 @@ import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(UserRepository) private userRepository: UserRepository,
-  ) {}
+  constructor(@InjectRepository(UserRepository) private userRepository: UserRepository) {}
 
   async signUp(signUpCredentialDto: SignUpCredentialsDto) {
     return this.userRepository.signUp(signUpCredentialDto);

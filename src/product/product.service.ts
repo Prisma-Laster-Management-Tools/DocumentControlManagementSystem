@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/shared/dto/pagination/pagination.dto';
 import { CreateProductDetailDTO } from './dto/create-product-detail.dto';
@@ -22,12 +18,8 @@ export class ProductService {
   //
   // ─── BASE PROD ──────────────────────────────────────────────────────────────────
   //
-  async createBaseProductDetail(
-    createProductDetailDTO: CreateProductDetailDTO,
-  ) {
-    return this.productDetailRepository.createBaseProductDetail(
-      createProductDetailDTO,
-    );
+  async createBaseProductDetail(createProductDetailDTO: CreateProductDetailDTO) {
+    return this.productDetailRepository.createBaseProductDetail(createProductDetailDTO);
   }
   // ────────────────────────────────────────────────────────────────────────────────
 
@@ -37,10 +29,7 @@ export class ProductService {
     const product = await this.productDetailRepository.findOne({
       product_code,
     });
-    if (!product)
-      throw new BadRequestException(
-        `Product Code of "${product_code}" doesn't exist in database`,
-      );
+    if (!product) throw new BadRequestException(`Product Code of "${product_code}" doesn't exist in database`);
     // ─────────────────────────────────────────────────────────────────
     return this.productRepository.createProduct(createProductDTO);
   }
@@ -51,10 +40,7 @@ export class ProductService {
 
   async getProduct(serial_number: string) {
     const prod = await this.productRepository.findOne({ serial_number });
-    if (!prod)
-      throw new NotFoundException(
-        `Product with serial_number of "${serial_number} doesn't exist"`,
-      );
+    if (!prod) throw new NotFoundException(`Product with serial_number of "${serial_number} doesn't exist"`);
     return prod;
   }
 }

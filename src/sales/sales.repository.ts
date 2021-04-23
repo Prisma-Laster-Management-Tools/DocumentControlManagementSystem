@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  InternalServerErrorException,
-  Logger,
-} from '@nestjs/common';
+import { ConflictException, InternalServerErrorException, Logger } from '@nestjs/common';
 import { ResponseMsg } from 'src/shared/helpers/ResponseMsg';
 
 import { EntityRepository, Repository } from 'typeorm';
@@ -13,13 +9,7 @@ export class SalesRepository extends Repository<Sales> {
   private logger = new Logger();
 
   async createSalesData(createSalesDataDTO: CreateSalesDataDTO) {
-    const {
-      serial_number,
-      product_name,
-      customer_name,
-      issued_at,
-      price,
-    } = createSalesDataDTO;
+    const { serial_number, product_name, customer_name, issued_at, price } = createSalesDataDTO;
     const salesData = new Sales();
     salesData.serial_number = serial_number;
     salesData.product_name = product_name;

@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  InternalServerErrorException,
-  Logger,
-} from '@nestjs/common';
+import { ConflictException, InternalServerErrorException, Logger } from '@nestjs/common';
 import { Sales } from 'src/sales/model/sales.entity';
 import { ResponseMsg } from 'src/shared/helpers/ResponseMsg';
 
@@ -13,14 +9,8 @@ import { ProductDetail } from './model/product-detail.entity';
 export class ProductDetailRepository extends Repository<ProductDetail> {
   private logger = new Logger();
 
-  async createBaseProductDetail(
-    createProductDetailDTO: CreateProductDetailDTO,
-  ) {
-    const {
-      product_name,
-      product_description,
-      product_code,
-    } = createProductDetailDTO;
+  async createBaseProductDetail(createProductDetailDTO: CreateProductDetailDTO) {
+    const { product_name, product_description, product_code } = createProductDetailDTO;
     const productDetail = new ProductDetail();
     productDetail.product_code = product_code;
     productDetail.product_name = product_name;

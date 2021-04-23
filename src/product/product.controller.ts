@@ -10,9 +10,7 @@ export class ProductController {
   constructor(private productService: ProductService) {}
 
   @Post('/create-product-detail')
-  async createBaseProductDetail(
-    @Body() createProductDetailDTO: CreateProductDetailDTO,
-  ) {
+  async createBaseProductDetail(@Body() createProductDetailDTO: CreateProductDetailDTO) {
     return this.productService.createBaseProductDetail(createProductDetailDTO);
   }
 
@@ -23,17 +21,13 @@ export class ProductController {
 
   @Get('/:serial_number')
   async getProduct(@Param('serial_number') serial_number: string) {
-    return ResponseMsg.success(
-      await this.productService.getProduct(serial_number),
-    );
+    return ResponseMsg.success(await this.productService.getProduct(serial_number));
   }
 
   @Get()
   async getAllProduct(@Query() paginationDto: PaginationDto) {
     paginationDto.page = Number(paginationDto.page) || 1;
     paginationDto.limit = Number(paginationDto.limit) || 10;
-    return ResponseMsg.success(
-      await this.productService.getAllProduct(paginationDto),
-    );
+    return ResponseMsg.success(await this.productService.getAllProduct(paginationDto));
   }
 }

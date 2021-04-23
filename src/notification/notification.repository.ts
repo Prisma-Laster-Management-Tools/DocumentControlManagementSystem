@@ -11,21 +11,12 @@ export class NotificationRepository extends Repository<Notification> {
   //TODO support for multiple related position like [a,b,c] format -> checking if string includes instead of equaling it
   async findAll(user: User) {
     return this.find({
-      where: [
-        { related_positions: null },
-        { related_positions: user.position },
-      ],
+      where: [{ related_positions: null }, { related_positions: user.position }],
     });
   }
 
-  async createNotification(
-    createNotificationDTO: CreateNotificationDTO,
-  ): Promise<Notification> {
-    const {
-      attached_params = '',
-      message = '',
-      related_positions = null,
-    } = createNotificationDTO;
+  async createNotification(createNotificationDTO: CreateNotificationDTO): Promise<Notification> {
+    const { attached_params = '', message = '', related_positions = null } = createNotificationDTO;
     const NotificationInstsance = new Notification();
     NotificationInstsance.message = message;
     NotificationInstsance.related_positions = related_positions;

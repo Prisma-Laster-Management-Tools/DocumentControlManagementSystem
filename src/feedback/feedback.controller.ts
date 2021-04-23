@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  NotAcceptableException,
-  Post,
-  Session,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotAcceptableException, Post, Session, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ISessionItems } from 'src/@types/session';
 import { Positions } from 'src/shared/guards/position/positions.decorator';
@@ -31,10 +22,7 @@ export class FeedbackController {
    * @ACCESS <REDIRECTION ONLY>
    */
   @Post()
-  createFeedback(
-    @Body() createFeedbackDTO: CreateFeedbackDTO,
-    @Session() session: ISessionItems,
-  ) {
+  createFeedback(@Body() createFeedbackDTO: CreateFeedbackDTO, @Session() session: ISessionItems) {
     const { sales_id } = SESSION_ExtractDataAndClear(session, 'param_cached');
     if (!sales_id) throw new NotAcceptableException();
     return this.feedbackService.createFeedback(createFeedbackDTO, sales_id);
