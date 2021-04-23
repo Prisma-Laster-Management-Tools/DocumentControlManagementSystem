@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { PaginationDto } from 'src/shared/dto/pagination/pagination.dto';
 import { ResponseMsg } from 'src/shared/helpers/ResponseMsg';
 import { CreateProductDetailDTO } from './dto/create-product-detail.dto';
@@ -17,6 +17,11 @@ export class ProductController {
   @Post('/create-product')
   async createProduct(@Body() createProductDTO: CreateProductDTO) {
     return this.productService.createProduct(createProductDTO);
+  }
+
+  @Delete('/remove-product/:serial_number')
+  async removeProduct(@Param('serial_number') serial_number: string) {
+    return this.productService.removeProduct(serial_number);
   }
 
   @Get('/:serial_number')

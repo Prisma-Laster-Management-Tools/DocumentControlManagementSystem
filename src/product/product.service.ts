@@ -34,6 +34,12 @@ export class ProductService {
     return this.productRepository.createProduct(createProductDTO);
   }
 
+  async removeProduct(serial_number: string) {
+    const removal = await this.productRepository.delete({ serial_number });
+    if (!removal.affected) throw new NotFoundException(`Product with serial number "${serial_number}" doesn't exist`);
+    return removal;
+  }
+
   async getAllProduct(paginationDto: PaginationDto) {
     return this.productRepository.getAllProduct(paginationDto);
   }
