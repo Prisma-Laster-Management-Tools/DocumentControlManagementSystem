@@ -21,6 +21,12 @@ export class ProductService {
   async createBaseProductDetail(createProductDetailDTO: CreateProductDetailDTO) {
     return this.productDetailRepository.createBaseProductDetail(createProductDetailDTO);
   }
+
+  async removeBaseProductDetail(product_code: string) {
+    const removal = await this.productDetailRepository.delete({ product_code });
+    if (!removal.affected) throw new NotFoundException(`Product-Detail with code "${product_code}" doesn't exist`);
+    return removal;
+  }
   // ────────────────────────────────────────────────────────────────────────────────
 
   async createProduct(createProductDTO: CreateProductDTO) {

@@ -14,6 +14,11 @@ export class ProductController {
     return this.productService.createBaseProductDetail(createProductDetailDTO);
   }
 
+  @Delete('/remove-product-detail/:product_code')
+  async removeBaseProductDetail(@Param('product_code') product_code: string) {
+    return this.productService.removeBaseProductDetail(product_code);
+  }
+
   @Post('/create-product')
   async createProduct(@Body() createProductDTO: CreateProductDTO) {
     return this.productService.createProduct(createProductDTO);
