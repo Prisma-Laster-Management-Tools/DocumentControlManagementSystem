@@ -16,11 +16,7 @@ export class NotificationController {
   }
 
   @Post()
-  async createNotification(
-    @Body() createNotificationDTO: CreateNotificationDTO,
-  ) {
-    return ResponseMsg.success(
-      await this.notificationService.createNotification(createNotificationDTO),
-    );
+  async createNotification(@Body() createNotificationDTO: CreateNotificationDTO) {
+    return ResponseMsg.success(await this.notificationService.createNotification(createNotificationDTO));
   }
 }

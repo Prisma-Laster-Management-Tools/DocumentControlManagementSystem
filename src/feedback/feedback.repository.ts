@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  InternalServerErrorException,
-  Logger,
-} from '@nestjs/common';
+import { ConflictException, InternalServerErrorException, Logger } from '@nestjs/common';
 import { Sales } from 'src/sales/model/sales.entity';
 import { ResponseMsg } from 'src/shared/helpers/ResponseMsg';
 
@@ -14,17 +10,11 @@ export class FeedbackRepository extends Repository<Feedback> {
   private logger = new Logger();
 
   findAll() {
-    const query = this.createQueryBuilder('feedback')
-      .leftJoinAndSelect('feedback.sales', 'sales')
-      .select(['feedback.id', 'feedback.feedback_str'])
-      .addSelect(['sales.customer_name', 'sales.id']);
+    const query = this.createQueryBuilder('feedback').leftJoinAndSelect('feedback.sales', 'sales').select(['feedback.id', 'feedback.feedback_str']).addSelect(['sales.customer_name', 'sales.id']);
     return query.getMany();
   }
 
-  async createFeedback(
-    createFeedbackDTO: CreateFeedbackDTO,
-    SaleEntity: Sales,
-  ) {
+  async createFeedback(createFeedbackDTO: CreateFeedbackDTO, SaleEntity: Sales) {
     const { feedback_str } = createFeedbackDTO;
     const feedback = new Feedback();
     feedback.feedback_str = feedback_str;

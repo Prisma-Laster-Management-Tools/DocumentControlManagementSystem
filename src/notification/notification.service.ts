@@ -16,11 +16,7 @@ export class NotificationService {
     return this.notificationRepository.findAll(user);
   }
 
-  async createNotification(
-    createNotificationDTO: CreateNotificationDTO,
-  ): Promise<Notification> {
-    return this.notificationRepository.createNotification(
-      createNotificationDTO,
-    );
+  async createNotification(createNotificationDTO: CreateNotificationDTO): Promise<Notification> {
+    return this.notificationRepository.createNotification(createNotificationDTO);
   }
 }

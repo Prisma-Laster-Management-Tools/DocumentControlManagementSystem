@@ -13,6 +13,7 @@ import { SalesModule } from './sales/sales.module';
 import { FeedbackModule } from './feedback/feedback.module';
 import { NotificationModule } from './notification/notification.module';
 import { NotificationGateway } from './notification.gateway';
+import { ProductModule } from './product/product.module';
 // ────────────────────────────────────────────────────────────────────────────────
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { NotificationGateway } from './notification.gateway';
     SalesModule,
     FeedbackModule,
     NotificationModule,
+    ProductModule,
   ],
   providers: [
     {

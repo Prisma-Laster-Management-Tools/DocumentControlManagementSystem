@@ -7,10 +7,7 @@ import { NotificationRepository } from './notification.repository';
 import { NotificationService } from './notification.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([NotificationRepository]),
-    AuthenticationModule,
-  ],
+  imports: [TypeOrmModule.forFeature([NotificationRepository]), AuthenticationModule],
   controllers: [NotificationController],
   providers: [NotificationService, NotificationGateway],
 })
