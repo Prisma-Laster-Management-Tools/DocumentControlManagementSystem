@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PaginationDto } from 'src/shared/dto/pagination/pagination.dto';
 import { CreateProductDetailDTO } from './dto/create-product-detail.dto';
 import { CreateProductDTO } from './dto/create-product.dto';
 import { ProductDetailRepository } from './product-detail.repository';
@@ -44,8 +45,8 @@ export class ProductService {
     return this.productRepository.createProduct(createProductDTO);
   }
 
-  async getAllProduct() {
-    return this.productRepository.getAllProduct();
+  async getAllProduct(paginationDto: PaginationDto) {
+    return this.productRepository.getAllProduct(paginationDto);
   }
 
   async getProduct(serial_number: string) {

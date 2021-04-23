@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { PaginationDto } from 'src/shared/dto/pagination/pagination.dto';
 import { ResponseMsg } from 'src/shared/helpers/ResponseMsg';
 import { CreateProductDetailDTO } from './dto/create-product-detail.dto';
 import { CreateProductDTO } from './dto/create-product.dto';
@@ -28,7 +29,11 @@ export class ProductController {
   }
 
   @Get()
-  async getAllProduct() {
-    return ResponseMsg.success(await this.productService.getAllProduct());
+  async getAllProduct(@Query() paginationDto: PaginationDto) {
+    paginationDto.page = Number(paginationDto.page) || 1;
+    paginationDto.limit = Number(paginationDto.limit) || 10;
+    return ResponseMsg.success(
+      await this.productService.getAllProduct(paginationDto),
+    );
   }
 }
