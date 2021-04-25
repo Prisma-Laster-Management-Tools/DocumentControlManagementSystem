@@ -5,6 +5,6 @@ import { ResponseMsg } from 'src/shared/helpers/ResponseMsg';
 import { EntityRepository, Repository } from 'typeorm';
 import { PurchasementPart } from './model/purchasement-part.entity';
 @EntityRepository(PurchasementPart)
-export class PurchansementRequestRepository extends Repository<PurchasementPart> {
+export class PurchansementPartRepository extends Repository<PurchasementPart> {
   private logger = new Logger();
 }
