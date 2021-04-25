@@ -54,5 +54,11 @@ export class PurchasementService {
     // ─────────────────────────────────────────────────────────────────
     return this.linked_repositories.purchasement_source.createPurchasementSource(createPurchasementSourceDTO);
   }
+
+  async removePurchasementSource(id: number) {
+    const removal = await this.linked_repositories.purchasement_source.delete(id);
+    if (!removal.affected) throw new NotFoundException(`Purchasement Source with id == "${id}" doesn't exist`);
+    return removal;
+  }
   // ────────────────────────────────────────────────────────────────────────────────
 }
