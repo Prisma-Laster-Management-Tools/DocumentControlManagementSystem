@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatePurchasementPartDetailDTO } from './dto/create-purchasement-part-detail.dto';
 import { PurchansementPartRepository } from './purchasement-part.repository';
@@ -29,6 +29,12 @@ export class PurchasementService {
   //
   async createPartDetail(createPurchasementPartDetailDTO: CreatePurchasementPartDetailDTO) {
     return this.linked_repositories.purchasement_part.createPartDetail(createPurchasementPartDetailDTO);
+  }
+
+  async removePartDetail(part_number: string) {
+    const removal = await this.linked_repositories.purchasement_part.delete({ part_number });
+    if (!removal.affected) throw new NotFoundException(`Part number of "${part_number}" doesn't exist`);
+    return removal;
   }
   // ────────────────────────────────────────────────────────────────────────────────
 }
