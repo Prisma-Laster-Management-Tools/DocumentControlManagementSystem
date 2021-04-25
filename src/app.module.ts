@@ -14,6 +14,7 @@ import { FeedbackModule } from './feedback/feedback.module';
 import { NotificationModule } from './notification/notification.module';
 import { NotificationGateway } from './notification.gateway';
 import { ProductModule } from './product/product.module';
+import { PurchasementModule } from './purchasement/purchasement.module';
 // ────────────────────────────────────────────────────────────────────────────────
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ProductModule } from './product/product.module';
     FeedbackModule,
     NotificationModule,
     ProductModule,
+    PurchasementModule,
   ],
   providers: [
     {
