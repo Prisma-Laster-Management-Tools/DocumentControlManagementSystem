@@ -28,8 +28,9 @@ export class PurchasementService {
   //
   // ─── PART ───────────────────────────────────────────────────────────────────────
   //
-  async getPurchasementPartDetail(part_number: string) {
-    return this.linked_repositories.purchasement_part.findOne({ part_number });
+  async getPurchasementPartDetail(part_number: string, throw_if_not_found: boolean = false) {
+    if (!throw_if_not_found) return this.linked_repositories.purchasement_part.findOne({ part_number });
+    else if (!(await this.linked_repositories.purchasement_part.findOne({ part_number }))) throw new NotFoundException(`Part number of "${part_number}" doesn't exist`);
   }
 
   async createPartDetail(createPurchasementPartDetailDTO: CreatePurchasementPartDetailDTO) {
@@ -49,7 +50,7 @@ export class PurchasementService {
   async createPurchasementSource(createPurchasementSourceDTO: CreatePurchasementSourceDTO) {
     //check if part is exist or not to be ordered
     const { part_number } = createPurchasementSourceDTO;
-    if (!(await this.getPurchasementPartDetail(part_number))) throw new NotFoundException(`Part number of "${part_number}" doesn't exist`);
+    const _ = await this.getPurchasementPartDetail(part_number, true);
     // ─────────────────────────────────────────────────────────────────
     return this.linked_repositories.purchasement_source.createPurchasementSource(createPurchasementSourceDTO);
   }
