@@ -1,7 +1,7 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
 
 @Entity()
-export class PurchansementSource extends BaseEntity {
+export class PurchasementSource extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
