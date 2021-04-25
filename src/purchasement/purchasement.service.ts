@@ -27,6 +27,10 @@ export class PurchasementService {
   //
   // ─── PART ───────────────────────────────────────────────────────────────────────
   //
+  async getPurchasementPartDetail(part_number: string) {
+    return this.linked_repositories.purchasement_part.findOne({ part_number });
+  }
+
   async createPartDetail(createPurchasementPartDetailDTO: CreatePurchasementPartDetailDTO) {
     return this.linked_repositories.purchasement_part.createPartDetail(createPurchasementPartDetailDTO);
   }
