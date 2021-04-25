@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatePurchasementPartDetailDTO } from './dto/create-purchasement-part-detail.dto';
+import { CreatePurchasementSourceDTO } from './dto/create-purchasement-source.dto';
 import { PurchansementPartRepository } from './purchasement-part.repository';
 import { PurchasementRequestRepository } from './purchasement-request.repository';
 import { PurchasementSourceRepository } from './purchasement-source.repository';
@@ -39,6 +40,18 @@ export class PurchasementService {
     const removal = await this.linked_repositories.purchasement_part.delete({ part_number });
     if (!removal.affected) throw new NotFoundException(`Part number of "${part_number}" doesn't exist`);
     return removal;
+  }
+  // ────────────────────────────────────────────────────────────────────────────────
+
+  //
+  // ─── SOURCE ─────────────────────────────────────────────────────────────────────
+  //
+  async createPurchasementSource(createPurchasementSourceDTO: CreatePurchasementSourceDTO) {
+    //check if part is exist or not to be ordered
+    const { part_number } = createPurchasementSourceDTO;
+    if (!(await this.getPurchasementPartDetail(part_number))) throw new NotFoundException(`Part number of "${part_number}" doesn't exist`);
+    // ─────────────────────────────────────────────────────────────────
+    return this.linked_repositories.purchasement_source.createPurchasementSource(createPurchasementSourceDTO);
   }
   // ────────────────────────────────────────────────────────────────────────────────
 }

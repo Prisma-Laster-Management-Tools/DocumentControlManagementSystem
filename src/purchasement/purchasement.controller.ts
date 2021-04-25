@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { CreatePurchasementPartDetailDTO } from './dto/create-purchasement-part-detail.dto';
+import { CreatePurchasementSourceDTO } from './dto/create-purchasement-source.dto';
 import { PurchasementService } from './purchasement.service';
 
 @Controller('purchasement')
@@ -15,4 +16,13 @@ export class PurchasementController {
   async removePartDetail(@Param('part_number') part_number: string) {
     return this.purchasementService.removePartDetail(part_number);
   }
+
+  //
+  // ─── SOURCE ─────────────────────────────────────────────────────────────────────
+  //
+  @Post('/create-source-detail')
+  async createPurchasementSource(@Body() createPurchasementSourceDTO: CreatePurchasementSourceDTO) {
+    return this.purchasementService.createPurchasementSource(createPurchasementSourceDTO);
+  }
+  // ────────────────────────────────────────────────────────────────────────────────
 }
