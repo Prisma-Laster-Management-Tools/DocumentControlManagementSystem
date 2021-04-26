@@ -10,12 +10,13 @@ export class PurchasementSourceRepository extends Repository<PurchasementSource>
   private logger = new Logger();
 
   async createPurchasementSource(createPurchasementSourceDTO: CreatePurchasementSourceDTO) {
-    const { part_number, company, email, seller } = createPurchasementSourceDTO;
+    const { part_number, company, email, seller, commercial_number } = createPurchasementSourceDTO;
     const Source = new PurchasementSource();
     Source.part_number = part_number;
     Source.company = company;
     Source.email = email;
     Source.seller = seller;
+    Source.commercial_number = commercial_number;
     return await Source.save();
   }
 }

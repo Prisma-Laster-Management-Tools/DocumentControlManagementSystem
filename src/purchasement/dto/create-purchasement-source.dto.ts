@@ -9,6 +9,10 @@ export class CreatePurchasementSourceDTO {
   @IsNotEmpty()
   company: string; // could be create the another table that contains the partner-company credentials
 
+  @IsString()
+  @IsNotEmpty()
+  commercial_number: string; // could be create the another table that contains the partner-company credentials
+
   @IsEmail()
   @IsNotEmpty()
   email: string;

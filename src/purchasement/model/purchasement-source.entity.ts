@@ -6,6 +6,9 @@ export class PurchasementSource extends BaseEntity {
   id: number;
 
   @Column()
+  commercial_number: string;
+
+  @Column()
   part_number: string;
 
   @Column()
