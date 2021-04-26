@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatePurchasementPartDetailDTO } from './dto/create-purchasement-part-detail.dto';
+import { CreatePurchasementRequestDTO } from './dto/create-purchasement-request.dto';
 import { CreatePurchasementSourceDTO } from './dto/create-purchasement-source.dto';
 import { PurchansementPartRepository } from './purchasement-part.repository';
 import { PurchasementRequestRepository } from './purchasement-request.repository';
@@ -59,6 +60,19 @@ export class PurchasementService {
     const removal = await this.linked_repositories.purchasement_source.delete(id);
     if (!removal.affected) throw new NotFoundException(`Purchasement Source with id == "${id}" doesn't exist`);
     return removal;
+  }
+  // ────────────────────────────────────────────────────────────────────────────────
+
+  //
+  // ─── PURCHASEMENT ───────────────────────────────────────────────────────────────
+  //
+  async createPurchasementRequest(createPurchasementRequestDTO: CreatePurchasementRequestDTO) {
+    const { is_special_request, commercial_number } = createPurchasementRequestDTO;
+    if (!is_special_request) {
+      const partSource = await this.linked_repositories.purchasement_source.findOne({ commercial_number });
+      if (!partSource) throw new NotFoundException(`Purchasement Source with commercial number == "${commercial_number}" doesn't exist`);
+    }
+    return this.linked_repositories.purchasement_request.createPurchasementRequest(createPurchasementRequestDTO);
   }
   // ────────────────────────────────────────────────────────────────────────────────
 }
