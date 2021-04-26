@@ -39,5 +39,10 @@ export class PurchasementController {
   async createPurchasementRequest(@Body() createPurchasementRequestDTO: CreatePurchasementRequestDTO) {
     return this.purchasementService.createPurchasementRequest(createPurchasementRequestDTO);
   }
+
+  @Delete('/remove-purchasement-request/:id')
+  async removePurchasementRequest(@Param('id', ParseIntPipe) id: number) {
+    return this.purchasementService.removePurchasementRequest(id);
+  }
   // ─────────────────────────────────────────────────────────────────
 }

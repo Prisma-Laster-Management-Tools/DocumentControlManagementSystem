@@ -74,5 +74,11 @@ export class PurchasementService {
     }
     return this.linked_repositories.purchasement_request.createPurchasementRequest(createPurchasementRequestDTO);
   }
+
+  async removePurchasementRequest(id: number) {
+    const removal = await this.linked_repositories.purchasement_request.delete(id);
+    if (!removal.affected) throw new NotFoundException(`Purchasement Reqiest with id == "${id}" doesn't exist`);
+    return removal;
+  }
   // ────────────────────────────────────────────────────────────────────────────────
 }
