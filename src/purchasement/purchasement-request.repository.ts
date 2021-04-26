@@ -21,6 +21,8 @@ export class PurchasementRequestRepository extends Repository<PurchasementReques
     PurchasementReq.special_part_name = special_part_name;
     PurchasementReq.special_part_contact = special_part_contact;
     return await PurchasementReq.save();
+
+    // TODO Send email to the target source
   }
 
   async getAllPurchasementRequest(paginationDTO: PaginationDto): Promise<PaginateResult> {
@@ -28,7 +30,9 @@ export class PurchasementRequestRepository extends Repository<PurchasementReques
     let totalCount = await this.count();
     const PAGINATION_QUERY_STR = `OFFSET ${skippedItem} ROWS FETCH NEXT ${paginationDTO.limit} ROWS ONLY`;
 
-    const PURCHASEMENT_REQS = await this.query(`SELECT * from public.purchasement_request pr ORDER BY pr."createdAt" DESC ${PAGINATION_QUERY_STR}`);
+    const PURCHASEMENT_REQS = await this.query(
+      `SELECT pr.*,ps.part_number,company,email,seller from public.purchasement_request pr LEFT JOIN public.purchasement_source ps ON ps.commercial_number = pr.commercial_number ORDER BY pr."createdAt" DESC ${PAGINATION_QUERY_STR}`,
+    );
 
     return {
       totalCount,
