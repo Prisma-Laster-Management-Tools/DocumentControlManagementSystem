@@ -6,7 +6,7 @@ export class PurchasementRequest extends BaseEntity {
   id: number;
 
   @Column()
-  part_number: string;
+  commercial_number: string; // 'CUSTOM' <= if it's a special request
 
   @Column()
   quantity: string; // 1ชิ้น , 1 กิโล , 1 อัน
@@ -16,6 +16,9 @@ export class PurchasementRequest extends BaseEntity {
 
   @Column({ nullable: true })
   special_part_name: string; // custom part name
+
+  @Column({ nullable: true })
+  special_part_contact: string; // custom contact email
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
