@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PaginationDto } from 'src/shared/dto/pagination/pagination.dto';
 import { CreatePurchasementPartDetailDTO } from './dto/create-purchasement-part-detail.dto';
 import { CreatePurchasementRequestDTO } from './dto/create-purchasement-request.dto';
 import { CreatePurchasementSourceDTO } from './dto/create-purchasement-source.dto';
@@ -79,6 +80,10 @@ export class PurchasementService {
     const removal = await this.linked_repositories.purchasement_request.delete(id);
     if (!removal.affected) throw new NotFoundException(`Purchasement Reqiest with id == "${id}" doesn't exist`);
     return removal;
+  }
+
+  async getAllPurchasementRequest(paginationDTO: PaginationDto) {
+    return this.linked_repositories.purchasement_request.getAllPurchasementRequest(paginationDTO);
   }
   // ────────────────────────────────────────────────────────────────────────────────
 }

@@ -1,5 +1,6 @@
 import { ConflictException, InternalServerErrorException, Logger } from '@nestjs/common';
 import { Sales } from 'src/sales/model/sales.entity';
+import { PaginateResult, PaginationDto } from 'src/shared/dto/pagination/pagination.dto';
 import { ResponseMsg } from 'src/shared/helpers/ResponseMsg';
 
 import { EntityRepository, Repository } from 'typeorm';
@@ -20,5 +21,21 @@ export class PurchasementRequestRepository extends Repository<PurchasementReques
     PurchasementReq.special_part_name = special_part_name;
     PurchasementReq.special_part_contact = special_part_contact;
     return await PurchasementReq.save();
+  }
+
+  async getAllPurchasementRequest(paginationDTO: PaginationDto): Promise<PaginateResult> {
+    const skippedItem = (paginationDTO.page - 1) * paginationDTO.limit;
+    let totalCount = await this.count();
+    const PAGINATION_QUERY_STR = `OFFSET ${skippedItem} ROWS FETCH NEXT ${paginationDTO.limit} ROWS ONLY`;
+
+    const PURCHASEMENT_REQS = await this.query(`SELECT * from public.purchasement_request pr ORDER BY pr."createdAt" DESC ${PAGINATION_QUERY_STR}`);
+
+    return {
+      totalCount,
+      page: paginationDTO.page,
+      limit: paginationDTO.limit,
+      data: PURCHASEMENT_REQS,
+      totalPage: totalCount < paginationDTO.limit ? 1 : Math.floor(totalCount / paginationDTO.limit),
+    };
   }
 }

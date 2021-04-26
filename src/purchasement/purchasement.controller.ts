@@ -1,4 +1,7 @@
+import { Get, Query } from '@nestjs/common';
 import { Body, Controller, Delete, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { PaginationDto } from 'src/shared/dto/pagination/pagination.dto';
+import { ResponseMsg } from 'src/shared/helpers/ResponseMsg';
 import { CreatePurchasementPartDetailDTO } from './dto/create-purchasement-part-detail.dto';
 import { CreatePurchasementRequestDTO } from './dto/create-purchasement-request.dto';
 import { CreatePurchasementSourceDTO } from './dto/create-purchasement-source.dto';
@@ -43,6 +46,13 @@ export class PurchasementController {
   @Delete('/remove-purchasement-request/:id')
   async removePurchasementRequest(@Param('id', ParseIntPipe) id: number) {
     return this.purchasementService.removePurchasementRequest(id);
+  }
+
+  @Get('/requests')
+  async getAllPurchasementRequest(@Query() paginationDTO: PaginationDto) {
+    paginationDTO.page = Number(paginationDTO.page) || 1;
+    paginationDTO.limit = Number(paginationDTO.limit) || 10;
+    return ResponseMsg.success(await this.purchasementService.getAllPurchasementRequest(paginationDTO));
   }
   // ─────────────────────────────────────────────────────────────────
 }
