@@ -15,6 +15,7 @@ import { NotificationModule } from './notification/notification.module';
 import { NotificationGateway } from './notification.gateway';
 import { ProductModule } from './product/product.module';
 import { PurchasementModule } from './purchasement/purchasement.module';
+import { QualityControlModule } from './quality-control/quality-control.module';
 // ────────────────────────────────────────────────────────────────────────────────
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { PurchasementModule } from './purchasement/purchasement.module';
     NotificationModule,
     ProductModule,
     PurchasementModule,
+    QualityControlModule,
   ],
   providers: [
     {
