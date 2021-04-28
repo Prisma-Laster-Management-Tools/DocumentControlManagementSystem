@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { CreateProtocalForProductDTO } from './dto/create-protocal-for-product.dto';
 import { QualityControlService } from './quality-control.service';
 
@@ -9,6 +9,11 @@ export class QualityControlController {
   //
   // ─── PROTOCOL ───────────────────────────────────────────────────────────────────
   //
+  @Get('/get-protocol-lists/:product_code')
+  getProductProtocolRule(@Param('product_code') product_code: string) {
+    return this.qualityControlService.getProductProtocolRule(product_code);
+  }
+
   @Post('/create-protocol')
   async createProtocolForProduct(@Body() createProtocalForProductDTO: CreateProtocalForProductDTO) {
     return this.qualityControlService.createProtocolForProduct(createProtocalForProductDTO);
