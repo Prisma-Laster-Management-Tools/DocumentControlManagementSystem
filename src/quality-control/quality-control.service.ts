@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateProtocalForProductDTO } from './dto/create-protocal-for-product.dto';
 import { QualityControlProtocolRepository } from './quality-control-protocal.repository';
@@ -25,6 +25,12 @@ export class QualityControlService {
   //
   async createProtocolForProduct(createProtocalForProductDTO: CreateProtocalForProductDTO) {
     return this.linked_repositories.protocol.createProtocolForProduct(createProtocalForProductDTO);
+  }
+  async removeProductProtocol(id: number) {
+    const removal = await this.linked_repositories.protocol.delete(id);
+    if (!removal.affected) throw new NotFoundException(`Product protocal with id "${id}" doesn't exist`);
+
+    //TODO Delete all of the qc-product that containing this id
   }
   // ────────────────────────────────────────────────────────────────────────────────
 }
