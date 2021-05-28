@@ -7,20 +7,23 @@ export class Feedback extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   quality_rating_score: number;
 
-  @Column()
+  @Column({ nullable: true })
   worthiness_rating_score: number;
 
-  @Column()
+  @Column({ nullable: true })
   delivery_rating_score: number;
 
-  @Column()
+  @Column({ nullable: true })
   service_rating_score: number;
 
-  @Column()
+  @Column({ nullable: true })
   feedback_str: string;
+
+  @Column()
+  access_token: string; // might be encoded with JWT or whatever => recommend using jwt with the stamp expired date [or just generate the random link]
 
   @ManyToOne((type) => Sales, (sales) => sales.id, { eager: false })
   sales: Sales;
