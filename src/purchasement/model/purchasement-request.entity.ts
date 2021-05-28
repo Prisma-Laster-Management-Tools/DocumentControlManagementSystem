@@ -20,6 +20,12 @@ export class PurchasementRequest extends BaseEntity {
   @Column({ nullable: true })
   special_part_contact: string; // custom contact email
 
+  @Column()
+  confirmation_token: string;
+
+  @Column({ default: false })
+  being_confirmed: boolean;
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
