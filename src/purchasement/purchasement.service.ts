@@ -85,5 +85,11 @@ export class PurchasementService {
   async getAllPurchasementRequest(paginationDTO: PaginationDto) {
     return this.linked_repositories.purchasement_request.getAllPurchasementRequest(paginationDTO);
   }
+  async clientConfirmationTheRequestOrder(confirmation_token: string) {
+    const PRequest = await this.linked_repositories.purchasement_request.findOne({ confirmation_token });
+    if (!PRequest || PRequest.being_confirmed) throw new NotFoundException(); // not found -> means already confirm
+    PRequest.being_confirmed = true;
+    return await PRequest.save();
+  }
   // ────────────────────────────────────────────────────────────────────────────────
 }
