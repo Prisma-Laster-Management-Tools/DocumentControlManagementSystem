@@ -13,4 +13,6 @@ export class CreateFeedbackDTO {
   delivery_rating_score: number;
   @IsNotEmpty()
   service_rating_score: number;
+  @IsNotEmpty()
+  access_token: string;
 }
