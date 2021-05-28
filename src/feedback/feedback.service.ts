@@ -17,6 +17,12 @@ export class FeedbackService {
     return this.feedbackRepository.findAll();
   }
 
+  async verifyFeedbackAccessToken(token: string) {
+    const feedback = await this.feedbackRepository.createQueryBuilder('feedback').leftJoinAndSelect('feedback.sales', 'sales').getMany();
+    if (!feedback) throw new NotFoundException();
+    return feedback;
+  }
+
   async createFeedback(createFeedbackDTO: CreateFeedbackDTO, sales_id: number) {
     const SaleEntity = await this.salesService.findSales(sales_id); // getting if the entity exist (cross-service)
     return this.feedbackRepository.createFeedback(createFeedbackDTO, SaleEntity);
