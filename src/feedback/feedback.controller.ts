@@ -28,6 +28,13 @@ export class FeedbackController {
     return this.feedbackService.createFeedback(createFeedbackDTO, sales_id);
   }
 
+  @Get('/create-feedback-access-link')
+  createFeedbackAccessLinkToken(@Session() session: ISessionItems) {
+    const { sales_id } = SESSION_ExtractDataAndClear(session, 'param_cached');
+    if (!sales_id) throw new NotAcceptableException();
+    return this.feedbackService.createFeedbackAccessLinkToken(sales_id);
+  }
+
   /**
    * @ACCESS <REDIRECTION ONLY>
    */

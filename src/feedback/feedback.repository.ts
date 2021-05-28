@@ -25,4 +25,13 @@ export class FeedbackRepository extends Repository<Feedback> {
     feedback.delivery_rating_score = delivery_rating_score;
     return await feedback.save();
   }
+
+  async createFeedbackAccessLinkToken(random_access_token: string, sales_id: number) {
+    const feedback = new Feedback();
+    const SaleEntity = new Sales();
+    SaleEntity.id = sales_id;
+    feedback.access_token = random_access_token;
+    feedback.sales = SaleEntity;
+    return await feedback.save();
+  }
 }
