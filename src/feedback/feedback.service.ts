@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SalesService } from 'src/sales/sales.service';
 import { getRandomString } from 'src/utilities/random/string';
@@ -18,14 +18,30 @@ export class FeedbackService {
   }
 
   async verifyFeedbackAccessToken(token: string) {
-    const feedback = await this.feedbackRepository.createQueryBuilder('feedback').leftJoinAndSelect('feedback.sales', 'sales').getMany();
+    const feedback = await this.feedbackRepository.createQueryBuilder('feedback').leftJoinAndSelect('feedback.sales', 'sales').getMany(); // TODO add where cluases
     if (!feedback) throw new NotFoundException();
     return feedback;
   }
 
   async createFeedback(createFeedbackDTO: CreateFeedbackDTO, sales_id: number) {
     const SaleEntity = await this.salesService.findSales(sales_id); // getting if the entity exist (cross-service)
-    return this.feedbackRepository.createFeedback(createFeedbackDTO, SaleEntity);
+
+    // Check if the token is valid or not
+    const { access_token, feedback_str, delivery_rating_score, quality_rating_score, service_rating_score, worthiness_rating_score } = createFeedbackDTO;
+    //const Feedback = await this.feedbackRepository.findOne({ access_token });
+    const Feedback = await this.feedbackRepository.createQueryBuilder('feedback').leftJoinAndSelect('feedback.sales', 'sales').where('access_token=:access_token', { access_token }).getOne();
+    if (!Feedback) throw new BadRequestException(`Token is invalid`);
+    // check if the sale id is the same of the fetched one
+    if (Feedback.sales.id !== sales_id) throw new BadRequestException(`Token is invalid`);
+    // ─────────────────────────────────────────────────────────────────
+    Feedback.feedback_str = feedback_str;
+    Feedback.sales = SaleEntity;
+    Feedback.quality_rating_score = quality_rating_score;
+    Feedback.service_rating_score = service_rating_score;
+    Feedback.worthiness_rating_score = worthiness_rating_score;
+    Feedback.delivery_rating_score = delivery_rating_score;
+    return await Feedback.save();
+    //return this.feedbackRepository.createFeedback(createFeedbackDTO, SaleEntity);
   }
 
   async createFeedbackAccessLinkToken(sales_id: number) {

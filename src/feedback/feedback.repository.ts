@@ -15,7 +15,7 @@ export class FeedbackRepository extends Repository<Feedback> {
   }
 
   async createFeedback(createFeedbackDTO: CreateFeedbackDTO, SaleEntity: Sales) {
-    const { feedback_str, delivery_rating_score, quality_rating_score, service_rating_score, worthiness_rating_score } = createFeedbackDTO;
+    /*const { feedback_str, delivery_rating_score, quality_rating_score, service_rating_score, worthiness_rating_score } = createFeedbackDTO;
     const feedback = new Feedback();
     feedback.feedback_str = feedback_str;
     feedback.sales = SaleEntity;
@@ -23,7 +23,7 @@ export class FeedbackRepository extends Repository<Feedback> {
     feedback.service_rating_score = service_rating_score;
     feedback.worthiness_rating_score = worthiness_rating_score;
     feedback.delivery_rating_score = delivery_rating_score;
-    return await feedback.save();
+    return await feedback.save();*/
   }
 
   async createFeedbackAccessLinkToken(random_access_token: string, sales_id: number) {
