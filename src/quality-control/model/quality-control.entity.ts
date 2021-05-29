@@ -1,3 +1,4 @@
+import { Product } from 'src/product/model/product.entity';
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
 import { QualityControlProtocol } from './quality-control-protocol.entity';
 
@@ -6,8 +7,12 @@ export class QualityControl extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  serial_number: string;
+  // @Column()
+  // serial_number: string;
+
+  // If product got delete this will too -> cascade on
+  @ManyToOne(() => Product, (product) => product.id, { eager: true, cascade: true, onDelete: 'CASCADE' })
+  product: Product;
 
   @Column()
   check_status: boolean;

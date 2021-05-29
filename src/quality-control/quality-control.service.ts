@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductService } from 'src/product/product.service';
+import { CreateControlProcess } from './dto/create-control-process.dto';
 import { CreateProtocalForProductDTO } from './dto/create-protocal-for-product.dto';
 import { CreateQCQueueDTO } from './dto/create-qc-queue.dto';
 import { QualityControlProtocolRepository } from './quality-control-protocal.repository';
@@ -43,6 +44,13 @@ export class QualityControlService {
 
     //TODO Delete all of the qc-product that containing this id
   }
+
+  //SHARED
+  async getQCProtocolById(id: number) {
+    const protocol = await this.linked_repositories.protocol.findOne(id);
+    if (!protocol) throw new NotFoundException(`Protocol with id of "${id} doesn't exist"`);
+    return protocol;
+  }
   // ────────────────────────────────────────────────────────────────────────────────
 
   //
@@ -54,6 +62,17 @@ export class QualityControlService {
   }
   async findAllQueue() {
     return this.linked_repositories.queue.find();
+  }
+  // ────────────────────────────────────────────────────────────────────────────────
+
+  //
+  // ─── PROD ───────────────────────────────────────────────────────────────────────
+  //
+  async createControlProcess(createControlProcess: CreateControlProcess) {
+    const { product_id, protocal_id } = createControlProcess;
+    await this.productService.getProductById(product_id); // check if product exist
+    await this.getQCProtocolById(protocal_id); // check if protocol is exist
+    return this.linked_repositories.product.createControlProcess(createControlProcess);
   }
   // ────────────────────────────────────────────────────────────────────────────────
 }

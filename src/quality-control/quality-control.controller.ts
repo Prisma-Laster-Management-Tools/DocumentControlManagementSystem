@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { CreateControlProcess } from './dto/create-control-process.dto';
 import { CreateProtocalForProductDTO } from './dto/create-protocal-for-product.dto';
 import { CreateQCQueueDTO } from './dto/create-qc-queue.dto';
 import { QualityControlService } from './quality-control.service';
@@ -37,6 +38,15 @@ export class QualityControlController {
   @Get('/queue')
   async findAllQueue() {
     return this.qualityControlService.findAllQueue();
+  }
+  // ────────────────────────────────────────────────────────────────────────────────
+
+  //
+  // ─── PROD ───────────────────────────────────────────────────────────────────────
+  //
+  @Post('/control-phase')
+  async createControlProcess(@Body() createControlProcess: CreateControlProcess) {
+    return this.qualityControlService.createControlProcess(createControlProcess);
   }
   // ────────────────────────────────────────────────────────────────────────────────
 }
