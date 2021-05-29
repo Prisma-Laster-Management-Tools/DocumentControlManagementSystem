@@ -77,5 +77,10 @@ export class QualityControlService {
   async findAllControlProcess() {
     return this.linked_repositories.product.find();
   }
+  async findControlProcess(id: number) {
+    const Processes = await await this.linked_repositories.product.find({ product: { id } });
+    if (!Processes) throw new NotFoundException(`Product with id of "${id}" doesn't have any existed qc_process in progress`);
+    return Processes;
+  }
   // ────────────────────────────────────────────────────────────────────────────────
 }

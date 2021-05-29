@@ -53,5 +53,9 @@ export class QualityControlController {
   async findAllControlProcess() {
     return this.qualityControlService.findAllControlProcess();
   }
+  @Get('/control-phase/process/:id')
+  async findControlProcess(@Param('id', ParseIntPipe) id: number) {
+    return this.qualityControlService.findControlProcess(id);
+  }
   // ────────────────────────────────────────────────────────────────────────────────
 }
