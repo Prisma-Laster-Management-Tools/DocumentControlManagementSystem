@@ -27,6 +27,12 @@ export class ProductService {
     if (!removal.affected) throw new NotFoundException(`Product-Detail with code "${product_code}" doesn't exist`);
     return removal;
   }
+
+  async getBaseProduct(product_code: string) {
+    const Prod = await this.productDetailRepository.findOne({ product_code });
+    if (!Prod) throw new NotFoundException(`Product Code of "${product_code}" doesn't exist in database`);
+    return Prod;
+  }
   // ────────────────────────────────────────────────────────────────────────────────
 
   async createProduct(createProductDTO: CreateProductDTO) {

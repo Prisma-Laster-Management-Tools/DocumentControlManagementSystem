@@ -48,6 +48,11 @@ export class PurchasementController {
     return this.purchasementService.removePurchasementRequest(id);
   }
 
+  @Get('/confirmation/:confirmation_token')
+  async clientConfirmationTheRequestOrder(@Param('confirmation_token') confirmation_token: string) {
+    return this.purchasementService.clientConfirmationTheRequestOrder(confirmation_token);
+  }
+
   @Get('/requests')
   async getAllPurchasementRequest(@Query() paginationDTO: PaginationDto) {
     paginationDTO.page = Number(paginationDTO.page) || 1;

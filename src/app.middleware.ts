@@ -11,4 +11,5 @@ export function applyMiddlewares(app: INestApplication) {
     }),
   );
   app.use(morgan('dev'));
+  app.enableCors();
 }

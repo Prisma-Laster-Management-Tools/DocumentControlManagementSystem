@@ -2,6 +2,7 @@ import { ConflictException, InternalServerErrorException, Logger } from '@nestjs
 import { Sales } from 'src/sales/model/sales.entity';
 import { PaginateResult, PaginationDto } from 'src/shared/dto/pagination/pagination.dto';
 import { ResponseMsg } from 'src/shared/helpers/ResponseMsg';
+import { getRandomString } from 'src/utilities/random/string';
 
 import { EntityRepository, Repository } from 'typeorm';
 import { CreatePurchasementRequestDTO } from './dto/create-purchasement-request.dto';
@@ -20,6 +21,18 @@ export class PurchasementRequestRepository extends Repository<PurchasementReques
     PurchasementReq.is_special_request = IsSpecialRequest;
     PurchasementReq.special_part_name = special_part_name;
     PurchasementReq.special_part_contact = special_part_contact;
+
+    let random_access_token;
+    while (true) {
+      random_access_token = getRandomString(10);
+
+      //check-in
+      const existed_pr_with_this_token = await this.findOne({ confirmation_token: random_access_token });
+      if (!existed_pr_with_this_token) break; // break if it's not exist
+    }
+
+    PurchasementReq.confirmation_token = random_access_token;
+
     return await PurchasementReq.save();
 
     // TODO Send email to the target source

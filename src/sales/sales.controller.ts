@@ -30,6 +30,12 @@ export class SalesController {
     return this.salesService.createSalesData(createSalesDataDTO);
   }
 
+  @Get('/:id/feedback/create-feedback-access-link')
+  REDIRECTION_CreateFeedbackAccessLinkToken(@Response() response: express.Response, @Req() request: Request, @Param('id', ParseIntPipe) id: number) {
+    request.session.param_cached = { sales_id: id }; // using session -> on the other side will take this and do some action with it
+    return response.redirect(303, `/api/feedback/create-feedback-access-link`);
+  }
+
   @Post('/:id/feedback')
   redirect(@Response() response: express.Response, @Req() request: Request, @Param('id', ParseIntPipe) id: number) {
     request.session.param_cached = { sales_id: id }; // using session -> on the other side will take this and do some action with it

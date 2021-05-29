@@ -1,14 +1,5 @@
 import { Sales } from 'src/sales/model/sales.entity';
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  Unique,
-  UpdateDateColumn,
-} from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 @Unique(['sales']) // 1 Sale can only have 1 feedback
@@ -16,14 +7,23 @@ export class Feedback extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  //   @Column()
-  //   product_name: string;
+  @Column({ nullable: true })
+  quality_rating_score: number;
 
-  //   @Column()
-  //   serial_number: string;
+  @Column({ nullable: true })
+  worthiness_rating_score: number;
+
+  @Column({ nullable: true })
+  delivery_rating_score: number;
+
+  @Column({ nullable: true })
+  service_rating_score: number;
+
+  @Column({ nullable: true })
+  feedback_str: string;
 
   @Column()
-  feedback_str: string;
+  access_token: string; // might be encoded with JWT or whatever => recommend using jwt with the stamp expired date [or just generate the random link]
 
   @ManyToOne((type) => Sales, (sales) => sales.id, { eager: false })
   sales: Sales;
