@@ -69,10 +69,13 @@ export class QualityControlService {
   // ─── PROD ───────────────────────────────────────────────────────────────────────
   //
   async createControlProcess(createControlProcess: CreateControlProcess) {
-    const { product_id, protocal_id } = createControlProcess;
+    const { product_id, protocol_id } = createControlProcess;
     await this.productService.getProductById(product_id); // check if product exist
-    await this.getQCProtocolById(protocal_id); // check if protocol is exist
+    await this.getQCProtocolById(protocol_id); // check if protocol is exist
     return this.linked_repositories.product.createControlProcess(createControlProcess);
+  }
+  async findAllControlProcess() {
+    return this.linked_repositories.product.find();
   }
   // ────────────────────────────────────────────────────────────────────────────────
 }

@@ -17,8 +17,12 @@ export class QualityControl extends BaseEntity {
   @Column()
   check_status: boolean;
 
-  @ManyToOne((type) => QualityControlProtocol)
-  @JoinColumn({ name: 'protocal_id', referencedColumnName: 'id' }) // using custom created column name instead of auto-generated -> protocalId
+  // @ManyToOne((type) => QualityControlProtocol)
+  // @JoinColumn({ name: 'protocal_id', referencedColumnName: 'id' }) // using custom created column name instead of auto-generated -> protocalId
+  // protocol: QualityControlProtocol;
+
+  @ManyToOne((type) => QualityControlProtocol, (qcp) => qcp.id, { eager: true, cascade: true, onDelete: 'CASCADE' })
+  //@JoinColumn({ name: 'protocal_id', referencedColumnName: 'id' }) // using custom created column name instead of auto-generated -> protocalId
   protocol: QualityControlProtocol;
 
   @CreateDateColumn({ type: 'timestamp' })

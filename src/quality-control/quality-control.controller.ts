@@ -48,5 +48,10 @@ export class QualityControlController {
   async createControlProcess(@Body() createControlProcess: CreateControlProcess) {
     return this.qualityControlService.createControlProcess(createControlProcess);
   }
+
+  @Get('/control-phase/process')
+  async findAllControlProcess() {
+    return this.qualityControlService.findAllControlProcess();
+  }
   // ────────────────────────────────────────────────────────────────────────────────
 }

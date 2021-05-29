@@ -7,7 +7,7 @@ export class CreateControlProcess {
 
   @IsNumber()
   @IsNotEmpty()
-  protocal_id: number;
+  protocol_id: number;
 
   @IsBoolean()
   @IsNotEmpty()
