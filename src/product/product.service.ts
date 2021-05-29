@@ -35,6 +35,10 @@ export class ProductService {
   }
   // ────────────────────────────────────────────────────────────────────────────────
 
+  //
+  // ─── PROD ENTITY ────────────────────────────────────────────────────────────────
+  //
+
   async createProduct(createProductDTO: CreateProductDTO) {
     //check phase
     const { product_code } = createProductDTO;
@@ -61,4 +65,13 @@ export class ProductService {
     if (!prod) throw new NotFoundException(`Product with serial_number of "${serial_number} doesn't exist"`);
     return prod;
   }
+
+  //SHARED
+  async getProductById(id: number) {
+    const prod = await this.productRepository.findOne({ id });
+    if (!prod) throw new NotFoundException(`Product with id of "${id} doesn't exist"`);
+    return prod;
+  }
+
+  // ────────────────────────────────────────────────────────────────────────────────
 }
