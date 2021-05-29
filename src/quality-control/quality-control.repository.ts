@@ -25,12 +25,16 @@ export class QualityControlRepository extends Repository<QualityControl> {
     }
   }
 
-  async createControlProcess(createControlProcess: CreateControlProcess) {
+  async createControlProcess(createControlProcess: CreateControlProcess, $dequeue_func: Function) {
     const { product_id, protocol_id, check_status } = createControlProcess;
 
     //If process already exist -> modifile instead
     const existed_process = await this.findOne({ product: { id: product_id }, protocol: { id: protocol_id } });
-    if (existed_process) return this.modifyControlProcess(createControlProcess, existed_process);
+    if (existed_process) {
+      const modified_result = await this.modifyControlProcess(createControlProcess, existed_process);
+      $dequeue_func(); // trigger checking process after
+      return modified_result;
+    }
     // ─────────────────────────────────────────────────────────────────
 
     const QcProcess = new QualityControl();
@@ -41,6 +45,8 @@ export class QualityControlRepository extends Repository<QualityControl> {
     QcProcess.product = Prod;
     QcProcess.protocol = Protocal;
     QcProcess.check_status = check_status;
-    return await QcProcess.save();
+    const Creation_Result = await QcProcess.save();
+    $dequeue_func(); // trigger checking process after
+    return Creation_Result;
   }
 }

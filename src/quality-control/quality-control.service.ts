@@ -63,6 +63,27 @@ export class QualityControlService {
   async findAllQueue() {
     return this.linked_repositories.queue.find();
   }
+  async dequeueProductFromQueue(product_id: number) {
+    const removal = await this.linked_repositories.queue.delete({ product: { id: product_id } });
+    // if (!removal) throw new NotFoundException(`Protocol with id of "${product_id} doesn't exist"`);
+    if (removal.affected) return true;
+    return false;
+  }
+  async ifShouldDequeueFromQueueThenDequeue(product_id: number) {
+    const { product_code } = await this.productService.getProductById(product_id);
+    const ProtocolList = await this.getProductProtocolRule(product_code);
+    const protocol_list_count = ProtocolList.length;
+    const passed_process = await this.linked_repositories.product.find({ product: { id: product_id }, check_status: true });
+    const passed_process_count = passed_process.length;
+
+    if (passed_process_count === protocol_list_count) {
+      console.log('Should Dequeue product id === ' + product_id + ' from the queue list');
+      //dequeue
+      const dequeue_success = await this.dequeueProductFromQueue(product_id);
+      if (dequeue_success) console.log(`Dequeue product_id ${product_id} successfully`);
+      else console.log(`Dequeue product_id ${product_id} failed`);
+    } else console.log('Should not Dequeue product id === ' + product_id + ' from the queue list');
+  }
   // ────────────────────────────────────────────────────────────────────────────────
 
   //
@@ -72,7 +93,10 @@ export class QualityControlService {
     const { product_id, protocol_id } = createControlProcess;
     await this.productService.getProductById(product_id); // check if product exist
     await this.getQCProtocolById(protocol_id); // check if protocol is exist
-    return this.linked_repositories.product.createControlProcess(createControlProcess);
+
+    const dequeue_process = () => this.ifShouldDequeueFromQueueThenDequeue(product_id);
+
+    return this.linked_repositories.product.createControlProcess(createControlProcess, dequeue_process);
   }
   async findAllControlProcess() {
     return this.linked_repositories.product.find();
