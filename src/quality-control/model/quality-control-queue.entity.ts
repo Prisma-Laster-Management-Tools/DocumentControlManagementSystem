@@ -7,7 +7,8 @@ export class QualityControlQueue extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Product, (product) => product.id, { onDelete: 'CASCADE', eager: true })
+  // If product got delete this will too -> cascade on
+  @ManyToOne(() => Product, (product) => product.id, { eager: true, cascade: true, onDelete: 'CASCADE' })
   product: Product;
 
   @CreateDateColumn({ type: 'timestamp' })
