@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { CreateProtocalForProductDTO } from './dto/create-protocal-for-product.dto';
+import { CreateQCQueueDTO } from './dto/create-qc-queue.dto';
 import { QualityControlService } from './quality-control.service';
 
 @Controller('quality-control')
@@ -22,6 +23,20 @@ export class QualityControlController {
   @Delete('/remove-protocol/:id')
   async removeProductProtocol(@Param('id', ParseIntPipe) id: number) {
     return this.qualityControlService.removeProductProtocol(id);
+  }
+  // ────────────────────────────────────────────────────────────────────────────────
+
+  //
+  // ─── QUEUE ──────────────────────────────────────────────────────────────────────
+  //
+  @Post('/queue')
+  async createQCQueue(@Body() createQCQueueDTO: CreateQCQueueDTO) {
+    return this.qualityControlService.createQCQueue(createQCQueueDTO);
+  }
+
+  @Get('/queue')
+  async findAllQueue() {
+    return this.qualityControlService.findAllQueue();
   }
   // ────────────────────────────────────────────────────────────────────────────────
 }
