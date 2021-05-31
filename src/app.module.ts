@@ -18,9 +18,17 @@ import { PurchasementModule } from './purchasement/purchasement.module';
 import { QualityControlModule } from './quality-control/quality-control.module';
 import { MaintenanceModule } from './maintenance/maintenance.module';
 // ────────────────────────────────────────────────────────────────────────────────
+
+//
+// ─── MODULES ────────────────────────────────────────────────────────────────────
+//
+import { ScheduleModule } from '@nestjs/schedule';
+// ────────────────────────────────────────────────────────────────────────────────
+
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
+    ScheduleModule.forRoot(),
     AuthenticationModule,
     UserModule,
     SalesModule,
