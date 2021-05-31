@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { CreateMaintenanceCycleDTO } from './dto/create-maintenance-cycle.dto';
 import { MaintenanceService } from './maintenance.service';
 
@@ -14,5 +14,10 @@ export class MaintenanceController {
   @Post()
   async createMaintenanceCycle(@Body() createMaintananceCycleDTO: CreateMaintenanceCycleDTO) {
     return this.maintenanceService.createMaintenanceCycle(createMaintananceCycleDTO);
+  }
+
+  @Delete('/:id')
+  async removeMaintenanceCycle(@Param('id', ParseIntPipe) id: number) {
+    return this.maintenanceService.removeMaintenanceCycle(id);
   }
 }
