@@ -12,11 +12,11 @@ export class Maintenance extends BaseEntity {
   @Column()
   serial_number: string;
 
-  @Column()
-  statis: string;
+  @Column({ nullable: true })
+  station: string;
 
-  @Column()
-  who: number; // maintenancer -> should be removed later
+  @Column({ nullable: true })
+  who: string; // maintenancer -> should be removed later
 
   @Column()
   instruction: string; // just a briefly instruction introduction to the maintenancer
