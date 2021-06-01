@@ -22,6 +22,9 @@ export class Maintenance extends BaseEntity {
   instruction: string; // just a briefly instruction introduction to the maintenancer
 
   @Column()
+  cycle_start_at: Date;
+
+  @Column()
   cycle_info: string;
 
   @CreateDateColumn({ type: 'timestamp' })

@@ -21,6 +21,10 @@ export class CreateMaintenanceCycleDTO {
   @IsNotEmpty()
   instruction: string;
 
+  @IsDateString()
+  @IsNotEmpty()
+  cycle_start_at: Date;
+
   @IsString()
   @IsNotEmpty()
   cycle_info: string; // [fixed, cycle]

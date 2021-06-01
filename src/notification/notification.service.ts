@@ -9,7 +9,7 @@ import { NotificationRepository } from './notification.repository';
 export class NotificationService {
   constructor(
     @InjectRepository(NotificationRepository)
-    private notificationRepository: NotificationRepository,
+    public notificationRepository: NotificationRepository,
   ) {}
 
   async findAll(user: User): Promise<Notification[]> {

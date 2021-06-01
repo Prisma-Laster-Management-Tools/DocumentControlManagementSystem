@@ -10,7 +10,7 @@ export class MaintenanceRepository extends Repository<Maintenance> {
   private logger = new Logger();
 
   async createMaintenanceCycle(createMaintananceCycleDTO: CreateMaintenanceCycleDTO) {
-    const { cycle_info, instruction, machine_name, serial_number, station, who } = createMaintananceCycleDTO;
+    const { cycle_info, instruction, machine_name, serial_number, station, who, cycle_start_at } = createMaintananceCycleDTO;
     const MaintenanceCycle = new Maintenance();
     MaintenanceCycle.instruction = instruction;
     MaintenanceCycle.machine_name = machine_name;
@@ -18,6 +18,7 @@ export class MaintenanceRepository extends Repository<Maintenance> {
     MaintenanceCycle.serial_number = serial_number;
     MaintenanceCycle.station = station;
     MaintenanceCycle.who = who;
+    MaintenanceCycle.cycle_start_at = cycle_start_at;
     return await MaintenanceCycle.save();
   }
 }
