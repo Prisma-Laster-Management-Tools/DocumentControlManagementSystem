@@ -15,3 +15,11 @@ export async function uploadSinglePhoto(file: Express.Multer.File): Promise<IUpl
     });
   });
 }
+
+export function uploadMultiplePhoto(files: Array<Express.Multer.File>): IUploadResponse {
+  files.forEach((file) => {
+    fs.writeFileSync(PUBLIC_FOLDER + file.originalname, file.buffer);
+  });
+  console.log(`total ${files.length} files were uploaded`);
+  return { success: true };
+}
