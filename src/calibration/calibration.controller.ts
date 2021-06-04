@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { CalibrationService } from './calibration.service';
 import { CreateCalibrationCycleDTO } from './dto/create-calibration-schedule.dto';
 
@@ -14,5 +14,10 @@ export class CalibrationController {
   @Post()
   createCalibrationSchedule(@Body() createCalibrationCycleDTO: CreateCalibrationCycleDTO) {
     return this.calibrationService.createCalibrationSchedule(createCalibrationCycleDTO);
+  }
+
+  @Delete('/:id')
+  async removeCalibrationSchedule(@Param('id', ParseIntPipe) id: number) {
+    return this.calibrationService.removeCalibrationSchedule(id);
   }
 }
