@@ -23,6 +23,7 @@ import { MaintenanceModule } from './maintenance/maintenance.module';
 // ─── MODULES ────────────────────────────────────────────────────────────────────
 //
 import { ScheduleModule } from '@nestjs/schedule';
+import { CalibrationModule } from './calibration/calibration.module';
 // ────────────────────────────────────────────────────────────────────────────────
 
 @Module({
@@ -38,6 +39,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     PurchasementModule,
     QualityControlModule,
     MaintenanceModule,
+    CalibrationModule,
   ],
   providers: [
     {
