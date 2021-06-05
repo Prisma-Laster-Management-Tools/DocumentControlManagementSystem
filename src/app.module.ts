@@ -27,6 +27,7 @@ import { MaintenanceModule } from './maintenance/maintenance.module';
 //
 import { ScheduleModule } from '@nestjs/schedule';
 import { CalibrationModule } from './calibration/calibration.module';
+import { RecruitmentModule } from './recruitment/recruitment.module';
 // ────────────────────────────────────────────────────────────────────────────────
 
 @Module({
@@ -46,6 +47,7 @@ import { CalibrationModule } from './calibration/calibration.module';
     QualityControlModule,
     MaintenanceModule,
     CalibrationModule,
+    RecruitmentModule,
   ],
   providers: [
     {
