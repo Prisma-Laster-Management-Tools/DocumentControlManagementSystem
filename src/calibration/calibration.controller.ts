@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, ParseIntPipe, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { AnyFilesInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { uploadMultiplePhoto, uploadSinglePhoto } from 'src/utilities/fs/image-upload';
 import { CalibrationService } from './calibration.service';
+import { CreateCalibrationEvidenceDTO } from './dto/create-calibration-evidence.dto';
 import { CreateCalibrationCycleDTO } from './dto/create-calibration-schedule.dto';
 
 @Controller('calibration')
@@ -47,6 +48,13 @@ export class CalibrationController {
   @Get('evidence/')
   async gelAllCalibrationEvidence() {
     return this.calibrationService.gelAllCalibrationEvidence();
+  }
+
+  @Post('evidence/')
+  @UseInterceptors(AnyFilesInterceptor())
+  async createCalibrationEvidence(@Body() createCalibrationEvidenceDTO: CreateCalibrationEvidenceDTO, @UploadedFiles() files: Array<Express.Multer.File>) {
+    if (!files) throw new BadRequestException('You have to upload a file');
+    return this.calibrationService.createCalibrationEvidence(createCalibrationEvidenceDTO, files);
   }
 
   // ────────────────────────────────────────────────────────────────────────────────

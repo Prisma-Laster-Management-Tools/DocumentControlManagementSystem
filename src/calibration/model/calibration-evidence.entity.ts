@@ -6,12 +6,15 @@ export class CalibrationEvidence extends BaseEntity {
   id: number;
 
   @Column()
+  machine_name: string;
+
+  @Column()
   serial_number: string;
 
-  @Column()
+  @Column({ nullable: true })
   description: string; // just a briefly instruction introduction to the maintenancer
 
-  @Column()
+  @Column({ nullable: true, default: null })
   attachments: string; // splits with comma [,]
 
   @CreateDateColumn({ type: 'timestamp' })

@@ -1,7 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { uploadMultiplePhoto } from 'src/utilities/fs/image-upload';
 import { CalibrationEvidenceRepository } from './calibration-evidence.repository';
 import { CalibrationScheduleRepository } from './calibration-schedule.repository';
+import { CreateCalibrationEvidenceDTO } from './dto/create-calibration-evidence.dto';
 import { CreateCalibrationCycleDTO } from './dto/create-calibration-schedule.dto';
 
 @Injectable()
@@ -30,6 +32,11 @@ export class CalibrationService {
   //
   async gelAllCalibrationEvidence() {
     return await this.calibrationEvidenceRepository.find();
+  }
+  async createCalibrationEvidence(createCalibrationEvidenceDTO: CreateCalibrationEvidenceDTO, files: Array<Express.Multer.File>) {
+    const upload = uploadMultiplePhoto(files);
+    const attachments = (upload.stored_path as Array<string>).join(',spiltter-23564,');
+    return this.calibrationEvidenceRepository.createCalibrationEvidence(createCalibrationEvidenceDTO, attachments);
   }
   // ────────────────────────────────────────────────────────────────────────────────
 }
