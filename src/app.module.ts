@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { UserModule } from './user/user.module';
 
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+
 import { AllExceptionsFilter } from './app.http-exception.filter';
 import { APP_FILTER } from '@nestjs/core';
 //
@@ -28,6 +31,9 @@ import { CalibrationModule } from './calibration/calibration.module';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'public'), // back 2 times -> because ts would then complied to the dist folder
+    }),
     TypeOrmModule.forRoot(typeOrmConfig),
     ScheduleModule.forRoot(),
     AuthenticationModule,
