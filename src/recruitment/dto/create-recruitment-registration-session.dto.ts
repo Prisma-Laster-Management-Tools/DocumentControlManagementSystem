@@ -11,5 +11,5 @@ export class CreateRecruitmentRegistrationSessionDTO {
 
   @IsString()
   @IsNotEmpty()
-  role: string;
+  role: string; //position
 }
