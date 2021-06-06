@@ -17,6 +17,9 @@ export class Recruitment extends BaseEntity {
   @Column()
   access_token: string;
 
+  @Column({ default: false })
+  already_used: boolean;
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
