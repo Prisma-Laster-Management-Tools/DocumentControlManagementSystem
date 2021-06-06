@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateRecruitmentRegistrationSessionDTO } from './dto/create-recruitment-registration-session.dto';
 import { RecruitmentRepository } from './recruitment.repository';
@@ -12,5 +12,11 @@ export class RecruitmentService {
 
   async generateRecruitmentRegistrationSession(createRecruitmentRegistrationSessionDTO: CreateRecruitmentRegistrationSessionDTO) {
     return this.recruitmentRepository.generateRecruitmentRegistrationSession(createRecruitmentRegistrationSessionDTO);
+  }
+
+  async verifyRecruitmentAccessToken(access_token: string) {
+    const Rm = await this.recruitmentRepository.findOne({ access_token });
+    if (!Rm) throw new NotFoundException();
+    return Rm;
   }
 }
