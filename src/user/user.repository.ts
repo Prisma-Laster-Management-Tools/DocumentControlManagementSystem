@@ -1,5 +1,7 @@
 import { ConflictException, InternalServerErrorException, Logger } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { CreateRegistrationWithTokenDTO } from 'src/recruitment/dto/create-registration-with-token.dto';
+import { Recruitment } from 'src/recruitment/model/recruitment.entity';
 
 import { EntityRepository, Repository } from 'typeorm';
 import { SignUpCredentialsDto } from './dto/signup-credentials.dto';
@@ -41,4 +43,28 @@ export class UserRepository extends Repository<User> {
   private async hashPassword(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt);
   }
+
+  //
+  // ─── CO OP WITH RECRUITMENT ─────────────────────────────────────────────────────
+  //
+  async signUpWithLegitWay(recruitmentData: Recruitment, createRegistrationWithTokenDTO: CreateRegistrationWithTokenDTO) {
+    const { email, password } = createRegistrationWithTokenDTO;
+    const user = new User();
+    user.email = email;
+    user.salt = await bcrypt.genSalt();
+    user.password = await this.hashPassword(password, user.salt);
+    user.position = recruitmentData.role; // NOTE role means position -> related the same [i am lazy to changed it right now]
+    try {
+      await user.save();
+      return { success: true };
+    } catch (error) {
+      if (error.code === '23505') {
+        // duplicate username
+        throw new ConflictException('Email already exists');
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
+  }
+  // ────────────────────────────────────────────────────────────────────────────────
 }

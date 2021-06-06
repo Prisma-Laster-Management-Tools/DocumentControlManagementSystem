@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreateAlreadyUsedFlaggedDTO } from './dto/create-already-used-flagged.dto';
 import { CreateRecruitmentRegistrationSessionDTO } from './dto/create-recruitment-registration-session.dto';
+import { CreateRegistrationWithTokenDTO } from './dto/create-registration-with-token.dto';
 import { RecruitmentService } from './recruitment.service';
 
 @Controller('recruitment')
@@ -25,5 +26,10 @@ export class RecruitmentController {
   @Post('/token/flagging')
   async setTokenAsAlreadyUsed(@Body() createAlreadyUsedFlaggedDTO: CreateAlreadyUsedFlaggedDTO) {
     return this.recruitmentService.TEST_setTokenAsAlreadyUsed(createAlreadyUsedFlaggedDTO);
+  }
+
+  @Post('/registration')
+  async registerWithAccessToken(@Body() createRegistrationWithTokenDTO: CreateRegistrationWithTokenDTO) {
+    return this.recruitmentService.registerWithAccessToken(createRegistrationWithTokenDTO);
   }
 }
