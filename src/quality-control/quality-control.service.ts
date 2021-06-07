@@ -137,7 +137,13 @@ export class QualityControlService {
     } catch (error) {
       throw new InternalServerErrorException(`Removal of the current existing doesn't sucesss`);
     }*/
-    const group_code = getRandomString(8); //TODO Check if duplication
+    let group_code = 'xxx-xxx-xxx';
+    while (true) {
+      group_code = getRandomString(8);
+      const exist = await this.linked_repositories.product.findOne({ group_code });
+      if (!exist) break; // break if the group code isn't already taken
+    }
+
     const ListOfInsertion = qc_datas.map((qc_data) => {
       const Qc = new QualityControl();
       const Prod_Pointer = new Product();
