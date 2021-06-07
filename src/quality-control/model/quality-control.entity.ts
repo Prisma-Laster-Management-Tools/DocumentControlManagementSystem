@@ -7,6 +7,9 @@ export class QualityControl extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  group_code: string; // a random generated string to group a period of the qc
+
   // @Column()
   // serial_number: string;
 

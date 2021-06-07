@@ -1,12 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductService } from 'src/product/product.service';
+import { CreateControlProcessBulkDTO } from './dto/create-control-process-bulk.dto';
 import { CreateControlProcess } from './dto/create-control-process.dto';
 import { CreateProtocalForProductDTO } from './dto/create-protocal-for-product.dto';
 import { CreateQCQueueDTO } from './dto/create-qc-queue.dto';
 import { QualityControlProtocolRepository } from './quality-control-protocal.repository';
 import { QualityControlQueueRepository } from './quality-control-queue.repository';
 import { QualityControlRepository } from './quality-control.repository';
+import { getConnection } from 'typeorm';
+import { QualityControl } from './model/quality-control.entity';
+import { getRandomString } from 'src/utilities/random/string';
+import { Product } from 'src/product/model/product.entity';
 
 interface ILinkedRepositories {
   protocol: QualityControlProtocolRepository;
@@ -69,11 +74,11 @@ export class QualityControlService {
     if (removal.affected) return true;
     return false;
   }
-  async ifShouldDequeueFromQueueThenDequeue(product_id: number) {
+  async ifShouldDequeueFromQueueThenDequeue(product_id: number, group_code: string) {
     const { product_code } = await this.productService.getProductById(product_id);
     const ProtocolList = await this.getProductProtocolRule(product_code);
     const protocol_list_count = ProtocolList.length;
-    const passed_process = await this.linked_repositories.product.find({ product: { id: product_id }, check_status: true });
+    const passed_process = await this.linked_repositories.product.find({ product: { id: product_id }, check_status: true, group_code });
     const passed_process_count = passed_process.length;
 
     if (passed_process_count === protocol_list_count) {
@@ -94,10 +99,65 @@ export class QualityControlService {
     await this.productService.getProductById(product_id); // check if product exist
     await this.getQCProtocolById(protocol_id); // check if protocol is exist
 
-    const dequeue_process = () => this.ifShouldDequeueFromQueueThenDequeue(product_id);
+    const dequeue_process = () => this.ifShouldDequeueFromQueueThenDequeue(product_id, 'group-code');
 
     return this.linked_repositories.product.createControlProcess(createControlProcess, dequeue_process);
   }
+
+  async createControlProcess_BULK(createControlProcessBulkDTO: CreateControlProcessBulkDTO) {
+    const { product_id, qc_datas } = createControlProcessBulkDTO;
+
+    // Check if this product_id is in the queue-list or not
+    const IsInQueue = await this.linked_repositories.queue.findOne({ product: { id: product_id } });
+    if (!IsInQueue) throw new BadRequestException(`This product is currently not in the queue process`);
+    // ─────────────────────────────────────────────────────────────────
+
+    // check if qc_datas is containing the right data form
+    const valid_format = qc_datas.every((each: Object) => {
+      if (each.hasOwnProperty('protocol_id') && each.hasOwnProperty('check_status')) return true;
+      return false;
+    });
+    // ─────────────────────────────────────────────────────────────────
+    if (!valid_format) return new BadRequestException(`Invalid format of the qc_datas`);
+
+    const { product_code } = await this.productService.getProductById(product_id);
+    const ProtocolList = await this.getProductProtocolRule(product_code); // getting protocol list
+
+    // check if qc_datas contains all of the protocol list
+    const ProtocolListAsStringArray = ProtocolList.map((proto) => proto.id).sort((a, b) => a - b); // sorting in ascending order
+    const QcDatasListAsStringArray = qc_datas.map((qc_data) => qc_data.protocol_id).sort((a, b) => a - b);
+    const IsQcDatasCoverAllProtocolList = ProtocolListAsStringArray.every((value, index) => value === QcDatasListAsStringArray[index]);
+    if (!IsQcDatasCoverAllProtocolList) return new BadRequestException(`qc_datas doesn't contain all of the protocols`);
+
+    // @ LOGIC -> 1. Remove all existing qc-process with the product id of ${product_id} -> insertion of the bulk list
+    /* @ LOGIC(2) -> 1. Create column for qc-product which is group_code -> to contain the random generated string so we don't have to remove a
+    all existing qc-process everytime because we can use this random generated string to separate the group and the period of time of the qc process*/
+    /*try {
+      await this.linked_repositories.product.delete({ product: { id: product_id } });
+    } catch (error) {
+      throw new InternalServerErrorException(`Removal of the current existing doesn't sucesss`);
+    }*/
+    const group_code = getRandomString(8); //TODO Check if duplication
+    const ListOfInsertion = qc_datas.map((qc_data) => {
+      const Qc = new QualityControl();
+      const Prod_Pointer = new Product();
+      Prod_Pointer.id = product_id;
+      Qc.product = Prod_Pointer;
+      Qc.protocol = qc_data.protocol_id;
+      Qc.check_status = qc_data.check_status;
+      Qc.group_code = group_code;
+      return Qc;
+    });
+
+    try {
+      const bulk_insertion = await getConnection().createQueryBuilder().insert().into(QualityControl).values(ListOfInsertion).execute();
+      await this.ifShouldDequeueFromQueueThenDequeue(product_id, group_code); // await is not required -> but this incase of doing some fresh quick refreshing on the frontend site -> to remove the queue from the list up in time
+      return bulk_insertion;
+    } catch (error) {
+      return new InternalServerErrorException(`Cannot do the certain operation -> bulk creation`);
+    }
+  }
+
   async findAllControlProcess() {
     return this.linked_repositories.product.find();
   }
