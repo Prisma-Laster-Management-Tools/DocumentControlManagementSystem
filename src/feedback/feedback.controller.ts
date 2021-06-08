@@ -20,6 +20,28 @@ export class FeedbackController {
   }
 
   /**
+   * @ACCESS <REDIRECTION ONLY>
+   */
+  @Get('/create-feedback-access-link')
+  @UseGuards(AuthGuard())
+  createFeedbackAccessLinkToken(@Session() session: ISessionItems) {
+    const { sales_id } = SESSION_ExtractDataAndClear(session, 'param_cached');
+    if (!sales_id) throw new NotAcceptableException();
+    return this.feedbackService.createFeedbackAccessLinkToken(sales_id);
+  }
+
+  /**
+   * @ACCESS <REDIRECTION ONLY>
+   */
+  @Get('/removal')
+  @UseGuards(AuthGuard())
+  removeFeedback(@Session() session: ISessionItems) {
+    const { sales_id } = SESSION_ExtractDataAndClear(session, 'param_cached');
+    if (!sales_id) throw new NotAcceptableException();
+    return this.feedbackService.removeFeedback(sales_id);
+  }
+
+  /**
    * @ACCESS Public
    */
   @Get('/verify/:access_token')
@@ -41,27 +63,5 @@ export class FeedbackController {
   @Get('/:id')
   getFeedback(@Param('id', ParseIntPipe) id: number) {
     return this.feedbackService.getFeedback(id);
-  }
-
-  /**
-   * @ACCESS <REDIRECTION ONLY>
-   */
-  @Get('/create-feedback-access-link')
-  @UseGuards(AuthGuard())
-  createFeedbackAccessLinkToken(@Session() session: ISessionItems) {
-    const { sales_id } = SESSION_ExtractDataAndClear(session, 'param_cached');
-    if (!sales_id) throw new NotAcceptableException();
-    return this.feedbackService.createFeedbackAccessLinkToken(sales_id);
-  }
-
-  /**
-   * @ACCESS <REDIRECTION ONLY>
-   */
-  @Get('/removal')
-  @UseGuards(AuthGuard())
-  removeFeedback(@Session() session: ISessionItems) {
-    const { sales_id } = SESSION_ExtractDataAndClear(session, 'param_cached');
-    if (!sales_id) throw new NotAcceptableException();
-    return this.feedbackService.removeFeedback(sales_id);
   }
 }

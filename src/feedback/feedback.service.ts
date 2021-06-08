@@ -52,7 +52,8 @@ export class FeedbackService {
   }
 
   async createFeedbackAccessLinkToken(sales_id: number) {
-    //const feedback = await this.feedbackRepository.findOne({ sales: { id: sales_id } });
+    const feedback = await this.feedbackRepository.findOne({ sales: { id: sales_id } });
+    if (feedback) return feedback; // if already exist show the same
     //if (!feedback) throw new NotFoundException(`SalesId of "${sales_id}" doesn't even have any feedback`);
     const SaleEntity = await this.salesService.findSales(sales_id);
     let random_access_token;
