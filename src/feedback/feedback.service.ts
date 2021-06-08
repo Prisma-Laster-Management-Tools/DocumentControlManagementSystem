@@ -44,6 +44,13 @@ export class FeedbackService {
     //return this.feedbackRepository.createFeedback(createFeedbackDTO, SaleEntity);
   }
 
+  async getFeedback(id: number) {
+    const SaleEntity = await this.salesService.findSales(id);
+    const Feedback = await this.feedbackRepository.findOne({ sales: { id } });
+    if (!Feedback) throw new NotFoundException(`SalesId of "${id}" doesn't even have any feedback`);
+    return Feedback;
+  }
+
   async createFeedbackAccessLinkToken(sales_id: number) {
     //const feedback = await this.feedbackRepository.findOne({ sales: { id: sales_id } });
     //if (!feedback) throw new NotFoundException(`SalesId of "${sales_id}" doesn't even have any feedback`);
