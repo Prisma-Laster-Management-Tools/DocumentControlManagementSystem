@@ -4,9 +4,11 @@ import { CreateSalesDataDTO } from './dto/create-sales-data.dto';
 import { SalesService } from './sales.service';
 
 import * as express from 'express';
+import { FeedbackService } from 'src/feedback/feedback.service';
+import { CreateFeedbackDTO } from 'src/feedback/dto/create-feedback.dto';
 @Controller('sales')
 export class SalesController {
-  constructor(private salesService: SalesService) {}
+  constructor(private salesService: SalesService, private feedbackService: FeedbackService) {}
 
   // @Get()
   // getAllSalesData() {
@@ -31,9 +33,13 @@ export class SalesController {
   }
 
   @Get('/:id/feedback/create-feedback-access-link')
-  REDIRECTION_CreateFeedbackAccessLinkToken(@Response() response: express.Response, @Req() request: Request, @Param('id', ParseIntPipe) id: number) {
-    request.session.param_cached = { sales_id: id }; // using session -> on the other side will take this and do some action with it
-    return response.redirect(303, `/api/feedback/create-feedback-access-link`);
+  // OLD PARAMS (@Response() response: express.Response, @Req() request: Request, @Param('id', ParseIntPipe) id: number)
+  // If you extract the response -> u will no longer just return the request
+  REDIRECTION_CreateFeedbackAccessLinkToken(@Param('id', ParseIntPipe) id: number) {
+    /*request.session.param_cached = { sales_id: id }; // using session -> on the other side will take this and do some action with it
+    return response.redirect(303, `/api/feedback/create-feedback-access-link`);*/
+    // Session will be lost after redirection -> cross service call instead
+    return this.feedbackService.createFeedbackAccessLinkToken(id);
   }
 
   @Get('/:id/feedback')
@@ -42,9 +48,12 @@ export class SalesController {
   }
 
   @Post('/:id/feedback')
-  redirect(@Response() response: express.Response, @Req() request: Request, @Param('id', ParseIntPipe) id: number) {
-    request.session.param_cached = { sales_id: id }; // using session -> on the other side will take this and do some action with it
-    return response.redirect(307, `/api/feedback`);
+  // OLD PARAMS (@Response() response: express.Response, @Req() request: Request, @Param('id', ParseIntPipe) id: number)
+  // If you extract the response -> u will no longer just return the request
+  redirect(@Body() createFeedbackDTO: CreateFeedbackDTO, @Param('id', ParseIntPipe) id: number) {
+    /*request.session.param_cached = { sales_id: id }; // using session -> on the other side will take this and do some action with it
+    return response.redirect(307, `/api/feedback`);*/
+    return this.feedbackService.createFeedback(createFeedbackDTO, id);
   }
 
   @Delete('/:id/feedback')

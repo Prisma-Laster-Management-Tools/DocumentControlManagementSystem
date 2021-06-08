@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { SalesService } from 'src/sales/sales.service';
 import { getRandomString } from 'src/utilities/random/string';
+import { IsNull, Not } from 'typeorm';
 import { CreateFeedbackDTO } from './dto/create-feedback.dto';
 import { FeedbackRepository } from './feedback.repository';
 
@@ -18,7 +19,12 @@ export class FeedbackService {
   }
 
   async verifyFeedbackAccessToken(token: string) {
-    const feedback = await this.feedbackRepository.createQueryBuilder('feedback').leftJoinAndSelect('feedback.sales', 'sales').getMany(); // TODO add where cluases
+    const feedback = await this.feedbackRepository
+      .createQueryBuilder('feedback')
+      .leftJoinAndSelect('feedback.sales', 'sales')
+      .where('access_token=:access_token', { access_token: token })
+      //.andWhere('quality_rating_score=:qrs', { qrs: null }) // TODO make a separate function to get the feedback data
+      .getOne(); // TODO add where cluases
     if (!feedback) throw new NotFoundException();
     return feedback;
   }
@@ -46,7 +52,7 @@ export class FeedbackService {
 
   async getFeedback(id: number) {
     const SaleEntity = await this.salesService.findSales(id);
-    const Feedback = await this.feedbackRepository.findOne({ sales: { id } });
+    const Feedback = await this.feedbackRepository.findOne({ sales: { id }, quality_rating_score: Not(IsNull()) });
     if (!Feedback) throw new NotFoundException(`SalesId of "${id}" doesn't even have any feedback`);
     return Feedback;
   }

@@ -1,7 +1,7 @@
-import { IsEmail, IsNotEmpty, MaxLength, MinLength, IsDate, IsDateString } from 'class-validator';
+import { IsEmail, IsNotEmpty, MaxLength, MinLength, IsDate, IsDateString, IsOptional } from 'class-validator';
 
 export class CreateFeedbackDTO {
-  @IsNotEmpty()
+  @IsOptional()
   feedback_str: string;
 
   @IsNotEmpty()
