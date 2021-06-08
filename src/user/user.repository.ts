@@ -54,6 +54,8 @@ export class UserRepository extends Repository<User> {
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);
     user.position = recruitmentData.role; // NOTE role means position -> related the same [i am lazy to changed it right now]
+    user.firstname = recruitmentData.firstname;
+    user.lastname = recruitmentData.lastname;
     try {
       await user.save();
       return { success: true };
