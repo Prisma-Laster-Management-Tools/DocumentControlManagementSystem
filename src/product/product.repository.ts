@@ -28,7 +28,15 @@ export class ProductRepository extends Repository<Product> {
     const SEARCH_CONDITION_RENDERED = `${paginationDto.search ? `%${paginationDto.search}%` : '%%'}`;
 
     // To specify the casein-sensitive -> u must provide "" like -> prod."createdAt" in order to b working
-    const Plain_Products_Query = `SELECT prod.*,prod_detail.product_name,prod_detail.product_description FROM public.product prod LEFT JOIN public.product_detail prod_detail ON prod.product_code=prod_detail.product_code WHERE prod.serial_number LIKE '${SEARCH_CONDITION_RENDERED}' ORDER BY prod."createdAt" DESC`;
+    //const Plain_Products_Query = `SELECT prod.*,prod_detail.product_name,prod_detail.product_description FROM public.product prod LEFT JOIN public.product_detail prod_detail ON prod.product_code=prod_detail.product_code WHERE prod.serial_number LIKE '${SEARCH_CONDITION_RENDERED}' ORDER BY prod."createdAt" DESC`;
+    const Plain_Products_Query = `SELECT prod.*,prod_detail.product_name,prod_detail.product_description
+    ,case when qcq."productId" is not null then true else false end as is_in_queue
+    FROM public.product prod 
+    LEFT JOIN public.product_detail prod_detail 
+    ON prod.product_code=prod_detail.product_code 
+    LEFT JOIN public.quality_control_queue qcq ON prod.id = qcq."productId" 
+    WHERE prod.serial_number LIKE '${SEARCH_CONDITION_RENDERED}'
+    ORDER BY prod."createdAt" DESC`;
     const Plain_Products_Query_With_Pagination = Plain_Products_Query + ` ${PAGINATION_QUERY_STR}`;
 
     const [getCountPromise, Products] = await Promise.all([
