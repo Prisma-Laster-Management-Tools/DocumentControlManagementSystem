@@ -9,6 +9,11 @@ import { ProductService } from './product.service';
 export class ProductController {
   constructor(private productService: ProductService) {}
 
+  @Get('/details')
+  async getAllBaseProductDetail() {
+    return this.productService.getAllBaseProductDetail();
+  }
+
   @Post('/create-product-detail')
   async createBaseProductDetail(@Body() createProductDetailDTO: CreateProductDetailDTO) {
     return this.productService.createBaseProductDetail(createProductDetailDTO);

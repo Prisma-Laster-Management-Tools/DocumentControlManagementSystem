@@ -28,6 +28,10 @@ export class ProductService {
     return removal;
   }
 
+  async getAllBaseProductDetail() {
+    return await this.productDetailRepository.find();
+  }
+
   async getBaseProduct(product_code: string) {
     const Prod = await this.productDetailRepository.findOne({ product_code });
     if (!Prod) throw new NotFoundException(`Product Code of "${product_code}" doesn't exist in database`);
