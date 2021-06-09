@@ -62,8 +62,13 @@ export class QualityControlService {
   // ─── QUEUE ──────────────────────────────────────────────────────────────────────
   //
   async createQCQueue(createQCQueueDTO: CreateQCQueueDTO) {
-    await this.productService.getProductById(createQCQueueDTO.product_id); // check if product_code exist
-    return this.linked_repositories.queue.createQCQueue(createQCQueueDTO);
+    const Prod = await this.productService.getProductById(createQCQueueDTO.product_id); // check if product_code exist
+
+    // If Prod.quality_passed === null -> means it hasn't been qualitied yet [so no need to flag as false]
+    //const cb_reset_product_qc_state_as_false = Prod.quality_passed === null ? () => this.productService.markProductFailTheQuailityChecked(createQCQueueDTO.product_id) : () => {}
+    const cb_reset_product_qc_state_as_false = () => {}; // @NOTE -> EMPTY FOR NOW
+
+    return this.linked_repositories.queue.createQCQueue(createQCQueueDTO, cb_reset_product_qc_state_as_false);
   }
   async findAllQueue() {
     return this.linked_repositories.queue.find();
@@ -71,7 +76,15 @@ export class QualityControlService {
   async dequeueProductFromQueue(product_id: number) {
     const removal = await this.linked_repositories.queue.delete({ product: { id: product_id } });
     // if (!removal) throw new NotFoundException(`Protocol with id of "${product_id} doesn't exist"`);
-    if (removal.affected) return true;
+    if (removal.affected) {
+      this.productService
+        .markProductPassTheQuailityChecked(product_id)
+        .then(() => {
+          console.log(`Product id:${product_id} successfully marked as qc-passed`);
+        })
+        .catch(() => console.log(`Product id:${product_id} has failed to marked as qc-passed`));
+      return true;
+    }
     return false;
   }
   async ifShouldDequeueFromQueueThenDequeue(product_id: number, group_code: string) {
@@ -87,7 +100,11 @@ export class QualityControlService {
       const dequeue_success = await this.dequeueProductFromQueue(product_id);
       if (dequeue_success) console.log(`Dequeue product_id ${product_id} successfully`);
       else console.log(`Dequeue product_id ${product_id} failed`);
-    } else console.log('Should not Dequeue product id === ' + product_id + ' from the queue list');
+    } else {
+      // means to mark as false
+      //this.productService.markProductFailTheQuailityChecked(product_id); // @NOTE -> maybe just only set to false when it is being appended to the q list
+      console.log('Should not Dequeue product id === ' + product_id + ' from the queue list');
+    }
   }
   // ────────────────────────────────────────────────────────────────────────────────
 

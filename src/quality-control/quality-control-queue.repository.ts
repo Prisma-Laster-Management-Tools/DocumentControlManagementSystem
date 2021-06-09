@@ -10,7 +10,7 @@ import { QualityControlQueue } from './model/quality-control-queue.entity';
 export class QualityControlQueueRepository extends Repository<QualityControlQueue> {
   private logger = new Logger();
 
-  async createQCQueue(createQCQueueDTO: CreateQCQueueDTO) {
+  async createQCQueue(createQCQueueDTO: CreateQCQueueDTO, cb: Function) {
     const { product_id } = createQCQueueDTO;
     // check if queue already been pending
     const Existed_Queue = await this.findOne({ product: { id: product_id } });
@@ -21,6 +21,12 @@ export class QualityControlQueueRepository extends Repository<QualityControlQueu
     const Prod = new Product();
     Prod.id = product_id;
     Queue.product = Prod;
-    return await Queue.save();
+    try {
+      const save = await Queue.save();
+      cb();
+      return save;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

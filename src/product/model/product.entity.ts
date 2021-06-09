@@ -14,6 +14,9 @@ export class Product extends BaseEntity {
   @Column()
   product_code: string;
 
+  @Column({ nullable: true, default: null })
+  quality_passed: boolean | null;
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 

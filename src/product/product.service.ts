@@ -77,5 +77,17 @@ export class ProductService {
     return prod;
   }
 
+  async markProductPassTheQuailityChecked(id: number) {
+    const prod = await this.productRepository.findOne({ id });
+    prod.quality_passed = true;
+    return await prod.save();
+  }
+
+  async markProductFailTheQuailityChecked(id: number) {
+    const prod = await this.productRepository.findOne({ id });
+    prod.quality_passed = false;
+    return await prod.save();
+  }
+
   // ────────────────────────────────────────────────────────────────────────────────
 }
