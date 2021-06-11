@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/shared/dto/pagination/pagination.dto';
 import { CreateProductDetailDTO } from './dto/create-product-detail.dto';
 import { CreateProductDTO } from './dto/create-product.dto';
+import { QueryGetBaseProductDTO } from './dto/query-get-base-prod.dto';
 import { ProductDetailRepository } from './product-detail.repository';
 import { ProductRepository } from './product.repository';
 
@@ -28,8 +29,8 @@ export class ProductService {
     return removal;
   }
 
-  async getAllBaseProductDetail() {
-    return await this.productDetailRepository.find();
+  async getAllBaseProductDetail(queryGetBaseProductDTO: QueryGetBaseProductDTO) {
+    return this.productDetailRepository.getAllBaseProductDetail(queryGetBaseProductDTO);
   }
 
   async getBaseProduct(product_code: string) {

@@ -3,6 +3,7 @@ import { PaginationDto } from 'src/shared/dto/pagination/pagination.dto';
 import { ResponseMsg } from 'src/shared/helpers/ResponseMsg';
 import { CreateProductDetailDTO } from './dto/create-product-detail.dto';
 import { CreateProductDTO } from './dto/create-product.dto';
+import { QueryGetBaseProductDTO } from './dto/query-get-base-prod.dto';
 import { ProductService } from './product.service';
 
 @Controller('product')
@@ -10,8 +11,8 @@ export class ProductController {
   constructor(private productService: ProductService) {}
 
   @Get('/details')
-  async getAllBaseProductDetail() {
-    return this.productService.getAllBaseProductDetail();
+  async getAllBaseProductDetail(@Query() queryGetBaseProductDTO: QueryGetBaseProductDTO) {
+    return this.productService.getAllBaseProductDetail(queryGetBaseProductDTO);
   }
 
   @Post('/create-product-detail')

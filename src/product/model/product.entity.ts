@@ -3,6 +3,7 @@ import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, On
 import { ProductDetail } from './product-detail.entity';
 
 @Entity()
+@Unique(['serial_number'])
 export class Product extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;

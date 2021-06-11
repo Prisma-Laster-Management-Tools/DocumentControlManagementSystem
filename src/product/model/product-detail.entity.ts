@@ -1,16 +1,5 @@
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
-  Unique,
-  UpdateDateColumn,
-} from 'typeorm';
+import { QualityControlProtocol } from 'src/quality-control/model/quality-control-protocol.entity';
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
 import { Product } from './product.entity';
 
 @Entity()
@@ -27,6 +16,9 @@ export class ProductDetail extends BaseEntity {
 
   @Column()
   product_description: string;
+
+  @OneToMany((type) => QualityControlProtocol, (protocol) => protocol.product_detail, { eager: false }) // not by default
+  protocol: QualityControlProtocol[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

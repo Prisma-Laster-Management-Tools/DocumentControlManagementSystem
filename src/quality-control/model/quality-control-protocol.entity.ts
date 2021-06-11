@@ -1,3 +1,4 @@
+import { ProductDetail } from 'src/product/model/product-detail.entity';
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
 
 @Entity()
@@ -16,6 +17,10 @@ export class QualityControlProtocol extends BaseEntity {
 
   @Column({ default: false })
   required_attachment: boolean;
+
+  @ManyToOne((type) => ProductDetail)
+  @JoinColumn({ name: 'product_code', referencedColumnName: 'product_code' })
+  product_detail: ProductDetail;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
