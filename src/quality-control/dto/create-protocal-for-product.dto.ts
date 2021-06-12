@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, MaxLength, MinLength, IsDate, IsDateString, IsString, IsNumber, IsBoolean } from 'class-validator';
+import { IsEmail, IsNotEmpty, MaxLength, MinLength, IsDate, IsDateString, IsString, IsNumber, IsBoolean, IsOptional } from 'class-validator';
 
 export class CreateProtocalForProductDTO {
   @IsString()
@@ -16,4 +16,8 @@ export class CreateProtocalForProductDTO {
   @IsBoolean()
   @IsNotEmpty()
   required_attachment: boolean = false;
+
+  @IsString()
+  @IsOptional()
+  attachment_path: string;
 }

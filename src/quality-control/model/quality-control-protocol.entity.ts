@@ -18,6 +18,9 @@ export class QualityControlProtocol extends BaseEntity {
   @Column({ default: false })
   required_attachment: boolean;
 
+  @Column({ nullable: true, default: null })
+  attachment_path: string;
+
   @ManyToOne((type) => ProductDetail)
   @JoinColumn({ name: 'product_code', referencedColumnName: 'product_code' })
   product_detail: ProductDetail;

@@ -11,7 +11,7 @@ export class QualityControlProtocolRepository extends Repository<QualityControlP
   private logger = new Logger();
 
   async createProtocolForProduct(createProtocalForProductDTO: CreateProtocalForProductDTO) {
-    const { process_description, process_order, product_code, required_attachment } = createProtocalForProductDTO;
+    const { process_description, process_order, product_code, required_attachment, attachment_path } = createProtocalForProductDTO;
 
     //Check if process_order is duplicated
     const process_exist = await this.findOne({ product_code, process_order });
@@ -23,6 +23,7 @@ export class QualityControlProtocolRepository extends Repository<QualityControlP
     Protocol.process_order = process_order;
     Protocol.process_description = process_description;
     Protocol.required_attachment = required_attachment;
+    Protocol.attachment_path = attachment_path;
     return await Protocol.save();
   }
 }
