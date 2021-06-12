@@ -11,6 +11,11 @@ import { PurchasementService } from './purchasement.service';
 export class PurchasementController {
   constructor(private purchasementService: PurchasementService) {}
 
+  @Get('/part-detail')
+  async getAllPartDetail() {
+    return this.purchasementService.getAllPartDetail();
+  }
+
   @Post('/create-part-detail')
   async createPartDetail(@Body() createPurchasementPartDetailDTO: CreatePurchasementPartDetailDTO) {
     return this.purchasementService.createPartDetail(createPurchasementPartDetailDTO);

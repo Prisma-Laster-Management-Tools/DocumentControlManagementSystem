@@ -35,6 +35,10 @@ export class PurchasementService {
     else if (!(await this.linked_repositories.purchasement_part.findOne({ part_number }))) throw new NotFoundException(`Part number of "${part_number}" doesn't exist`);
   }
 
+  async getAllPartDetail() {
+    return await this.linked_repositories.purchasement_part.find();
+  }
+
   async createPartDetail(createPurchasementPartDetailDTO: CreatePurchasementPartDetailDTO) {
     return this.linked_repositories.purchasement_part.createPartDetail(createPurchasementPartDetailDTO);
   }
