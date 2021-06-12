@@ -66,6 +66,10 @@ export class PurchasementService {
     if (!removal.affected) throw new NotFoundException(`Purchasement Source with id == "${id}" doesn't exist`);
     return removal;
   }
+
+  async getAllSource() {
+    return await this.linked_repositories.purchasement_source.find();
+  }
   // ────────────────────────────────────────────────────────────────────────────────
 
   //

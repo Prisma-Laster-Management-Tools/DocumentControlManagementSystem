@@ -34,6 +34,11 @@ export class PurchasementController {
     return this.purchasementService.createPurchasementSource(createPurchasementSourceDTO);
   }
 
+  @Get('source')
+  async getAllSource() {
+    return this.purchasementService.getAllSource();
+  }
+
   @Delete('/remove-source-detail/:id')
   async removePurchasementSource(@Param('id', ParseIntPipe) id: number) {
     return this.purchasementService.removePurchasementSource(id);
