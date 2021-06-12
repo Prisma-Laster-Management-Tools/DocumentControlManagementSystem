@@ -36,6 +36,11 @@ export class QualityControlController {
     return this.qualityControlService.createQCQueue(createQCQueueDTO);
   }
 
+  @Delete('/queue/:product_id')
+  async removeFromQueue(@Param('product_id', ParseIntPipe) serial_number: number) {
+    return this.qualityControlService.removeFromQueue(serial_number);
+  }
+
   @Get('/queue')
   async findAllQueue() {
     return this.qualityControlService.findAllQueue();

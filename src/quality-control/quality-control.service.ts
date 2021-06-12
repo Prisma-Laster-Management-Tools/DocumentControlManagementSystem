@@ -70,6 +70,11 @@ export class QualityControlService {
 
     return this.linked_repositories.queue.createQCQueue(createQCQueueDTO, cb_reset_product_qc_state_as_false);
   }
+  async removeFromQueue(product_id: number) {
+    const removal = await this.linked_repositories.queue.delete({ product: { id: product_id } });
+    if (!removal.affected) throw new BadRequestException(`Product with id of ${product_id} is not currently in the queue`);
+    return removal;
+  }
   async findAllQueue() {
     return this.linked_repositories.queue.find();
   }
