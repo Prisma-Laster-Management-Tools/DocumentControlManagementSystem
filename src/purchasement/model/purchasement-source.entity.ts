@@ -1,6 +1,7 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
 
 @Entity()
+@Unique(['commercial_number'])
 export class PurchasementSource extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
