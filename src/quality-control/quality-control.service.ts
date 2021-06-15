@@ -93,7 +93,8 @@ export class QualityControlService {
     return false;
   }
   async ifShouldDequeueFromQueueThenDequeue(product_id: number, group_code: string) {
-    const { product_code } = await this.productService.getProductById(product_id);
+    const Product = await this.productService.getProductById(product_id);
+    const { product_code } = Product;
     const ProtocolList = await this.getProductProtocolRule(product_code);
     const protocol_list_count = ProtocolList.length;
     const passed_process = await this.linked_repositories.product.find({ product: { id: product_id }, check_status: true, group_code });
@@ -107,7 +108,7 @@ export class QualityControlService {
       else console.log(`Dequeue product_id ${product_id} failed`);
     } else {
       // means to mark as false
-      //this.productService.markProductFailTheQuailityChecked(product_id); // @NOTE -> maybe just only set to false when it is being appended to the q list
+      this.productService.markProductFailTheQuailityChecked(product_id); // @NOTE -> maybe just only set to false when it is being appended to the q list
       console.log('Should not Dequeue product id === ' + product_id + ' from the queue list');
     }
   }
