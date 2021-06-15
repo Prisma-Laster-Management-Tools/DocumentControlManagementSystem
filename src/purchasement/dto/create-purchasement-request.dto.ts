@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, MaxLength, MinLength, IsDate, IsDateString, IsString, IsOptional, IsBoolean } from 'class-validator';
+import { IsEmail, IsNotEmpty, MaxLength, MinLength, IsDate, IsDateString, IsString, IsOptional, IsBoolean, IsNumber } from 'class-validator';
 
 export class CreatePurchasementRequestDTO {
   @IsString()
@@ -8,6 +8,10 @@ export class CreatePurchasementRequestDTO {
   @IsString()
   @IsNotEmpty()
   quantity: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  price: number;
 
   @IsBoolean()
   @IsOptional()

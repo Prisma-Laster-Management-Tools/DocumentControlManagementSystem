@@ -11,6 +11,9 @@ export class PurchasementRequest extends BaseEntity {
   @Column()
   quantity: string; // 1ชิ้น , 1 กิโล , 1 อัน
 
+  @Column()
+  price: number; // price [dealing price]
+
   @Column({ default: false })
   is_special_request: boolean;
 
