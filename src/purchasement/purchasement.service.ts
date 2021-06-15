@@ -70,6 +70,14 @@ export class PurchasementService {
   async getAllSource() {
     return await this.linked_repositories.purchasement_source.find();
   }
+
+  async getSourceData(id: number) {
+    const [result] = await this.linked_repositories.purchasement_source.query(
+      `SELECT p_s.*,p_p.part_name from public.purchasement_source p_s LEFT JOIN public.purchasement_part p_p ON p_s.part_number=p_p.part_number WHERE p_s.id=${id} LIMIT 1`,
+    );
+    if (!result) throw new NotFoundException(`Purchasement source with id of "${id}" doesn't exist in the database`);
+    return result;
+  }
   // ────────────────────────────────────────────────────────────────────────────────
 
   //
