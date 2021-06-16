@@ -1,4 +1,5 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
+import { CalibrationSchedule } from './calibration-schedule.entity';
 
 @Entity()
 export class CalibrationEvidence extends BaseEntity {
@@ -19,6 +20,11 @@ export class CalibrationEvidence extends BaseEntity {
 
   @Column({ nullable: true, default: null })
   attachments: string; // splits with comma [,]
+
+  // NOTE createForeignKeyConstraints to allow having the calibration evidence with the not-exist serial_number in the cycle
+  @ManyToOne((type) => CalibrationSchedule, { createForeignKeyConstraints: false, cascade: true, onDelete: 'CASCADE' }) // If CalibrationSchedule got removed -> remove all the evidence of it too
+  @JoinColumn({ name: 'serial_number', referencedColumnName: 'serial_number' })
+  calibration_schedule: CalibrationSchedule;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
