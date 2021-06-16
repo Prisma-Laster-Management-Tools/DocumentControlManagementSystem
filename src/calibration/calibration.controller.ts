@@ -57,5 +57,10 @@ export class CalibrationController {
     return this.calibrationService.createCalibrationEvidence(createCalibrationEvidenceDTO, files);
   }
 
+  @Get('evidence/:serial_number')
+  async getCalibrationEvidenceHistoryOfSpecificSerialNumber(@Param('serial_number') serial_number: string) {
+    return this.calibrationService.getCalibrationEvidenceHistoryOfSpecificSerialNumber(serial_number);
+  }
+
   // ────────────────────────────────────────────────────────────────────────────────
 }

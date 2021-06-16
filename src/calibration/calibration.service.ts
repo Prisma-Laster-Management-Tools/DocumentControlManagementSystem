@@ -37,6 +37,9 @@ export class CalibrationService {
   async gelAllCalibrationEvidence() {
     return await this.calibrationEvidenceRepository.find();
   }
+  async getCalibrationEvidenceHistoryOfSpecificSerialNumber(serial_number: string) {
+    return await this.calibrationEvidenceRepository.find({ serial_number });
+  }
   async createCalibrationEvidence(createCalibrationEvidenceDTO: CreateCalibrationEvidenceDTO, files: Array<Express.Multer.File>) {
     const upload = uploadMultiplePhoto(files);
     const attachments = (upload.stored_path as Array<string>).join(',spiltter-23564,');
