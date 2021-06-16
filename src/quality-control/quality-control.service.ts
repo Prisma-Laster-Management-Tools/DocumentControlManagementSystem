@@ -166,7 +166,6 @@ export class QualityControlService {
       const exist = await this.linked_repositories.product.findOne({ group_code });
       if (!exist) break; // break if the group code isn't already taken
     }
-
     const ListOfInsertion = qc_datas.map((qc_data) => {
       const Qc = new QualityControl();
       const Prod_Pointer = new Product();
@@ -175,6 +174,8 @@ export class QualityControlService {
       Qc.protocol = qc_data.protocol_id;
       Qc.check_status = qc_data.check_status;
       Qc.group_code = group_code;
+      Qc.number_of_protocol = ProtocolList.length;
+      Qc.protocol_description = ProtocolList.find((protocol) => protocol.id === qc_data.protocol_id).process_description;
       return Qc;
     });
 
