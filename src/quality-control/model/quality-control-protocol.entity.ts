@@ -21,7 +21,7 @@ export class QualityControlProtocol extends BaseEntity {
   @Column({ nullable: true, default: null })
   attachment_path: string;
 
-  @ManyToOne((type) => ProductDetail)
+  @ManyToOne((type) => ProductDetail, { cascade: true, onDelete: 'CASCADE' }) // If product-detail got removed -> remove all the protocol of it too
   @JoinColumn({ name: 'product_code', referencedColumnName: 'product_code' })
   product_detail: ProductDetail;
 
