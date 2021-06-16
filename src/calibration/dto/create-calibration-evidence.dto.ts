@@ -14,7 +14,7 @@ export class CreateCalibrationEvidenceDTO {
   @IsOptional()
   description: string;
 
-  @Type(() => Boolean)
+  @Type(() => Boolean) // does not work
   @IsBoolean()
   @IsNotEmpty()
   is_pass: boolean;

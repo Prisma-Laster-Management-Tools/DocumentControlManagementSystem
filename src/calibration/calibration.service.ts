@@ -18,7 +18,11 @@ export class CalibrationService {
   ) {}
 
   async getAllCalibrationSchedules() {
-    return this.calibrationScheduleRepository.find();
+    return await this.calibrationScheduleRepository
+      .createQueryBuilder('calib_schedule')
+      .leftJoinAndSelect('calib_schedule.calibration_evidence', 'calib_evidence')
+      .orderBy('calib_evidence."createdAt"', 'DESC') // latest  first
+      .getMany();
   }
 
   async createCalibrationSchedule(createCalibrationCycleDTO: CreateCalibrationCycleDTO) {
