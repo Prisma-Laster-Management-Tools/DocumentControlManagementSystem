@@ -25,7 +25,7 @@ export class Feedback extends BaseEntity {
   @Column()
   access_token: string; // might be encoded with JWT or whatever => recommend using jwt with the stamp expired date [or just generate the random link]
 
-  @ManyToOne((type) => Sales, (sales) => sales.id, { eager: false })
+  @ManyToOne((type) => Sales, (sales) => sales.id, { eager: false, cascade: true, onDelete: 'CASCADE' }) // when sales got deleted -> this would be removed too
   sales: Sales;
 
   @CreateDateColumn({ type: 'timestamp' })
