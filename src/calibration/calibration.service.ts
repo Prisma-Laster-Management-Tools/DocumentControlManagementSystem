@@ -42,7 +42,7 @@ export class CalibrationService {
     return await this.calibrationEvidenceRepository.find();
   }
   async getCalibrationEvidenceHistoryOfSpecificSerialNumber(serial_number: string) {
-    return await this.calibrationEvidenceRepository.find({ serial_number });
+    return await this.calibrationEvidenceRepository.find({ where: { serial_number }, order: { createdAt: 'DESC' } });
   }
   async createCalibrationEvidence(createCalibrationEvidenceDTO: CreateCalibrationEvidenceDTO, files: Array<Express.Multer.File>) {
     const upload = uploadMultiplePhoto(files);
