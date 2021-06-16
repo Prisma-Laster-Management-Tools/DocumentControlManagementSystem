@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { IsEmail, IsNotEmpty, MaxLength, MinLength, IsDate, IsDateString, IsString, IsOptional, IsBoolean } from 'class-validator';
 
 export class CreateCalibrationEvidenceDTO {
@@ -14,8 +14,14 @@ export class CreateCalibrationEvidenceDTO {
   @IsOptional()
   description: string;
 
-  @Type(() => Boolean) // does not work
+  //@Type(() => Boolean) // does not work
   @IsBoolean()
+  @Transform((boolean_as_str) => {
+    if (boolean_as_str.value === 'true') {
+      return true;
+    }
+    return false;
+  })
   @IsNotEmpty()
   is_pass: boolean;
 }
