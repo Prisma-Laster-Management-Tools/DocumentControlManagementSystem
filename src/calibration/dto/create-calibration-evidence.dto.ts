@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, MaxLength, MinLength, IsDate, IsDateString, IsString, IsOptional } from 'class-validator';
+import { IsEmail, IsNotEmpty, MaxLength, MinLength, IsDate, IsDateString, IsString, IsOptional, IsBoolean } from 'class-validator';
 
 export class CreateCalibrationEvidenceDTO {
   @IsString()
@@ -12,4 +12,8 @@ export class CreateCalibrationEvidenceDTO {
   @IsString()
   @IsOptional()
   description: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  is_pass: boolean;
 }

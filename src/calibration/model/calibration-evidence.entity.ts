@@ -14,6 +14,9 @@ export class CalibrationEvidence extends BaseEntity {
   @Column({ nullable: true })
   description: string; // just a briefly instruction introduction to the maintenancer
 
+  @Column({ default: false })
+  is_pass: boolean;
+
   @Column({ nullable: true, default: null })
   attachments: string; // splits with comma [,]
 
