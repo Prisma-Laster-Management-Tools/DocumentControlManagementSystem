@@ -53,7 +53,7 @@ export class CalibrationController {
   @Post('evidence/')
   @UseInterceptors(AnyFilesInterceptor())
   async createCalibrationEvidence(@Body() createCalibrationEvidenceDTO: CreateCalibrationEvidenceDTO, @UploadedFiles() files: Array<Express.Multer.File>) {
-    if (!files) throw new BadRequestException('You have to upload a file');
+    if (!files || !files.length) throw new BadRequestException('You have to upload a file');
     return this.calibrationService.createCalibrationEvidence(createCalibrationEvidenceDTO, files);
   }
 
