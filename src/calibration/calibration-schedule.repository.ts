@@ -11,12 +11,14 @@ export class CalibrationScheduleRepository extends Repository<CalibrationSchedul
 
   async createCalibrationSchedule(createCalibrationCycleDTO: CreateCalibrationCycleDTO) {
     const { cycle_info, instruction, machine_name, serial_number, cycle_start_at } = createCalibrationCycleDTO;
-    const MaintenanceCycle = new CalibrationSchedule();
-    MaintenanceCycle.instruction = instruction;
-    MaintenanceCycle.machine_name = machine_name;
-    MaintenanceCycle.cycle_info = cycle_info;
-    MaintenanceCycle.serial_number = serial_number;
-    MaintenanceCycle.cycle_start_at = cycle_start_at;
-    return await MaintenanceCycle.save();
+    const CalibrationCycle = new CalibrationSchedule();
+    CalibrationCycle.instruction = instruction;
+    CalibrationCycle.machine_name = machine_name;
+    CalibrationCycle.cycle_info = cycle_info;
+    CalibrationCycle.serial_number = serial_number;
+    CalibrationCycle.cycle_start_at = cycle_start_at;
+    CalibrationCycle.cycle_start_at_for_notification_cooldown = cycle_start_at;
+
+    return await CalibrationCycle.save();
   }
 }

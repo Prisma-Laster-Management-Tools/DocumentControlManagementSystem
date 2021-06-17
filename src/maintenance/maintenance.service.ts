@@ -76,7 +76,19 @@ export class MaintenanceService {
         if (creation) {
           // if success
           //stamp the new date
-          target.cycle_start_at = new Date(Date.now());
+
+          // NEWLY ADDED LOGIC
+          // made static for the day but only add month
+          const date = cycle_start_at;
+          const current_month = today.getMonth();
+          date.setMonth(current_month);
+          if (date < today) {
+            // if set to the current month and still less than today [add another month]
+            date.setMonth(current_month + 1);
+          }
+          // • • • • •
+
+          target.cycle_start_at = date;
           target.save().catch(() => console.log('[ERROR]: Cannot stamp the new date for maintenance id ' + id));
         }
       } else if (once_of_as_cycle_Regex.test(cycle_info)) {

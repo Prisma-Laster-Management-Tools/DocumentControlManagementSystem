@@ -10,7 +10,7 @@ import { CalibrationEvidence } from './model/calibration-evidence.entity';
 export class CalibrationEvidenceRepository extends Repository<CalibrationEvidence> {
   private logger = new Logger();
 
-  async createCalibrationEvidence(createCalibrationEvidenceDTO: CreateCalibrationEvidenceDTO, attachments: string) {
+  async createCalibrationEvidence(createCalibrationEvidenceDTO: CreateCalibrationEvidenceDTO, attachments: string, onEvidenceUploadCompletion: () => Promise<any>) {
     const { description, serial_number, machine_name, is_pass } = createCalibrationEvidenceDTO;
     const Evidence = new CalibrationEvidence();
     Evidence.description = description;
@@ -18,6 +18,14 @@ export class CalibrationEvidenceRepository extends Repository<CalibrationEvidenc
     Evidence.machine_name = machine_name;
     Evidence.attachments = attachments;
     Evidence.is_pass = is_pass;
-    return await Evidence.save();
+    try {
+      const save_operation = await Evidence.save();
+      await onEvidenceUploadCompletion(); // wait for the time stamping
+      // TODO idea
+      // Only stamp if the is_pass = true [NOT SURE IF THIS IS THE GREAT IDEA]
+      // ─────────────────────────────────────────────────────────────────
+    } catch (error) {
+      throw error;
+    }
   }
 }

@@ -19,6 +19,10 @@ export class CalibrationSchedule extends BaseEntity {
   @Column()
   cycle_start_at: Date;
 
+  //  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ nullable: true, type: 'timestamp', default: null })
+  cycle_start_at_for_notification_cooldown: Date;
+
   @Column()
   cycle_info: string;
 
