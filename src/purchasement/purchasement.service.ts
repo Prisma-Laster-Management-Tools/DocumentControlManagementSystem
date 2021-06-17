@@ -117,10 +117,10 @@ export class PurchasementService {
   async sendMail() {
     return this.mailerService
       .sendMail({
-        to: 'thiti2013@gmail.com',
+        to: 'tanawatt2541@gmail.com',
         from: 'thiti.mwk.main@gmail.com',
         subject: 'Yooloo',
-        template: join(__dirname, '..', '..', 'shared', 'templates', 'mailer', 'orderconfirmation'),
+        template: join(__dirname, '..', '..', 'shared', 'templates', 'mailer', 'purchasement_confirmation'),
         context: {
           part_name: 'ตะปูเหล็ก',
           quantity: '10 โหล',

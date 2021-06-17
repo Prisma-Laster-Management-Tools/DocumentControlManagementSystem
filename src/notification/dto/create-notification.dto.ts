@@ -1,14 +1,4 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  MaxLength,
-  MinLength,
-  IsDate,
-  IsDateString,
-  IsString,
-  ValidateIf,
-  IsOptional,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, MaxLength, MinLength, IsDate, IsDateString, IsString, ValidateIf, IsOptional } from 'class-validator';
 
 export class CreateNotificationDTO {
   //@IsNotEmpty() // default would be null instead
@@ -18,7 +8,10 @@ export class CreateNotificationDTO {
 
   @IsString()
   @IsOptional()
-  message: string = 'no message attached'; // default value
+  message: string;
+  //message: string = 'no message attached'; // default value
 
+  @IsString()
+  @IsOptional()
   attached_params: string;
 }

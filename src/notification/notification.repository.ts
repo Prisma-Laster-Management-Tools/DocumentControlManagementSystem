@@ -15,12 +15,18 @@ export class NotificationRepository extends Repository<Notification> {
     });
   }
 
-  async createNotification(createNotificationDTO: CreateNotificationDTO): Promise<Notification> {
-    const { attached_params = '', message = '', related_positions = null } = createNotificationDTO;
+  async createNotification(createNotificationDTO: CreateNotificationDTO, emitToPeer: (data: any) => void): Promise<Notification> {
+    const { attached_params, message, related_positions = null } = createNotificationDTO;
     const NotificationInstsance = new Notification();
     NotificationInstsance.message = message;
     NotificationInstsance.related_positions = related_positions;
     NotificationInstsance.attached_params = attached_params;
-    return await NotificationInstsance.save();
+    try {
+      const creation = await NotificationInstsance.save();
+      emitToPeer(creation);
+      return creation;
+    } catch (error) {
+      throw error;
+    }
   }
 }
