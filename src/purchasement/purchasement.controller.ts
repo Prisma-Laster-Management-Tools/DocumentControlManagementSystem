@@ -75,4 +75,13 @@ export class PurchasementController {
     return ResponseMsg.success(await this.purchasementService.getAllPurchasementRequest(paginationDTO));
   }
   // ─────────────────────────────────────────────────────────────────
+
+  //
+  // ─── TEST ───────────────────────────────────────────────────────────────────────
+  //
+  @Get('/sendmail')
+  async sendMail() {
+    return this.purchasementService.sendMail();
+  }
+  // ────────────────────────────────────────────────────────────────────────────────
 }

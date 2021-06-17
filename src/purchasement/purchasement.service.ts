@@ -1,3 +1,4 @@
+import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/shared/dto/pagination/pagination.dto';
@@ -7,7 +8,7 @@ import { CreatePurchasementSourceDTO } from './dto/create-purchasement-source.dt
 import { PurchansementPartRepository } from './purchasement-part.repository';
 import { PurchasementRequestRepository } from './purchasement-request.repository';
 import { PurchasementSourceRepository } from './purchasement-source.repository';
-
+import { join } from 'path';
 interface ILinkedRepositories {
   purchasement_part: PurchansementPartRepository;
   purchasement_request: PurchasementRequestRepository;
@@ -21,6 +22,7 @@ export class PurchasementService {
     @InjectRepository(PurchansementPartRepository) purchasementPartRepository,
     @InjectRepository(PurchasementSourceRepository) purchasementSourceRepository,
     @InjectRepository(PurchasementRequestRepository) purchasementRequestRepository,
+    private readonly mailerService: MailerService,
   ) {
     this.linked_repositories.purchasement_part = purchasementPartRepository;
     this.linked_repositories.purchasement_source = purchasementSourceRepository;
@@ -106,6 +108,32 @@ export class PurchasementService {
     if (!PRequest || PRequest.being_confirmed) throw new NotFoundException(); // not found -> means already confirm
     PRequest.being_confirmed = true;
     return await PRequest.save();
+  }
+  // ────────────────────────────────────────────────────────────────────────────────
+
+  //
+  // ─── TEST ───────────────────────────────────────────────────────────────────────
+  //
+  async sendMail() {
+    return this.mailerService
+      .sendMail({
+        to: 'thiti2013@gmail.com',
+        from: 'thiti.mwk.main@gmail.com',
+        subject: 'Yooloo',
+        template: join(__dirname, '..', '..', 'shared', 'templates', 'mailer', 'orderconfirmation'),
+        context: {
+          part_name: 'ตะปูเหล็ก',
+          quantity: '10 โหล',
+          price: 3000,
+          token: '3a6b7c',
+        },
+      })
+      .then(() => {
+        console.log('mail successfully sent');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   // ────────────────────────────────────────────────────────────────────────────────
 }

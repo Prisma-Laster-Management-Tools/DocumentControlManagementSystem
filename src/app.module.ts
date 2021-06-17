@@ -31,10 +31,42 @@ import { RecruitmentModule } from './recruitment/recruitment.module';
 import { UploadModule } from './upload/upload.module';
 // ────────────────────────────────────────────────────────────────────────────────
 
+//
+// ─── MAILER ─────────────────────────────────────────────────────────────────────
+//
+import { MailerModule, MailerOptions } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import ConfigManagement from './utilities/conf_management';
+// ────────────────────────────────────────────────────────────────────────────────
+
+const mailerConfig = ConfigManagement.extractConfigVariables('mailer');
+
 @Module({
   imports: [
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', 'public'), // back 2 times -> because ts would then complied to the dist folder
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: mailerConfig.host,
+        port: mailerConfig.port,
+        // ignoreTLS: true,
+        secure: mailerConfig.secure,
+        auth: {
+          user: mailerConfig.user,
+          pass: mailerConfig.pass,
+        },
+      },
+      defaults: {
+        from: '"nest-modules" <modules@nestjs.com>',
+      },
+      template: {
+        dir: join(__dirname, '..', 'shared', 'templates', 'mailer'), // back 2 folder [currently at the dist]
+        adapter: new HandlebarsAdapter(),
+        options: {
+          strict: true,
+        },
+      },
     }),
     TypeOrmModule.forRoot(typeOrmConfig),
     ScheduleModule.forRoot(),
