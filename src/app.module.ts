@@ -88,7 +88,7 @@ const mailerConfig = ConfigManagement.extractConfigVariables('mailer');
       provide: APP_FILTER,
       useClass: AllExceptionsFilter,
     },
-    NotificationGateway,
+    //NotificationGateway,
   ],
 })
 export class AppModule {}
