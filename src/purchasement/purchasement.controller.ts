@@ -5,6 +5,7 @@ import { ResponseMsg } from 'src/shared/helpers/ResponseMsg';
 import { CreatePurchasementPartDetailDTO } from './dto/create-purchasement-part-detail.dto';
 import { CreatePurchasementRequestDTO } from './dto/create-purchasement-request.dto';
 import { CreatePurchasementSourceDTO } from './dto/create-purchasement-source.dto';
+import { CreateResponseToPurchasementRequest } from './dto/create-response-to-purchasement-request.dto';
 import { PurchasementService } from './purchasement.service';
 
 @Controller('purchasement')
@@ -66,6 +67,11 @@ export class PurchasementController {
   @Get('/confirmation/:confirmation_token')
   async clientConfirmationTheRequestOrder(@Param('confirmation_token') confirmation_token: string) {
     return this.purchasementService.clientConfirmationTheRequestOrder(confirmation_token);
+  }
+
+  @Post('/confirmation/:confirmation_token/response')
+  async clientResponseToPurchasementRequest(@Body() createResponseToPurchasementRequest: CreateResponseToPurchasementRequest, @Param('confirmation_token') confirmation_token: string) {
+    return this.purchasementService.clientResponseToPurchasementRequest(createResponseToPurchasementRequest, confirmation_token);
   }
 
   @Get('/requests')

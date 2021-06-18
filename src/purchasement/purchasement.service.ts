@@ -9,6 +9,7 @@ import { PurchansementPartRepository } from './purchasement-part.repository';
 import { PurchasementRequestRepository } from './purchasement-request.repository';
 import { PurchasementSourceRepository } from './purchasement-source.repository';
 import { join } from 'path';
+import { CreateResponseToPurchasementRequest } from './dto/create-response-to-purchasement-request.dto';
 interface ILinkedRepositories {
   purchasement_part: PurchansementPartRepository;
   purchasement_request: PurchasementRequestRepository;
@@ -109,6 +110,15 @@ export class PurchasementService {
     PRequest.being_confirmed = true;
     return await PRequest.save();
   }
+
+  async clientResponseToPurchasementRequest(createResponseToPurchasementRequest: CreateResponseToPurchasementRequest, confirmation_token: string) {
+    const { accept } = createResponseToPurchasementRequest;
+    const PRequest = await this.linked_repositories.purchasement_request.findOne({ confirmation_token });
+    if (!PRequest || PRequest.is_order_accepted !== null || PRequest.purchasement_successfully !== false) throw new NotFoundException(); // not found -> means already confirm or in progress
+    PRequest.is_order_accepted = accept;
+    return await PRequest.save();
+  }
+
   // ────────────────────────────────────────────────────────────────────────────────
 
   //
