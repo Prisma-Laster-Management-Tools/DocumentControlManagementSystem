@@ -9,6 +9,11 @@ import { GetUser } from 'src/shared/decorators/get-user.decorator';
 export class UserController {
   constructor(private userService: UserService, private authenticationService: AuthenticationService) {}
 
+  @Get()
+  getAllUser() {
+    return this.userService.getAllUser();
+  }
+
   @Post('registration')
   signUp(
     @Body()

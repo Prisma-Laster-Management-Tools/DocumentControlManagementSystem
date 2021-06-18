@@ -14,6 +14,10 @@ export class UserService {
     return this.userRepository.signUp(signUpCredentialDto);
   }
 
+  async getAllUser() {
+    return await this.userRepository.find({ order: { createdAt: 'DESC' } });
+  }
+
   // CO-OP WITH THE RECRUITMENT MODULE
   async signUpWithLegitWay(recruitmentData: Recruitment, createRegistrationWithTokenDTO: CreateRegistrationWithTokenDTO) {
     const creation = await this.userRepository.signUpWithLegitWay(recruitmentData, createRegistrationWithTokenDTO);
