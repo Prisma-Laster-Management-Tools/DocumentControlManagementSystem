@@ -23,6 +23,12 @@ export class RecruitmentService {
     return Rm;
   }
 
+  async removeRecruitmentToken(id: number) {
+    const removal = await this.recruitmentRepository.delete(id);
+    if (!removal.affected) throw new NotFoundException(`Recruitment-token with id:"${id}" doesn't exist in the database`);
+    return removal;
+  }
+
   async TEST_setTokenAsAlreadyUsed(createAlreadyUsedFlaggedDTO: CreateAlreadyUsedFlaggedDTO) {
     const Rm = await this.recruitmentRepository.findOne({ access_token: createAlreadyUsedFlaggedDTO.access_token, already_used: false });
     if (!Rm) return;
