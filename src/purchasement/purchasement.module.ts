@@ -10,5 +10,6 @@ import { PurchasementService } from './purchasement.service';
   imports: [TypeOrmModule.forFeature([PurchasementSourceRepository, PurchansementPartRepository, PurchasementRequestRepository])],
   controllers: [PurchasementController],
   providers: [PurchasementService],
+  exports: [PurchasementService],
 })
 export class PurchasementModule {}

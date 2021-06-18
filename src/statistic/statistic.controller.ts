@@ -13,4 +13,13 @@ export class StatisticController {
     return this.statisticService.getQualityControlStatistic();
   }
   // ────────────────────────────────────────────────────────────────────────────────
+
+  //
+  // ─── PURCHASEMENT ───────────────────────────────────────────────────────────────
+  //
+  @Get('/purchasement')
+  getPurchasementStatistic() {
+    return this.statisticService.getPurchasementStatistic();
+  }
+  // ────────────────────────────────────────────────────────────────────────────────
 }
