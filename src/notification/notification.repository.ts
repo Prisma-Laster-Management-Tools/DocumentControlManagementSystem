@@ -12,6 +12,7 @@ export class NotificationRepository extends Repository<Notification> {
   async findAll(user: User) {
     return this.find({
       where: [{ related_positions: null }, { related_positions: user.position }],
+      order: { createdAt: 'DESC' },
     });
   }
 
