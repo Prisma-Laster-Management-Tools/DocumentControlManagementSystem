@@ -1,6 +1,7 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
 
 import * as bcrypt from 'bcrypt';
+import { classToPlain, Exclude } from 'class-transformer';
 
 @Entity()
 @Unique(['email'])
@@ -17,9 +18,11 @@ export class User extends BaseEntity {
   @Column()
   lastname: string;
 
+  @Exclude({ toPlainOnly: true }) // exclude during response not the instance it self
   @Column()
   password: string;
 
+  @Exclude({ toPlainOnly: true }) // exclude during response not the instance it self
   @Column()
   salt: string;
 
@@ -34,6 +37,11 @@ export class User extends BaseEntity {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
+
+  // @Overided - to make the Exclude decorator works
+  toJSON() {
+    return classToPlain(this);
+  }
 
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);
