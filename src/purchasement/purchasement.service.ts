@@ -127,12 +127,18 @@ export class PurchasementService {
   }
 
   async clientAttachEvidenceToPurchasementRequest(confirmation_token: string, evidence_path: string) {
-    const PRequest = await this.linked_repositories.purchasement_request.findOne({ confirmation_token });
+    const PRequest = await this.linked_repositories.purchasement_request.findOne({ confirmation_token, delivery_attachments: null });
     if (!PRequest) throw new NotFoundException();
     PRequest.delivery_attachments = evidence_path;
     return await PRequest.save();
   }
 
+  async employeeAttachEvidenceToPurchasementRequest(confirmation_token: string, evidence_path: string) {
+    const PRequest = await this.linked_repositories.purchasement_request.findOne({ confirmation_token, payment_attachments: null });
+    if (!PRequest) throw new NotFoundException();
+    PRequest.payment_attachments = evidence_path;
+    return await PRequest.save();
+  }
   // ────────────────────────────────────────────────────────────────────────────────
 
   //

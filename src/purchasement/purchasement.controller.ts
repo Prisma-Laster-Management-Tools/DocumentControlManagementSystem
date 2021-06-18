@@ -90,6 +90,16 @@ export class PurchasementController {
     return this.purchasementService.clientAttachEvidenceToPurchasementRequest(confirmation_token, upload.stored_path as string);
   }
 
+  //TODO Authguard later
+  @Post('/confirmation/:confirmation_token/employee-upload-evidence')
+  @UseInterceptors(FileInterceptor('file'))
+  async employeeAttachEvidenceToPurchasementRequest(@UploadedFile() file: Express.Multer.File, @Param('confirmation_token') confirmation_token: string) {
+    //TODO mime-type checking later
+    if (!file) throw new BadRequestException('You have to upload the evidence');
+    const upload = await uploadSinglePhoto(file);
+    return this.purchasementService.employeeAttachEvidenceToPurchasementRequest(confirmation_token, upload.stored_path as string);
+  }
+
   @Get('/requests')
   async getAllPurchasementRequest(@Query() paginationDTO: PaginationDto) {
     paginationDTO.page = Number(paginationDTO.page) || 1;
