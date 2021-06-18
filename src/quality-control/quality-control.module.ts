@@ -13,5 +13,6 @@ import { QualityControlService } from './quality-control.service';
   imports: [ProductModule, TypeOrmModule.forFeature([QualityControlRepository, QualityControlProtocolRepository, QualityControlQueueRepository])],
   controllers: [QualityControlController],
   providers: [QualityControlService],
+  exports: [QualityControlService],
 })
 export class QualityControlModule {}
