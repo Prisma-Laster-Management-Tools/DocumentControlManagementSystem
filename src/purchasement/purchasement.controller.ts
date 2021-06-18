@@ -1,7 +1,9 @@
-import { Get, Query } from '@nestjs/common';
+import { BadRequestException, Get, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { Body, Controller, Delete, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { PaginationDto } from 'src/shared/dto/pagination/pagination.dto';
 import { ResponseMsg } from 'src/shared/helpers/ResponseMsg';
+import { uploadSinglePhoto } from 'src/utilities/fs/image-upload';
 import { CreatePurchasementPartDetailDTO } from './dto/create-purchasement-part-detail.dto';
 import { CreatePurchasementRequestDTO } from './dto/create-purchasement-request.dto';
 import { CreatePurchasementSourceDTO } from './dto/create-purchasement-source.dto';
@@ -77,6 +79,15 @@ export class PurchasementController {
   @Get('/confirmation/:confirmation_token/close')
   async employeeClosePurchasementRequest(@Param('confirmation_token') confirmation_token: string) {
     return this.purchasementService.employeeClosePurchasementRequest(confirmation_token);
+  }
+
+  @Post('/confirmation/:confirmation_token/client-upload-evidence')
+  @UseInterceptors(FileInterceptor('file'))
+  async clientAttachEvidenceToPurchasementRequest(@UploadedFile() file: Express.Multer.File, @Param('confirmation_token') confirmation_token: string) {
+    //TODO mime-type checking later
+    if (!file) throw new BadRequestException('You have to upload the evidence');
+    const upload = await uploadSinglePhoto(file);
+    return this.purchasementService.clientAttachEvidenceToPurchasementRequest(confirmation_token, upload.stored_path as string);
   }
 
   @Get('/requests')

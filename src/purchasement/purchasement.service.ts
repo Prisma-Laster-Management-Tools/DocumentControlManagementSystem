@@ -126,6 +126,13 @@ export class PurchasementService {
     return await PRequest.save();
   }
 
+  async clientAttachEvidenceToPurchasementRequest(confirmation_token: string, evidence_path: string) {
+    const PRequest = await this.linked_repositories.purchasement_request.findOne({ confirmation_token });
+    if (!PRequest) throw new NotFoundException();
+    PRequest.delivery_attachments = evidence_path;
+    return await PRequest.save();
+  }
+
   // ────────────────────────────────────────────────────────────────────────────────
 
   //
