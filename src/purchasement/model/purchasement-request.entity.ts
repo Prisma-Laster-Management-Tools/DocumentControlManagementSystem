@@ -29,6 +29,23 @@ export class PurchasementRequest extends BaseEntity {
   @Column({ default: false })
   being_confirmed: boolean;
 
+  //
+  // ─── NEW SYSTEM ─────────────────────────────────────────────────────────────────
+  //
+  @Column({ nullable: true, default: null })
+  is_order_accepted: boolean | null;
+
+  @Column({ nullable: true, default: null })
+  delivery_attachments: string;
+
+  @Column({ nullable: true, default: null })
+  payment_attachments: string;
+
+  @Column({ default: false })
+  purchasement_successfully: boolean;
+
+  // ────────────────────────────────────────────────────────────────────────────────
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
