@@ -89,10 +89,15 @@ export class PurchasementService {
   async createPurchasementRequest(createPurchasementRequestDTO: CreatePurchasementRequestDTO) {
     const { is_special_request, commercial_number } = createPurchasementRequestDTO;
     if (!is_special_request) {
-      const partSource = await this.linked_repositories.purchasement_source.findOne({ commercial_number });
-      if (!partSource) throw new NotFoundException(`Purchasement Source with commercial number == "${commercial_number}" doesn't exist`);
+      /*const partSource = await this.linked_repositories.purchasement_source.findOne({ commercial_number });
+      if (!partSource) throw new NotFoundException(`Purchasement Source with commercial number == "${commercial_number}" doesn't exist`);*/
+
+      const [result] = await this.linked_repositories.purchasement_source.query(
+        `SELECT p_s.*,p_p.part_name from public.purchasement_source p_s LEFT JOIN public.purchasement_part p_p ON p_s.part_number=p_p.part_number WHERE p_s.commercial_number='${commercial_number}' LIMIT 1`,
+      );
+      if (!result) throw new NotFoundException(`Purchasement source with id of "${commercial_number}" doesn't exist in the database`);
+      return this.linked_repositories.purchasement_request.createPurchasementRequest(createPurchasementRequestDTO, result);
     }
-    return this.linked_repositories.purchasement_request.createPurchasementRequest(createPurchasementRequestDTO);
   }
 
   async removePurchasementRequest(id: number) {

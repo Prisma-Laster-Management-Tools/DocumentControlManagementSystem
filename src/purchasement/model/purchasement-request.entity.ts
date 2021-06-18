@@ -8,11 +8,35 @@ export class PurchasementRequest extends BaseEntity {
   @Column()
   commercial_number: string; // 'CUSTOM' <= if it's a special request
 
+  //
+  // ─── STAMP ──────────────────────────────────────────────────────────────────────
+  //
+
+  @Column()
+  company: string;
+
+  @Column()
+  seller: string;
+
+  @Column({ nullable: true })
+  contact_number: string;
+
+  @Column()
+  email: string;
+
+  @Column()
+  part_number: string;
+
+  @Column()
+  part_name: string;
+
   @Column()
   quantity: string; // 1ชิ้น , 1 กิโล , 1 อัน
 
   @Column()
   price: number; // price [dealing price]
+
+  // ────────────────────────────────────────────────────────────────────────────────
 
   @Column({ default: false })
   is_special_request: boolean;

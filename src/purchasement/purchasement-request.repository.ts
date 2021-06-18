@@ -11,7 +11,18 @@ import { PurchasementRequest } from './model/purchasement-request.entity';
 export class PurchasementRequestRepository extends Repository<PurchasementRequest> {
   private logger = new Logger();
 
-  async createPurchasementRequest(createPurchasementRequestDTO: CreatePurchasementRequestDTO) {
+  async createPurchasementRequest(
+    createPurchasementRequestDTO: CreatePurchasementRequestDTO,
+    sourceData: {
+      commercial_number: string;
+      part_number: string;
+      company: string;
+      email: string;
+      seller: string;
+      part_name: string;
+      contact_number: string;
+    },
+  ) {
     let { commercial_number, is_special_request, special_part_name, quantity, special_part_contact, price } = createPurchasementRequestDTO;
     const IsSpecialRequest = is_special_request && special_part_name ? true : false;
     if (IsSpecialRequest) commercial_number = 'CUSTOM'; // if it's special request
@@ -22,6 +33,12 @@ export class PurchasementRequestRepository extends Repository<PurchasementReques
     PurchasementReq.special_part_name = special_part_name;
     PurchasementReq.special_part_contact = special_part_contact;
     PurchasementReq.price = price;
+    PurchasementReq.part_number = sourceData.part_number;
+    PurchasementReq.part_name = sourceData.part_name;
+    PurchasementReq.company = sourceData.company;
+    PurchasementReq.seller = sourceData.seller;
+    PurchasementReq.email = sourceData.email;
+    PurchasementReq.contact_number = sourceData.contact_number || null;
 
     let random_access_token: string;
     while (true) {
