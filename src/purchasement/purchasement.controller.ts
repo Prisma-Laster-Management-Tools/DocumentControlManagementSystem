@@ -74,6 +74,11 @@ export class PurchasementController {
     return this.purchasementService.clientResponseToPurchasementRequest(createResponseToPurchasementRequest, confirmation_token);
   }
 
+  @Get('/confirmation/:confirmation_token/close')
+  async employeeClosePurchasementRequest(@Param('confirmation_token') confirmation_token: string) {
+    return this.purchasementService.employeeClosePurchasementRequest(confirmation_token);
+  }
+
   @Get('/requests')
   async getAllPurchasementRequest(@Query() paginationDTO: PaginationDto) {
     paginationDTO.page = Number(paginationDTO.page) || 1;

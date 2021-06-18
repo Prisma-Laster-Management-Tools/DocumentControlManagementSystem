@@ -119,6 +119,13 @@ export class PurchasementService {
     return await PRequest.save();
   }
 
+  async employeeClosePurchasementRequest(confirmation_token: string) {
+    const PRequest = await this.linked_repositories.purchasement_request.findOne({ confirmation_token });
+    if (!PRequest || PRequest.is_order_accepted !== true || PRequest.purchasement_successfully !== false) throw new NotFoundException();
+    PRequest.purchasement_successfully = true;
+    return await PRequest.save();
+  }
+
   // ────────────────────────────────────────────────────────────────────────────────
 
   //
