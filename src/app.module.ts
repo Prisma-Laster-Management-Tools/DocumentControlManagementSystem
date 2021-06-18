@@ -36,6 +36,7 @@ import { UploadModule } from './upload/upload.module';
 //
 import { MailerModule, MailerOptions } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { StatisticModule } from './statistic/statistic.module';
 import ConfigManagement from './utilities/conf_management';
 // ────────────────────────────────────────────────────────────────────────────────
 
@@ -82,6 +83,7 @@ const mailerConfig = ConfigManagement.extractConfigVariables('mailer');
     CalibrationModule,
     RecruitmentModule,
     UploadModule,
+    StatisticModule,
   ],
   providers: [
     {
