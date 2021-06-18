@@ -66,6 +66,11 @@ export class PurchasementController {
     return this.purchasementService.removePurchasementRequest(id);
   }
 
+  @Get('/request/:confirmation_token')
+  async getPurchasementRequest(@Param('confirmation_token') confirmation_token: string) {
+    return this.purchasementService.getPurchasementRequest(confirmation_token);
+  }
+
   @Get('/confirmation/:confirmation_token')
   async clientConfirmationTheRequestOrder(@Param('confirmation_token') confirmation_token: string) {
     return this.purchasementService.clientConfirmationTheRequestOrder(confirmation_token);
