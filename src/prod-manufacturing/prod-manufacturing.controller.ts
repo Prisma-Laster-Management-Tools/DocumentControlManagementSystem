@@ -1,4 +1,10 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { ProdManufacturingService } from './prod-manufacturing.service';
 
 @Controller('prod-manufacturing')
-export class ProdManufacturingController {}
+export class ProdManufacturingController {
+  constructor(private prodManufacturingService: ProdManufacturingService) {}
+
+  @Get('')
+  getAllProductManufacturingData() {}
+}
