@@ -1,6 +1,8 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
+import { Product } from 'src/product/model/product.entity';
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
 
 @Entity()
+@Unique(['generated_key']) // unique constant needed for relational
 export class ProdManufacturing extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -49,6 +51,10 @@ export class ProdManufacturing extends BaseEntity {
   buyer_contact: string; // phone_number or fax or ... etc whatever
 
   // ────────────────────────────────────────────────────────────────────────────────
+
+  @OneToMany((type) => Product, (product) => product.product_manufacturing)
+  @JoinColumn({ name: 'generated_key', referencedColumnName: 'prod_manufact_code' })
+  product: Array<Product>;
 
   @Column({ nullable: true })
   shipping_evidence: string | null; // string that contains the path to the uploaded file/photo

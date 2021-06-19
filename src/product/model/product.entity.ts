@@ -1,3 +1,4 @@
+import { ProdManufacturing } from 'src/prod-manufacturing/model/prod-manufacturing.entity';
 import { QualityControlQueue } from 'src/quality-control/model/quality-control-queue.entity';
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
 import { ProductDetail } from './product-detail.entity';
@@ -17,6 +18,17 @@ export class Product extends BaseEntity {
 
   @Column({ nullable: true, default: null })
   quality_passed: boolean | null;
+
+  //
+  // ─── PROD MANUFACTURING ─────────────────────────────────────────────────────────
+  //
+  @Column({ nullable: true, default: null })
+  prod_manufact_code: string | null; // default null
+
+  @ManyToOne((type) => ProdManufacturing)
+  @JoinColumn({ name: 'prod_manufact_code', referencedColumnName: 'generated_key' })
+  product_manufacturing: ProdManufacturing;
+  // ────────────────────────────────────────────────────────────────────────────────
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
