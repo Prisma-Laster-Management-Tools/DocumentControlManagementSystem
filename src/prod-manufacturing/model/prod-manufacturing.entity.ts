@@ -27,7 +27,7 @@ export class ProdManufacturing extends BaseEntity {
   @Column()
   price: number; // total price
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: null })
   shipping_status: boolean | null; // null = waiting to upload the evidence of shipping -> false = cancelled -> true = shipping successfully
 
   // @ NOTE FOR <shipping_status>
@@ -47,8 +47,8 @@ export class ProdManufacturing extends BaseEntity {
   @Column()
   buyer_name: string; // Thiti Mahawannakit
 
-  @Column()
-  buyer_contact: string; // phone_number or fax or ... etc whatever
+  @Column({ nullable: true })
+  buyer_contact: string | null; // phone_number or fax or ... etc whatever
 
   // ────────────────────────────────────────────────────────────────────────────────
 

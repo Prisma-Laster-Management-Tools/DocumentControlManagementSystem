@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateProductManufacturingShippingDTO } from './dto/create-prod-manufacturing-shipping.dto';
 import { ProdManufacturing } from './model/prod-manufacturing.entity';
 import { ProdManufacturingRepository } from './prod-manufacturing.repository';
 
@@ -26,5 +27,9 @@ export class ProdManufacturingService {
     });
     if (!prod_manu) throw new NotFoundException(`ProductManufacturing with the generated key of "${generated_key}" does not exist`);
     return prod_manu;
+  }
+
+  async createProductManufacturingShipping(createProductManufacturingShippingDTO: CreateProductManufacturingShippingDTO) {
+    return this.prodManufacturingRepository.createProductManufacturingShipping(createProductManufacturingShippingDTO);
   }
 }
