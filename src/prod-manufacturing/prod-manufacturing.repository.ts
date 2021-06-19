@@ -46,7 +46,7 @@ export class ProdManufacturingRepository extends Repository<ProdManufacturing> {
         const reversation = await reverse_phase(random_access_token);
         console.log(reversation);
         // after reversing [also remove the created entity]
-        await creation.remove();
+        await creation.remove(); // TODO need rechecking when available to check
         throw new BadRequestException(`Transaction got reversed due to the changes of the entities in the database`);
       }
 

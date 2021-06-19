@@ -65,4 +65,12 @@ export class ProdManufacturingService {
 
     return this.prodManufacturingRepository.createProductManufacturingShipping(createProductManufacturingShippingDTO, mark_products_as_shipping_pending, reverse_marking_shiping_phase);
   }
+
+  async employeeAttachEvidenceToShippingRequest(generated_key: string, evidence_path: string) {
+    const ProdManuProcess = await this.prodManufacturingRepository.findOne({ generated_key });
+    if (!ProdManuProcess) throw new NotFoundException(`ProductManufacturing Process with the generated_key:"${generated_key}" doesn't exist`);
+    ProdManuProcess.shipping_evidence = evidence_path;
+    ProdManuProcess.shipping_evidence_uploaded_at = new Date(Date.now());
+    return await ProdManuProcess.save();
+  }
 }
