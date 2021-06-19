@@ -13,7 +13,7 @@ export class ProductService {
     @InjectRepository(ProductDetailRepository)
     private productDetailRepository: ProductDetailRepository,
     @InjectRepository(ProductRepository)
-    private productRepository: ProductRepository,
+    public productRepository: ProductRepository,
   ) {}
 
   //
