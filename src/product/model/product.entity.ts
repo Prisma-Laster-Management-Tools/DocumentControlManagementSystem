@@ -30,6 +30,14 @@ export class Product extends BaseEntity {
   product_manufacturing: ProdManufacturing;
   // ────────────────────────────────────────────────────────────────────────────────
 
+  //
+  // ─── PROD DETAIL ────────────────────────────────────────────────────────────────
+  //
+  @ManyToOne((type) => ProductDetail, { cascade: true, onDelete: 'CASCADE' }) // If product-detail got removed -> remove all the product entitites with that product code [DANGER] //TODO require disscussion [but later]
+  @JoinColumn({ name: 'product_code', referencedColumnName: 'product_code' })
+  product_detail: ProductDetail;
+  // ────────────────────────────────────────────────────────────────────────────────
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 

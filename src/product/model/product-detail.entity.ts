@@ -20,6 +20,9 @@ export class ProductDetail extends BaseEntity {
   @OneToMany((type) => QualityControlProtocol, (protocol) => protocol.product_detail, { eager: false }) // not by default
   protocol: QualityControlProtocol[];
 
+  @OneToMany((type) => Product, (prod) => prod.product_detail, { eager: false })
+  product_entity: Array<Product>;
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 

@@ -12,9 +12,17 @@ export class ProductDetailRepository extends Repository<ProductDetail> {
   private logger = new Logger();
 
   async getAllBaseProductDetail(queryGetBaseProductDTO: QueryGetBaseProductDTO) {
-    const { with_protocol } = queryGetBaseProductDTO;
-    if (!with_protocol) return this.find();
-    return await this.createQueryBuilder('prod_detail').leftJoinAndSelect('prod_detail.protocol', 'quality_control_protocol').getMany(); // the right side quality_control_protocol is the alias [ it can be any in this case -> i already test]
+    const { with_protocol, with_product } = queryGetBaseProductDTO;
+    if (!with_protocol && !with_product) return this.find();
+    const queryBuilder = this.createQueryBuilder('prod_detail');
+    if (with_protocol) {
+      queryBuilder.leftJoinAndSelect('prod_detail.protocol', 'quality_control_protocol');
+    }
+    if (with_product) {
+      queryBuilder.leftJoinAndSelect('prod_detail.product_entity', 'product');
+    }
+
+    return await queryBuilder.getMany();
   }
 
   async createBaseProductDetail(createProductDetailDTO: CreateProductDetailDTO) {

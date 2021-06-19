@@ -13,4 +13,7 @@ export class QueryGetBaseProductDTO {
 
   @IsOptional()
   with_protocol: boolean;
+
+  @IsOptional()
+  with_product: boolean;
 }
