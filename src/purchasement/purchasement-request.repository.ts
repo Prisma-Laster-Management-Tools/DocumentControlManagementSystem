@@ -60,9 +60,9 @@ export class PurchasementRequestRepository extends Repository<PurchasementReques
     const skippedItem = (paginationDTO.page - 1) * paginationDTO.limit;
     let totalCount = await this.count();
     const PAGINATION_QUERY_STR = `OFFSET ${skippedItem} ROWS FETCH NEXT ${paginationDTO.limit} ROWS ONLY`;
-
+    //took the company,email,ps.part_number,seller out from ps <cuz it cause the ambigiu>
     const PURCHASEMENT_REQS = await this.query(
-      `SELECT pr.*,ps.part_number,company,email,seller from public.purchasement_request pr LEFT JOIN public.purchasement_source ps ON ps.commercial_number = pr.commercial_number ORDER BY pr."createdAt" DESC ${PAGINATION_QUERY_STR}`,
+      `SELECT pr.* from public.purchasement_request pr LEFT JOIN public.purchasement_source ps ON ps.commercial_number = pr.commercial_number ORDER BY pr."createdAt" DESC ${PAGINATION_QUERY_STR}`,
     );
 
     return {
