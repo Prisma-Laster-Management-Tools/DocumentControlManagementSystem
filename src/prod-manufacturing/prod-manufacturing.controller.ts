@@ -31,4 +31,9 @@ export class ProdManufacturingController {
     const upload = await uploadSinglePhoto(file);
     return this.prodManufacturingService.employeeAttachEvidenceToShippingRequest(generated_key, upload.stored_path as string);
   }
+
+  @Get(':generated_key/cancel')
+  async employeeCancelTheShippingRequest(@Param('generated_key') generated_key: string) {
+    return this.prodManufacturingService.employeeCancelTheShippingRequest(generated_key);
+  }
 }

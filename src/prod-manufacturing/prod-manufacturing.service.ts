@@ -71,6 +71,22 @@ export class ProdManufacturingService {
     if (!ProdManuProcess) throw new NotFoundException(`ProductManufacturing Process with the generated_key:"${generated_key}" doesn't exist`);
     ProdManuProcess.shipping_evidence = evidence_path;
     ProdManuProcess.shipping_evidence_uploaded_at = new Date(Date.now());
+    ProdManuProcess.shipping_status = true; // this might be useless -> cuz we can check directly thru the evidence_path
     return await ProdManuProcess.save();
+  }
+
+  async employeeCancelTheShippingRequest(generated_key: string) {
+    const ProdManuProcess = await this.prodManufacturingRepository.findOne({ generated_key });
+    if (!ProdManuProcess) throw new NotFoundException(`ProductManufacturing Process with the generated_key:"${generated_key}" doesn't exist`);
+    ProdManuProcess.shipping_status = false; // cancel
+
+    // this should be btw have no problems -> and we no need to wait for it or do we? [i think we need to]
+    try {
+      const update_operation = await getConnection().createQueryBuilder().update(Product).set({ prod_manufact_code: null }).where({ prod_manufact_code: generated_key }).execute();
+      console.log(update_operation); // debugging
+      return await ProdManuProcess.save();
+    } catch (error) {
+      throw error;
+    }
   }
 }
