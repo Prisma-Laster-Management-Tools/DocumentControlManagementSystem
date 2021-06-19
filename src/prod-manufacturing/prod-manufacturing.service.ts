@@ -42,7 +42,8 @@ export class ProdManufacturingService {
     // ─── CB ─────────────────────────────────────────────────────────────────────────
     //
     const mark_products_as_shipping_pending = async (generated_key: string): Promise<UpdateResult> => {
-      const prod_serial_number_lists_in_array = product_with_passed_quality_checking.map((data) => data.serial_number);
+      const needed_prod_list = product_with_passed_quality_checking.slice(0, total_products); // ex 0 - 3  => [0,1,2]
+      const prod_serial_number_lists_in_array = needed_prod_list.map((data) => data.serial_number);
 
       // @NOTE update_operation have to be done after the product_manufact_shipping process itself got created
       // @DESC if you want to skip this check [not reccommended setting createForignKeyContranits to false in the relation descriibing in the entity file]
