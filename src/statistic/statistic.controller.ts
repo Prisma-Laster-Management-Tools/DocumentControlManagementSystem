@@ -31,4 +31,13 @@ export class StatisticController {
     return this.statisticService.getRecruitmentStatistic();
   }
   // ────────────────────────────────────────────────────────────────────────────────
+
+  //
+  // ─── MT ─────────────────────────────────────────────────────────────────────────
+  //
+  @Get('/maintenance')
+  getMaintenanceStatistic() {
+    return this.statisticService.getMaintenanceStatistic();
+  }
+  // ────────────────────────────────────────────────────────────────────────────────
 }

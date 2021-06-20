@@ -11,5 +11,6 @@ import { CalibrationService } from './calibration.service';
   imports: [TypeOrmModule.forFeature([CalibrationScheduleRepository, CalibrationEvidenceRepository]), NotificationModule, AuthenticationModule],
   controllers: [CalibrationController],
   providers: [CalibrationService],
+  exports: [CalibrationService],
 })
 export class CalibrationModule {}

@@ -12,5 +12,6 @@ import { Maintenance } from './model/maintenance.entity';
   imports: [TypeOrmModule.forFeature([MaintenanceRepository, NotificationRepository]), NotificationModule],
   controllers: [MaintenanceController],
   providers: [MaintenanceService, NotificationService],
+  exports: [MaintenanceService],
 })
 export class MaintenanceModule {}
