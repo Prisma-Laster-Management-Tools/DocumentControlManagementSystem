@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
+import { get } from 'config';
 import { PaginationDto } from 'src/shared/dto/pagination/pagination.dto';
 import { ResponseMsg } from 'src/shared/helpers/ResponseMsg';
 import { CreateProductBulkDTO } from './dto/create-product-bulk.dto';
@@ -33,6 +34,11 @@ export class ProductController {
   @Post('/create-product@bulk')
   async BULK_createProduct(@Body() createProductBulkDTO: CreateProductBulkDTO) {
     return this.productService.BULK_createProduct(createProductBulkDTO);
+  }
+
+  @Get('/generate-serial-number')
+  async generateSerialNumber() {
+    return this.productService.generateSerialNumber();
   }
 
   @Delete('/remove-product/:serial_number')

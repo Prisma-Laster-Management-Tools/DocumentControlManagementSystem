@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/shared/dto/pagination/pagination.dto';
+import { getRandomString } from 'src/utilities/random/string';
 import { getConnection, In } from 'typeorm';
 import { CreateProductBulkDTO } from './dto/create-product-bulk.dto';
 import { CreateProductDetailDTO } from './dto/create-product-detail.dto';
@@ -62,6 +63,20 @@ export class ProductService {
     const removal = await this.productRepository.delete({ serial_number });
     if (!removal.affected) throw new NotFoundException(`Product with serial number "${serial_number}" doesn't exist`);
     return removal;
+  }
+
+  async generateSerialNumber() {
+    let random_serial_number: string;
+    while (true) {
+      random_serial_number = getRandomString(9);
+
+      //check-in
+      const existed_pr_with_this_token = await this.productRepository.findOne({ serial_number: random_serial_number });
+      if (!existed_pr_with_this_token) break; // break if it's not exist
+    }
+    return {
+      serial_number: random_serial_number,
+    };
   }
 
   async getAllProduct(paginationDto: PaginationDto) {
