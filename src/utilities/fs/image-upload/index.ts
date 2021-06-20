@@ -9,7 +9,8 @@ interface IUploadResponse {
 }
 
 export async function uploadSinglePhoto(file: Express.Multer.File): Promise<IUploadResponse> {
-  const new_file_name = Date.now().toString() + '_' + file.originalname;
+  const cleaned_file_name = file.originalname.replace(/[^\w\s.]/gi, '');
+  const new_file_name = Date.now().toString() + '_' + cleaned_file_name;
   const relative_path = PUBLIC_FOLDER + new_file_name;
   return new Promise((resolve, reject) => {
     fs.writeFile(relative_path, file.buffer, (err) => {
@@ -23,7 +24,8 @@ export async function uploadSinglePhoto(file: Express.Multer.File): Promise<IUpl
 export function uploadMultiplePhoto(files: Array<Express.Multer.File>): IUploadResponse {
   const stored_path = [];
   files.forEach((file) => {
-    const new_file_name = Date.now().toString() + '_' + file.originalname;
+    const cleaned_file_name = file.originalname.replace(/[^\w\s.]/gi, '');
+    const new_file_name = Date.now().toString() + '_' + cleaned_file_name;
     const relative_path = PUBLIC_FOLDER + new_file_name;
     fs.writeFileSync(relative_path, file.buffer);
     stored_path.push(relative_path.replace('public/', ''));
