@@ -136,4 +136,18 @@ export class StatisticService {
       },
     };
   }
+
+  async getProductStatistic() {
+    const { data: products } = await this.productService.getAllProduct({ limit: 100000000, page: 1, search: null });
+    const product_types = await this.productService.getAllBaseProductDetail({ with_product: false, with_protocol: false });
+
+    //TODO calc phase <later>
+
+    return {
+      statistic: {
+        total_product: products.length,
+        total_product_type: product_types.length,
+      },
+    };
+  }
 }
