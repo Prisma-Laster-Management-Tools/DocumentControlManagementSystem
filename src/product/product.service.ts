@@ -107,7 +107,10 @@ export class ProductService {
     });
 
     const bulk_insertion = await getConnection().createQueryBuilder().insert().into(Product).values(insertion_element).execute();
-    return bulk_insertion;
+    return {
+      success: true,
+      insertion_list: bulk_insertion,
+    };
   }
   // ─────────────────────────────────────────────────────────────────
 
