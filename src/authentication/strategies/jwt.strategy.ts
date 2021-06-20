@@ -14,19 +14,16 @@ export const modules_importation = [
   JwtModule.register({
     secret: process.env.JWT_SECRET || ConfigManagement.legacyGet('jwt.secret'),
     signOptions: {
-      expiresIn: 3600,
+      expiresIn: 3600 * 8, // 8 hour
     },
   }),
 ];
 
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    @InjectRepository(UserRepository) private userRepository: UserRepository,
-  ) {
+  constructor(@InjectRepository(UserRepository) private userRepository: UserRepository) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey:
-        process.env.JWT_SECRET || ConfigManagement.legacyGet('jwt.secret'),
+      secretOrKey: process.env.JWT_SECRET || ConfigManagement.legacyGet('jwt.secret'),
     });
   }
 

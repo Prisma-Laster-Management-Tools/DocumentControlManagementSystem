@@ -30,7 +30,7 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  async validateUserPassword(authCredentialDto: SignUpCredentialsDto): Promise<any> {
+  async validateUserPassword(authCredentialDto: SignUpCredentialsDto): Promise<User | null> {
     const { email, password } = authCredentialDto;
     const user = await this.findOne({ email });
     if (user && (await user.validatePassword(password))) {

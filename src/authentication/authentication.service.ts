@@ -7,22 +7,15 @@ import { JwtPayload } from './strategies/jwt.payload';
 
 @Injectable()
 export class AuthenticationService {
-  constructor(
-    @InjectRepository(UserRepository) private userRepository: UserRepository,
-    private jwtService: JwtService,
-  ) {}
+  constructor(@InjectRepository(UserRepository) private userRepository: UserRepository, private jwtService: JwtService) {}
 
-  async signIn(
-    signUpCredentialsDto: SignUpCredentialsDto,
-  ): Promise<{ accessToken: string }> {
-    const user = await this.userRepository.validateUserPassword(
-      signUpCredentialsDto,
-    );
+  async signIn(signUpCredentialsDto: SignUpCredentialsDto): Promise<{ accessToken: string }> {
+    const user = await this.userRepository.validateUserPassword(signUpCredentialsDto);
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const payload: JwtPayload = { email: user.email };
+    const payload: JwtPayload = { email: user.email, firstname: user.firstname, lastname: user.lastname, position: user.position, role: user.role };
     const accessToken = this.jwtService.sign(payload);
 
     return { accessToken };
