@@ -5,6 +5,7 @@ interface IUploadResponse {
   success: boolean;
   errors?: any;
   stored_path?: Array<string> | string;
+  plain_str_with_splitter?: string;
 }
 
 export async function uploadSinglePhoto(file: Express.Multer.File): Promise<IUploadResponse> {
@@ -28,5 +29,5 @@ export function uploadMultiplePhoto(files: Array<Express.Multer.File>): IUploadR
     stored_path.push(relative_path.replace('public/', ''));
   });
   console.log(`total ${files.length} files were uploaded`);
-  return { success: true, stored_path };
+  return { success: true, stored_path, plain_str_with_splitter: stored_path.join(',splitter-global-final,') };
 }

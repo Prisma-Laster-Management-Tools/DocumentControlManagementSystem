@@ -17,6 +17,9 @@ export class ProductDetail extends BaseEntity {
   @Column()
   product_description: string;
 
+  @Column({ nullable: true, default: null })
+  images_path: string | null;
+
   @OneToMany((type) => QualityControlProtocol, (protocol) => protocol.product_detail, { eager: false }) // not by default
   protocol: QualityControlProtocol[];
 

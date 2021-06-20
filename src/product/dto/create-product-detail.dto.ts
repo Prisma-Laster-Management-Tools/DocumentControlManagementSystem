@@ -1,12 +1,4 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  MaxLength,
-  MinLength,
-  IsDate,
-  IsDateString,
-  IsString,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, MaxLength, MinLength, IsDate, IsDateString, IsString, IsOptional } from 'class-validator';
 
 export class CreateProductDetailDTO {
   @IsString()
@@ -20,4 +12,8 @@ export class CreateProductDetailDTO {
   @IsString()
   @IsNotEmpty()
   product_description: string;
+
+  @IsString()
+  @IsOptional()
+  images_path: string | null;
 }

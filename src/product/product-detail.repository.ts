@@ -26,11 +26,12 @@ export class ProductDetailRepository extends Repository<ProductDetail> {
   }
 
   async createBaseProductDetail(createProductDetailDTO: CreateProductDetailDTO) {
-    const { product_name, product_description, product_code } = createProductDetailDTO;
+    const { product_name, product_description, product_code, images_path } = createProductDetailDTO;
     const productDetail = new ProductDetail();
     productDetail.product_code = product_code;
     productDetail.product_name = product_name;
     productDetail.product_description = product_description;
+    productDetail.images_path = images_path;
     return await productDetail.save();
   }
 }
