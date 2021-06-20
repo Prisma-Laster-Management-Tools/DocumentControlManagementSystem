@@ -152,7 +152,7 @@ a[x-apple-data-detectors] {
                       <td align="left" style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px"><h3 style="Margin:0;line-height:31px;mso-line-height-rule:exactly;font-family:'Kanit', sans-serif, sans-serif;font-size:22px;font-style:normal;font-weight:normal;color:#FFFFFF">รหัสสินค้า</h3></td> 
                      </tr> 
                      <tr> 
-                      <td align="left" style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'Kanit', sans-serif;line-height:27px;color:#999999;font-size:18px">SMLSDVS6500</p></td> 
+                      <td align="left" style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'Kanit', sans-serif;line-height:27px;color:#999999;font-size:18px">{{part_number}}</p></td> 
                      </tr> 
                    </table></td> 
                  </tr> 
@@ -170,7 +170,7 @@ a[x-apple-data-detectors] {
                       <td align="left" style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px"><h3 style="Margin:0;line-height:31px;mso-line-height-rule:exactly;font-family:'Kanit', sans-serif, sans-serif;font-size:22px;font-style:normal;font-weight:normal;color:#FFFFFF">ราคาสินค้าที่เสนอ</h3></td> 
                      </tr> 
                      <tr> 
-                      <td align="left" style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'Kanit', sans-serif;line-height:27px;color:#999999;font-size:18px">3,000 บาท</p></td> 
+                      <td align="left" style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'Kanit', sans-serif;line-height:27px;color:#999999;font-size:18px">{{ price }} บาท - {{ quantity }}</p></td> 
                      </tr> 
                    </table></td> 
                  </tr> 
@@ -184,7 +184,7 @@ a[x-apple-data-detectors] {
                       <td align="left" style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px"><h3 style="Margin:0;line-height:31px;mso-line-height-rule:exactly;font-family:'Kanit', sans-serif, sans-serif;font-size:22px;font-style:normal;font-weight:normal;color:#FFFFFF">รายละเอียดสินค้า</h3></td> 
                      </tr> 
                      <tr> 
-                      <td align="left" style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'Kanit', sans-serif;line-height:27px;color:#999999;font-size:18px">ถุงยางอนามัยเรืองแสง</p></td> 
+                      <td align="left" style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'Kanit', sans-serif;line-height:27px;color:#999999;font-size:18px">{{ part_name }}</p></td> 
                      </tr> 
                    </table></td> 
                  </tr> 
@@ -226,7 +226,7 @@ a[x-apple-data-detectors] {
                       <td align="center" style="padding:0;Margin:0;padding-top:20px;padding-bottom:5px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'Kanit', sans-serif;line-height:27px;color:#999999;font-size:18px">คุณสามารถดูสถานะการการยืนยันของคุณได้โดยคลิกที่ปุ่มด้านล่าง</p></td> 
                      </tr> 
                      <tr> 
-                      <td align="center" style="padding:20px;Margin:0"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#E06666;border-width:0px;display:inline-block;border-radius:0px;width:auto"><a href="https://viewstripo.email" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:18px;border-style:solid;border-color:#DDA520;border-width:15px 35px 15px 35px;display:inline-block;background:#DDA520;border-radius:0px;font-family:;font-family:;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center">ดูรายละเอียดตอบรับคำร้อง</a></span></td> 
+                      <td align="center" style="padding:20px;Margin:0"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#E06666;border-width:0px;display:inline-block;border-radius:0px;width:auto"><a href="{{dest_path}}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:18px;border-style:solid;border-color:#DDA520;border-width:15px 35px 15px 35px;display:inline-block;background:#DDA520;border-radius:0px;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center">ดูรายละเอียดตอบรับคำร้อง</a></span></td> 
                      </tr> 
                    </table></td> 
                  </tr> 
@@ -259,7 +259,7 @@ a[x-apple-data-detectors] {
                   <td align="left" style="padding:0;Margin:0;width:520px"> 
                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px"> 
                      <tr> 
-                      <td align="center" style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px"><h2 style="Margin:0;line-height:43px;mso-line-height-rule:exactly;font-family:'Kanit', sans-serif, sans-serif;font-size:36px;font-style:normal;font-weight:bold;color:#FFFFFF">ติดต่อสอบถาม&nbsp;</h2></td> 
+                      <td align="center" style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px"><h2 style="Margin:0;line-height:43px;mso-line-height-rule:exactly;font-family:'Kanit', sans-serif, sans-serif;font-size:36px;font-style:normal;font-weight:bold;color:#FFFFFF">{{ prefix2 }}&nbsp;</h2></td> 
                      </tr> 
                      <tr> 
                       <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'Kanit', sans-serif;line-height:21px;color:#999999;font-size:14px">ตอบกลับอีเมลนี้ Charoent@primalasertherapy.com หรือโทรติดต่อฝ่ายสนับสนุน</p></td> 

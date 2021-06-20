@@ -87,7 +87,7 @@ export class PurchasementService {
   // ─── PURCHASEMENT ───────────────────────────────────────────────────────────────
   //
   async createPurchasementRequest(createPurchasementRequestDTO: CreatePurchasementRequestDTO) {
-    const { is_special_request, commercial_number } = createPurchasementRequestDTO;
+    const { is_special_request, commercial_number, price, quantity } = createPurchasementRequestDTO;
     if (!is_special_request) {
       /*const partSource = await this.linked_repositories.purchasement_source.findOne({ commercial_number });
       if (!partSource) throw new NotFoundException(`Purchasement Source with commercial number == "${commercial_number}" doesn't exist`);*/
@@ -96,7 +96,28 @@ export class PurchasementService {
         `SELECT p_s.*,p_p.part_name from public.purchasement_source p_s LEFT JOIN public.purchasement_part p_p ON p_s.part_number=p_p.part_number WHERE p_s.commercial_number='${commercial_number}' LIMIT 1`,
       );
       if (!result) throw new NotFoundException(`Purchasement source with id of "${commercial_number}" doesn't exist in the database`);
-      return this.linked_repositories.purchasement_request.createPurchasementRequest(createPurchasementRequestDTO, result);
+      return this.linked_repositories.purchasement_request.createPurchasementRequest(createPurchasementRequestDTO, result).then((data) => {
+        this.mailerService.sendMail({
+          to: 'tanawatt2541@gmail.com', //TODO changed to the destination one
+          from: 'thiti.mwk.main@gmail.com',
+          subject: 'คำร้องขอการสั่งซื้อ',
+          template: join(__dirname, '..', '..', 'shared', 'templates', 'mailer', 'purchasement_confirmation'),
+          context: {
+            part_name: result.part_name,
+            part_number: result.part_number,
+            quantity: quantity,
+            price: price,
+            token: data.confirmation_token,
+            company: result.company,
+            seller: result.seller,
+            contact_number: result.contact_number,
+            email: result.email,
+            prefix1: 'ล่าง',
+            prefix2: 'ติดต่อสอบถาม',
+            dest_path: `http://localhost:3001/purchasement-tracking/${data.confirmation_token}/?type=client`,
+          },
+        });
+      });
     }
   }
 
