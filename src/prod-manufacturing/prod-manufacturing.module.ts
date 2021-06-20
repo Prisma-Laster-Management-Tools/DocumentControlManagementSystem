@@ -10,5 +10,6 @@ import { ProdManufacturingService } from './prod-manufacturing.service';
   imports: [TypeOrmModule.forFeature([ProdManufacturingRepository]), ProductModule, AuthenticationModule],
   controllers: [ProdManufacturingController],
   providers: [ProdManufacturingService],
+  exports: [ProdManufacturingService],
 })
 export class ProdManufacturingModule {}

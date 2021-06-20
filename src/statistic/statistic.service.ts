@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CalibrationService } from 'src/calibration/calibration.service';
 import { MaintenanceService } from 'src/maintenance/maintenance.service';
+import { ProdManufacturingService } from 'src/prod-manufacturing/prod-manufacturing.service';
 import { ProductService } from 'src/product/product.service';
 import { PurchasementService } from 'src/purchasement/purchasement.service';
 import { QualityControlService } from 'src/quality-control/quality-control.service';
@@ -18,6 +19,7 @@ export class StatisticService {
     private recruitmentService: RecruitmentService,
     private maintenanceService: MaintenanceService,
     private calibrationService: CalibrationService,
+    private deliberationService: ProdManufacturingService,
   ) {}
   async getQualityControlStatistic() {
     const { data: products } = await this.productService.getAllProduct({ limit: 100000000, page: 1, search: null });
@@ -119,6 +121,18 @@ export class StatisticService {
         total_calibration_schedule: calibration_lists.length,
         total_calibration_period_hit: hit_period_count,
         total_maintenance_schedule: mt.length,
+      },
+    };
+  }
+
+  async getDeliberationStatistic() {
+    const deliberation_list = await this.deliberationService.getAllProductManufacturingData({ join_prod: false });
+    return {
+      statistic: {
+        total_shipping_successfully: deliberation_list.filter((data) => data.shipping_status).length,
+        total_waiting_to_be_shipped: deliberation_list.filter((data) => data.shipping_status === null).length,
+        total_rejected_shipping: deliberation_list.filter((data) => data.shipping_status === false).length,
+        total_exportation: deliberation_list.length,
       },
     };
   }

@@ -40,4 +40,13 @@ export class StatisticController {
     return this.statisticService.getMaintenanceStatistic();
   }
   // ────────────────────────────────────────────────────────────────────────────────
+
+  //
+  // ─── DELIBERATION ───────────────────────────────────────────────────────────────
+  //
+  @Get('/deliberation')
+  getDeliberationStatistic() {
+    return this.statisticService.getDeliberationStatistic();
+  }
+  // ────────────────────────────────────────────────────────────────────────────────
 }
