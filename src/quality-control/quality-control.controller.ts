@@ -1,4 +1,7 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/shared/decorators/get-user.decorator';
+import { User } from 'src/user/model/user.entity';
 import { CreateControlProcessBulkDTO } from './dto/create-control-process-bulk.dto';
 import { CreateControlProcess } from './dto/create-control-process.dto';
 import { CreateProtocalForProductDTO } from './dto/create-protocal-for-product.dto';
@@ -56,8 +59,9 @@ export class QualityControlController {
   }
 
   @Post('/control-phase@bulk')
-  async createControlProcess_BULK(@Body() createControlProcessBulkDTO: CreateControlProcessBulkDTO) {
-    return this.qualityControlService.createControlProcess_BULK(createControlProcessBulkDTO);
+  @UseGuards(AuthGuard())
+  async createControlProcess_BULK(@Body() createControlProcessBulkDTO: CreateControlProcessBulkDTO, @GetUser() user: User) {
+    return this.qualityControlService.createControlProcess_BULK(createControlProcessBulkDTO, user);
   }
 
   @Get('/control-phase/process')

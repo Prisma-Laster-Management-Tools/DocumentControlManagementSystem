@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, UseGuards } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductService } from 'src/product/product.service';
 import { CreateControlProcessBulkDTO } from './dto/create-control-process-bulk.dto';
@@ -12,6 +12,9 @@ import { getConnection } from 'typeorm';
 import { QualityControl } from './model/quality-control.entity';
 import { getRandomString } from 'src/utilities/random/string';
 import { Product } from 'src/product/model/product.entity';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/shared/decorators/get-user.decorator';
+import { User } from 'src/user/model/user.entity';
 
 interface ILinkedRepositories {
   protocol: QualityControlProtocolRepository;
@@ -127,7 +130,7 @@ export class QualityControlService {
     return this.linked_repositories.product.createControlProcess(createControlProcess, dequeue_process);
   }
 
-  async createControlProcess_BULK(createControlProcessBulkDTO: CreateControlProcessBulkDTO) {
+  async createControlProcess_BULK(createControlProcessBulkDTO: CreateControlProcessBulkDTO, user: User) {
     const { product_id, qc_datas } = createControlProcessBulkDTO;
 
     // Check if this product_id is in the queue-list or not
@@ -176,6 +179,8 @@ export class QualityControlService {
       Qc.group_code = group_code;
       Qc.number_of_protocol = ProtocolList.length;
       Qc.protocol_description = ProtocolList.find((protocol) => protocol.id === qc_data.protocol_id).process_description;
+      Qc.stamper_firstname = user.firstname;
+      Qc.stamper_lastname = user.lastname;
       return Qc;
     });
 
