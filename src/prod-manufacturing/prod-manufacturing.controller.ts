@@ -1,5 +1,8 @@
-import { BadRequestException, Body, Controller, Get, Param, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Post, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { GetUser } from 'src/shared/decorators/get-user.decorator';
+import { User } from 'src/user/model/user.entity';
 import { uploadSinglePhoto } from 'src/utilities/fs/image-upload';
 import { CreateProductManufacturingShippingDTO } from './dto/create-prod-manufacturing-shipping.dto';
 import { ProdManufacturingService } from './prod-manufacturing.service';
@@ -24,12 +27,13 @@ export class ProdManufacturingController {
   }
 
   @Post('/:generated_key/upload-evidence')
+  @UseGuards(AuthGuard())
   @UseInterceptors(FileInterceptor('file'))
-  async employeeAttachEvidenceToShippingRequest(@UploadedFile() file: Express.Multer.File, @Param('generated_key') generated_key: string) {
+  async employeeAttachEvidenceToShippingRequest(@UploadedFile() file: Express.Multer.File, @Param('generated_key') generated_key: string, @GetUser() user: User) {
     //TODO mime-type checking later
     if (!file) throw new BadRequestException('You have to upload the evidence');
     const upload = await uploadSinglePhoto(file);
-    return this.prodManufacturingService.employeeAttachEvidenceToShippingRequest(generated_key, upload.stored_path as string);
+    return this.prodManufacturingService.employeeAttachEvidenceToShippingRequest(generated_key, upload.stored_path as string, user);
   }
 
   @Get(':generated_key/cancel')

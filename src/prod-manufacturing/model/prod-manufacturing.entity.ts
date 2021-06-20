@@ -50,6 +50,19 @@ export class ProdManufacturing extends BaseEntity {
   @Column({ nullable: true })
   buyer_contact: string | null; // phone_number or fax or ... etc whatever
 
+  @Column()
+  shipping_address: string;
+
+  // ────────────────────────────────────────────────────────────────────────────────
+
+  //
+  // ─── NAME STAMPING ──────────────────────────────────────────────────────────────
+  //
+  @Column({ nullable: true, default: null })
+  stamper_firstname: string;
+
+  @Column({ nullable: true, default: null })
+  stamper_lastname: string;
   // ────────────────────────────────────────────────────────────────────────────────
 
   @OneToMany((type) => Product, (product) => product.product_manufacturing)

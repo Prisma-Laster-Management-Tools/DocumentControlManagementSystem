@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/product/model/product.entity';
 import { ProductService } from 'src/product/product.service';
+import { User } from 'src/user/model/user.entity';
 import { getConnection, In, UpdateResult } from 'typeorm';
 import { CreateProductManufacturingShippingDTO } from './dto/create-prod-manufacturing-shipping.dto';
 import { ProdManufacturing } from './model/prod-manufacturing.entity';
@@ -67,12 +68,14 @@ export class ProdManufacturingService {
     return this.prodManufacturingRepository.createProductManufacturingShipping(createProductManufacturingShippingDTO, mark_products_as_shipping_pending, reverse_marking_shiping_phase);
   }
 
-  async employeeAttachEvidenceToShippingRequest(generated_key: string, evidence_path: string) {
+  async employeeAttachEvidenceToShippingRequest(generated_key: string, evidence_path: string, user: User) {
     const ProdManuProcess = await this.prodManufacturingRepository.findOne({ generated_key });
     if (!ProdManuProcess) throw new NotFoundException(`ProductManufacturing Process with the generated_key:"${generated_key}" doesn't exist`);
     ProdManuProcess.shipping_evidence = evidence_path;
     ProdManuProcess.shipping_evidence_uploaded_at = new Date(Date.now());
     ProdManuProcess.shipping_status = true; // this might be useless -> cuz we can check directly thru the evidence_path
+    ProdManuProcess.stamper_firstname = user.firstname;
+    ProdManuProcess.stamper_lastname = user.lastname;
     return await ProdManuProcess.save();
   }
 

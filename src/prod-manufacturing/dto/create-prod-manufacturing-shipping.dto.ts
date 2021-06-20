@@ -23,6 +23,10 @@ export class CreateProductManufacturingShippingDTO {
   buyer_name: string;
 
   @IsString()
+  @IsNotEmpty()
+  shipping_address: string; // address to ship
+
+  @IsString()
   @IsOptional()
   buyer_contact: string;
 }

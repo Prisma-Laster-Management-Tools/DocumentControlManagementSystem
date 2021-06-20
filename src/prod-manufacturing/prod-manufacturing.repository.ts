@@ -17,7 +17,7 @@ export class ProdManufacturingRepository extends Repository<ProdManufacturing> {
     mark_phase: (generated_key: string) => Promise<UpdateResult>,
     reverse_phase: (generated_key: string) => Promise<UpdateResult>,
   ) {
-    const { buyer_contact, price, product_code, buyer_name, product_name, total_products } = createProductManufacturingShippingDTO;
+    const { buyer_contact, price, product_code, buyer_name, product_name, total_products, shipping_address } = createProductManufacturingShippingDTO;
     const ProdManuEntity = new ProdManufacturing();
     ProdManuEntity.product_code = product_code;
     ProdManuEntity.product_name = product_name;
@@ -25,6 +25,7 @@ export class ProdManufacturingRepository extends Repository<ProdManufacturing> {
     ProdManuEntity.price = price;
     ProdManuEntity.buyer_name = buyer_name;
     ProdManuEntity.buyer_contact = buyer_contact;
+    ProdManuEntity.shipping_address = shipping_address;
 
     let random_access_token: string;
     while (true) {
