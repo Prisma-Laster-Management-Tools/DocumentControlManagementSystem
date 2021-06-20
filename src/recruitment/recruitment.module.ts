@@ -10,5 +10,6 @@ import { RecruitmentService } from './recruitment.service';
   imports: [TypeOrmModule.forFeature([RecruitmentRepository]), AuthenticationModule, UserModule],
   controllers: [RecruitmentController],
   providers: [RecruitmentService],
+  exports: [RecruitmentService],
 })
 export class RecruitmentModule {}

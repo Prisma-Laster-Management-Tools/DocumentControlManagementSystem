@@ -22,4 +22,13 @@ export class StatisticController {
     return this.statisticService.getPurchasementStatistic();
   }
   // ────────────────────────────────────────────────────────────────────────────────
+
+  //
+  // ─── RC ─────────────────────────────────────────────────────────────────────────
+  //
+  @Get('/recruitment')
+  getRecruitmentStatistic() {
+    return this.statisticService.getRecruitmentStatistic();
+  }
+  // ────────────────────────────────────────────────────────────────────────────────
 }
