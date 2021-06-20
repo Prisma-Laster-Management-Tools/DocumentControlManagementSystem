@@ -1,5 +1,8 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, ParseIntPipe, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, ParseIntPipe, Post, UploadedFile, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AnyFilesInterceptor, FileInterceptor } from '@nestjs/platform-express';
+import { GetUser } from 'src/shared/decorators/get-user.decorator';
+import { User } from 'src/user/model/user.entity';
 import { uploadMultiplePhoto, uploadSinglePhoto } from 'src/utilities/fs/image-upload';
 import { CalibrationService } from './calibration.service';
 import { CreateCalibrationEvidenceDTO } from './dto/create-calibration-evidence.dto';
@@ -51,10 +54,11 @@ export class CalibrationController {
   }
 
   @Post('evidence/')
+  @UseGuards(AuthGuard())
   @UseInterceptors(AnyFilesInterceptor())
-  async createCalibrationEvidence(@Body() createCalibrationEvidenceDTO: CreateCalibrationEvidenceDTO, @UploadedFiles() files: Array<Express.Multer.File>) {
+  async createCalibrationEvidence(@Body() createCalibrationEvidenceDTO: CreateCalibrationEvidenceDTO, @UploadedFiles() files: Array<Express.Multer.File>, @GetUser() user: User) {
     if (!files || !files.length) throw new BadRequestException('You have to upload a file');
-    return this.calibrationService.createCalibrationEvidence(createCalibrationEvidenceDTO, files);
+    return this.calibrationService.createCalibrationEvidence(createCalibrationEvidenceDTO, files, user);
   }
 
   @Get('evidence/:serial_number')

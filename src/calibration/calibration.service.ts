@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NotificationService } from 'src/notification/notification.service';
+import { User } from 'src/user/model/user.entity';
 import { uploadMultiplePhoto } from 'src/utilities/fs/image-upload';
 import { calculateDayPassed, isAlreadyPassedPeriodOfDay } from 'src/utilities/time';
 import { CalibrationEvidenceRepository } from './calibration-evidence.repository';
@@ -44,7 +45,7 @@ export class CalibrationService {
   async getCalibrationEvidenceHistoryOfSpecificSerialNumber(serial_number: string) {
     return await this.calibrationEvidenceRepository.find({ where: { serial_number }, order: { createdAt: 'DESC' } });
   }
-  async createCalibrationEvidence(createCalibrationEvidenceDTO: CreateCalibrationEvidenceDTO, files: Array<Express.Multer.File>) {
+  async createCalibrationEvidence(createCalibrationEvidenceDTO: CreateCalibrationEvidenceDTO, files: Array<Express.Multer.File>, user: User) {
     const upload = uploadMultiplePhoto(files);
     const attachments = (upload.stored_path as Array<string>).join(',spiltter-23564,');
 
@@ -58,7 +59,7 @@ export class CalibrationService {
       await cycle.save();
     };
 
-    return this.calibrationEvidenceRepository.createCalibrationEvidence(createCalibrationEvidenceDTO, attachments, onEvidenceUploadCompletion);
+    return this.calibrationEvidenceRepository.createCalibrationEvidence(createCalibrationEvidenceDTO, user, attachments, onEvidenceUploadCompletion);
   }
   // ────────────────────────────────────────────────────────────────────────────────
 

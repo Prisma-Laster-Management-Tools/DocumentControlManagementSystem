@@ -21,6 +21,16 @@ export class CalibrationEvidence extends BaseEntity {
   @Column({ nullable: true, default: null })
   attachments: string; // splits with comma [,]
 
+  //
+  // ─── NAME STAMPING ──────────────────────────────────────────────────────────────
+  //
+  @Column()
+  stamper_firstname: string;
+
+  @Column()
+  stamper_lastname: string;
+  // ────────────────────────────────────────────────────────────────────────────────
+
   // NOTE createForeignKeyConstraints to allow having the calibration evidence with the not-exist serial_number in the cycle
   @ManyToOne((type) => CalibrationSchedule, { createForeignKeyConstraints: false, cascade: true, onDelete: 'CASCADE' }) // If CalibrationSchedule got removed -> remove all the evidence of it too
   @JoinColumn({ name: 'serial_number', referencedColumnName: 'serial_number' })

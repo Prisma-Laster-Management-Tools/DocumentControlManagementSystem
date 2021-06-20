@@ -1,6 +1,7 @@
 import { ConflictException, InternalServerErrorException, Logger } from '@nestjs/common';
 import { Sales } from 'src/sales/model/sales.entity';
 import { ResponseMsg } from 'src/shared/helpers/ResponseMsg';
+import { User } from 'src/user/model/user.entity';
 
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateCalibrationEvidenceDTO } from './dto/create-calibration-evidence.dto';
@@ -10,7 +11,7 @@ import { CalibrationEvidence } from './model/calibration-evidence.entity';
 export class CalibrationEvidenceRepository extends Repository<CalibrationEvidence> {
   private logger = new Logger();
 
-  async createCalibrationEvidence(createCalibrationEvidenceDTO: CreateCalibrationEvidenceDTO, attachments: string, onEvidenceUploadCompletion: () => Promise<any>) {
+  async createCalibrationEvidence(createCalibrationEvidenceDTO: CreateCalibrationEvidenceDTO, user: User, attachments: string, onEvidenceUploadCompletion: () => Promise<any>) {
     const { description, serial_number, machine_name, is_pass } = createCalibrationEvidenceDTO;
     const Evidence = new CalibrationEvidence();
     Evidence.description = description;
@@ -18,6 +19,8 @@ export class CalibrationEvidenceRepository extends Repository<CalibrationEvidenc
     Evidence.machine_name = machine_name;
     Evidence.attachments = attachments;
     Evidence.is_pass = is_pass;
+    Evidence.stamper_firstname = user.firstname;
+    Evidence.stamper_lastname = user.lastname;
     try {
       const save_operation = await Evidence.save();
       await onEvidenceUploadCompletion(); // wait for the time stamping
