@@ -86,12 +86,7 @@ export class ProdManufacturingService {
     ProdManuProcess.stamper_firstname = user.firstname;
     ProdManuProcess.stamper_lastname = user.lastname;
     try {
-      const update_operation = await getConnection()
-        .createQueryBuilder()
-        .update(Product)
-        .set({ prod_manufact_code: null, already_shipped: true })
-        .where({ prod_manufact_code: generated_key })
-        .execute();
+      const update_operation = await getConnection().createQueryBuilder().update(Product).set({ already_shipped: true }).where({ prod_manufact_code: generated_key }).execute();
       return await ProdManuProcess.save();
     } catch (error) {
       throw error;
