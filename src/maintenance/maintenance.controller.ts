@@ -20,4 +20,9 @@ export class MaintenanceController {
   async removeMaintenanceCycle(@Param('id', ParseIntPipe) id: number) {
     return this.maintenanceService.removeMaintenanceCycle(id);
   }
+
+  @Get('/:id/set-maintain')
+  async markAsMaintained(@Param('id', ParseIntPipe) id: number) {
+    return this.maintenanceService.markAsMaintained(id);
+  }
 }

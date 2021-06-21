@@ -27,6 +27,9 @@ export class Maintenance extends BaseEntity {
   @Column()
   cycle_info: string;
 
+  @Column({ nullable: true, default: null })
+  already_maintain: boolean | null;
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 

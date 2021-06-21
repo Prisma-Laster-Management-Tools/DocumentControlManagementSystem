@@ -87,8 +87,8 @@ export class MaintenanceService {
             date.setMonth(current_month + 1);
           }
           // • • • • •
-
           target.cycle_start_at = date;
+          target.already_maintain = false; // set to false
           target.save().catch(() => console.log('[ERROR]: Cannot stamp the new date for maintenance id ' + id));
         }
       } else if (once_of_as_cycle_Regex.test(cycle_info)) {
@@ -122,4 +122,11 @@ export class MaintenanceService {
     // ─────────────────────────────────────────────────────────────────
   }
   // ────────────────────────────────────────────────────────────────────────────────
+
+  async markAsMaintained(id: number) {
+    const schedule = await this.maintenanceRepository.findOne(id);
+    if (!schedule) throw new NotFoundException();
+    schedule.already_maintain = true;
+    return await schedule.save();
+  }
 }
