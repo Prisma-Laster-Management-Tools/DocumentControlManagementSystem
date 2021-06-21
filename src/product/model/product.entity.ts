@@ -30,6 +30,9 @@ export class Product extends BaseEntity {
   product_manufacturing: ProdManufacturing;
   // ────────────────────────────────────────────────────────────────────────────────
 
+  @Column({ default: false })
+  already_shipped: boolean;
+
   //
   // ─── PROD DETAIL ────────────────────────────────────────────────────────────────
   //

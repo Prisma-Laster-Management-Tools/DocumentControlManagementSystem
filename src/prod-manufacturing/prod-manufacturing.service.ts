@@ -85,7 +85,17 @@ export class ProdManufacturingService {
     ProdManuProcess.shipping_status = true; // this might be useless -> cuz we can check directly thru the evidence_path
     ProdManuProcess.stamper_firstname = user.firstname;
     ProdManuProcess.stamper_lastname = user.lastname;
-    return await ProdManuProcess.save();
+    try {
+      const update_operation = await getConnection()
+        .createQueryBuilder()
+        .update(Product)
+        .set({ prod_manufact_code: null, already_shipped: true })
+        .where({ prod_manufact_code: generated_key })
+        .execute();
+      return await ProdManuProcess.save();
+    } catch (error) {
+      throw error;
+    }
   }
 
   async employeeCancelTheShippingRequest(generated_key: string) {
@@ -95,7 +105,12 @@ export class ProdManufacturingService {
 
     // this should be btw have no problems -> and we no need to wait for it or do we? [i think we need to]
     try {
-      const update_operation = await getConnection().createQueryBuilder().update(Product).set({ prod_manufact_code: null }).where({ prod_manufact_code: generated_key }).execute();
+      const update_operation = await getConnection()
+        .createQueryBuilder()
+        .update(Product)
+        .set({ prod_manufact_code: null, already_shipped: false })
+        .where({ prod_manufact_code: generated_key })
+        .execute();
       console.log(update_operation); // debugging
       return await ProdManuProcess.save();
     } catch (error) {
