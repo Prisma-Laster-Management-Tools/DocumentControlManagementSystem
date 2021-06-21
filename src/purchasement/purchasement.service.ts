@@ -10,6 +10,8 @@ import { PurchasementRequestRepository } from './purchasement-request.repository
 import { PurchasementSourceRepository } from './purchasement-source.repository';
 import { join } from 'path';
 import { CreateResponseToPurchasementRequest } from './dto/create-response-to-purchasement-request.dto';
+
+import * as moment from 'moment';
 interface ILinkedRepositories {
   purchasement_part: PurchansementPartRepository;
   purchasement_request: PurchasementRequestRepository;
@@ -113,7 +115,7 @@ export class PurchasementService {
             contact_number: result.contact_number,
             email: result.email,
             prefix1: 'ล่าง',
-            prefix2: 'ติดต่อสอบถาม',
+            created_at: moment().locale('th').format('LLLL'),
             dest_path: `http://localhost:3001/purchasement-tracking/${data.confirmation_token}/?type=client`,
           },
         });
