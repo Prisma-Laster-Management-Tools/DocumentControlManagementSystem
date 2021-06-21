@@ -121,6 +121,8 @@ export class StatisticService {
         total_calibration_schedule: calibration_lists.length,
         total_calibration_period_hit: hit_period_count,
         total_maintenance_schedule: mt.length,
+        total_maintenance_attention_needed: mt.filter((data) => data.already_maintain === false).length,
+        total_maintenance_never_maintained: mt.filter((data) => data.already_maintain === null).length,
       },
     };
   }
