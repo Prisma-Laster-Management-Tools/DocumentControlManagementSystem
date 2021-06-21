@@ -35,7 +35,16 @@ export class ProdManufacturingService {
 
   async createProductManufacturingShipping(createProductManufacturingShippingDTO: CreateProductManufacturingShippingDTO) {
     const { product_code, total_products } = createProductManufacturingShippingDTO;
-    const product_with_passed_quality_checking = await this.productService.productRepository.find({ product_code, quality_passed: true });
+    const product_with_passed_quality_checking = await this.productService.productRepository.find({
+      where: {
+        product_code,
+        quality_passed: true,
+        prod_manufact_code: null,
+      },
+      order: {
+        createdAt: 'ASC',
+      },
+    });
     if (product_with_passed_quality_checking.length < total_products)
       throw new BadRequestException(`Don't have enough of product with product_code:"${product_code}" to serve shipping with total amount of "${total_products}"`);
 
