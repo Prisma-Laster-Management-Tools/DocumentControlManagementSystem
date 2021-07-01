@@ -58,6 +58,7 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
+    <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -103,9 +104,16 @@ In order to get this project works you need to have
    ```
 
 
-<!--
+<!-- USAGE EXAMPLES -->
 ## Usage
- -->
+
+1. Start the NestJs server by
+   ```sh
+   npm start:dev
+   ```
+    and the service will run on port 3000 (editable)
+  
+  
 
 
 <!-- ROADMAP -->
